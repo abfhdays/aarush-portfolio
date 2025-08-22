@@ -1,6 +1,7 @@
 import Section from "@/components/Section";
 import { about } from "@/content/about";
 
+
 // Helper to extract company from role string
 function extractCompany(role: string) {
   // Looks for " - " or ", " as separator
