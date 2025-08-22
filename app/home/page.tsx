@@ -36,7 +36,7 @@ export default function Home() {
 
       {/* About Me section */}
       <h2 className="text-2xl font-semibold mb-4">About Me</h2>
-      <Section>
+      <Section title="Introduction">
         <div className="space-y-4">
           {about.intro.map((line, i) => (
             <p key={i} className="text-lg text-zinc-700">{line}</p>
@@ -46,7 +46,7 @@ export default function Home() {
 
       {/* Experience heading and timeline */}
       <h2 className="text-2xl font-semibold mb-4 mt-10">Experience</h2>
-      <Section>
+      <Section title="Timeline">
         <ul className="space-y-6">
           {about.experiences.map((e) => {
             const company = extractCompany(e.role);
@@ -73,7 +73,7 @@ export default function Home() {
       </Section>
 
       <h2 className="text-2xl font-semibold mb-4">Cool</h2>
-      <Section>
+      <Section title="Photos">
         <p>{about.hobbies.join(", ")}.</p>
       </Section>
     </div>
