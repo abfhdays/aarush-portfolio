@@ -3,7 +3,7 @@ import Gallery from "@/components/Gallery";
 
 export const metadata = { title: "Photos — Aarush Ghosh" };
 
-export default function PhotosPage() {
+export default function Photos() {
   return (
     <div>
       <h1 className="text-3xl mb-6">Photos</h1>
