@@ -1,36 +1,35 @@
 @import "tailwindcss";
 
-
-/* Design tokens */
+/* ---------- Design tokens ---------- */
 :root{
-  --bg: #f6faf7;           /* soft off-white with a hint of green */
-  --fg: #1a2e1a;           /* deep green for main text */
-  --muted: #5e7d5e;        /* muted green/grey */
-  --border: #b7e2c6;       /* soft light green for borders */
-  --accent: #2e8b57;       /* strong green for accents */
-  --header: #174c2a;       /* darker green for main headers */
-  --nav-bg: #eafaf1;       /* very subtle light green for navigation */
+  --bg:        #f6faf7;  /* soft off-white with a hint of green */
+  --fg:        #1a2e1a;  /* deep green text */
+  --muted:     #5e7d5e;  /* muted green/grey */
+  --border:    #b7e2c6;  /* soft light green */
+  --accent:    #2e8b57;  /* sea-green accent */
+  --accent-bg: #eafaf1;  /* pale accent for chips/images */
+  --accent-ink:#1a5c37;  /* darker accent for hovers */
+  --header:    #174c2a;  /* dark heading ink */
+
+  --nav-bg:    #eafaf1;
+  --nav-text:  #1a2e1a;
+  --nav-hover: #dff3e8;
 }
 
-/* Base */
-html{ scroll-behavior:smooth; }
-::selection{ background:#e6f7ec; }
+/* ---------- Base ---------- */
+html { scroll-behavior:smooth; }
+::selection { background:#e6f7ec; }
+
 body{
   background:var(--bg);
   color:var(--fg);
-  /* ⬇️ use next/font variables directly */
   font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
 }
 
-/* Headings use display font and green color */
+/* Headings = display font */
 h1,h2,h3{
   font-family: var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   letter-spacing:-0.015em;
-  color: var(--accent);
-}
-
-/* Main page and section titles (darker green) */
-h1, .main-title, .section-title {
   color: var(--header);
 }
 
@@ -38,12 +37,9 @@ h1, .main-title, .section-title {
 p{ line-height:1.75; }
 ul{ list-style:disc; padding-left:1.5rem; }
 a{ text-underline-offset:4px; color: var(--muted); }
+a:hover { color: var(--accent-ink); }
 
-a:hover {
-  color: var(--accent);
-}
-
-/* Cards */
+/* Cards (projects/photos) */
 .card{
   border-radius:1rem;
   border:1px solid var(--border);
@@ -52,3 +48,16 @@ a:hover {
 }
 .card-hover{ transition:transform .15s ease, box-shadow .2s ease; }
 .card-hover:hover{ transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+
+/* Sidebar nav link */
+.nav-link{
+  display:inline-block;
+  padding:.5rem .75rem;
+  border-radius:.5rem;
+  color: var(--nav-text);
+  text-underline-offset:4px;
+}
+.nav-link:hover{
+  background: var(--nav-hover);
+  color: var(--header);
+}
