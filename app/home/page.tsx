@@ -1,5 +1,5 @@
 // app/home/page.tsx
-import Link from "next/link";
+// import Link from "next/link";
 import Section from "@/components/Section";
 import { about } from "@/content/about";
 
@@ -29,7 +29,7 @@ export default function Home() {
           {about.title}
         </h1>
         <p className="mt-3 text-lg text-[var(--muted)] max-w-2xl">
-          I’m Aarush. I build simple, resilient software and write about what I learn.
+          Engineer
         </p>
       </header>
 
