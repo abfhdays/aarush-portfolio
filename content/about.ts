@@ -1,9 +1,9 @@
 export const about = {
   title: "Aarush Ghosh",
   intro: [
-    "Hello there! Thanks for checking out my portfolio. I’m heading to my 3rd year as student at the University of Waterloo majoring in Statistics exploring other disciplines through my minors in CO (combinatorics and optimization) and computing.",
-    "I build data driven products with data pipelines, LLMs, and web apps. I’m passionate about building simple, resilient software that solves real problems.",
-    "I’m currently looking for a co-op position for Winter 2026. "
+    "Hi visitors. I’m a Statistics major working towards a CS minor at the University of Waterloo. I build software and love turning data into products—designing pipelines and shipping ML/AI features for both serious and just-for-fun problems.",
+    "Professionally, I have built RA an AI Dev at CGI, and with the Dean of Mathematics to build a Markov model forecasting student tuition dynamics. I enjoy building and open-sourcing small tools, and I learn best by mixing coursework, real projects, and hands-on tinkering.",
+    "Outside of work, you’ll find me playing baseball, football, or soccer—or going deep on niche sports stats on sites like Baseball-Reference (see my sports project). I also make and obsess over music; new soundscapes and lyrics are a daily habit."
   ],
   passions: ["LLMs and information retrieval", "data pipelines", "minimal product design", "music production and drums"],
   hobbies: ["photography", "hiking", "basketball"],

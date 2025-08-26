@@ -2,7 +2,7 @@
 
 /* ---------- Design tokens ---------- */
 :root{
-  --bg:        #f6faf7;  /* soft off-white with a hint of green */
+  --bg:        #f5f7fa;  /* clean, modern off-white */
   --fg:        #1a2e1a;  /* deep green text */
   --muted:     #5e7d5e;  /* muted green/grey */
   --border:    #b7e2c6;  /* soft light green */
@@ -11,9 +11,9 @@
   --accent-ink:#1a5c37;  /* darker accent for hovers */
   --header:    #174c2a;  /* dark heading ink */
 
-  --nav-bg:    #eafaf1;
+  --nav-bg:    #e3f6e8;  /* slightly richer green for nav */
   --nav-text:  #1a2e1a;
-  --nav-hover: #dff3e8;
+  --nav-hover: #d0eddc;
 }
 
 /* ---------- Base ---------- */
@@ -23,7 +23,7 @@ html { scroll-behavior:smooth; }
 body{
   background:var(--bg);
   color:var(--fg);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  font-family: var(--font-sans), var(--font-code), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
 }
 
 /* Headings = display font */
@@ -31,12 +31,15 @@ h1,h2,h3{
   font-family: var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   letter-spacing:-0.015em;
   color: var(--header);
+  font-weight: 700;
 }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.2rem; }
 
-/* Readability */
-p{ line-height:1.75; }
+p{ line-height:1.75; font-size:1.05rem; }
 ul{ list-style:disc; padding-left:1.5rem; }
-a{ text-underline-offset:4px; color: var(--muted); }
+a{ text-underline-offset:4px; color: var(--muted); transition: color .15s; }
 a:hover { color: var(--accent-ink); }
 
 /* Cards (projects/photos) */
@@ -52,10 +55,13 @@ a:hover { color: var(--accent-ink); }
 /* Sidebar nav link */
 .nav-link{
   display:inline-block;
-  padding:.5rem .75rem;
+  padding:.5rem 1.1rem;
   border-radius:.5rem;
   color: var(--nav-text);
   text-underline-offset:4px;
+  font-family: var(--font-display), serif;
+  letter-spacing: 0.01em;
+  transition: background .15s, color .15s;
 }
 .nav-link:hover{
   background: var(--nav-hover);
