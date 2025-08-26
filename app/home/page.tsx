@@ -70,7 +70,7 @@ export default function Home() {
           </p>
         </div>
         <p className="text-[var(--fg)]/85">
-          In my own time I enjoy playing sports (baseball, football, soccer) (and digging through niche statistics in websites like baseball reference <a href="/projects#sports" className="underline text-[var(--accent)]">here's a link to be sports project</a>), playing and listening to music (hyperfixating on new soundscapes, lyrics every day).
+          In my own time I enjoy playing sports (baseball, football, soccer) (and digging through niche statistics in websites like baseball reference <a href="https://www.google.com/search?q=what+are+sites+like+basebal-reference+fancharts+called&oq=what+are+sites+like+basebal-reference+fancharts+called&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIJCAEQIRgKGKAB0gEJMTAxMjVqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8" className="underline text-[var(--accent)]">here's a link to be sports project</a>), playing and listening to music (hyperfixating on new soundscapes, lyrics every day).
         </p>
       </Section>
 
