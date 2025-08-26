@@ -76,33 +76,35 @@ export default function Home() {
 
       {/* Experience */}
       <Section title="experience">
-    
-        <ol className="relative pl-6">
-          <div className="absolute left-2 top-1 bottom-1 w-px bg-[var(--border)]" />
-          {about.experiences.map((e) => {
-            const company = extractCompany(e.role);
-            const title = extractTitle(e.role);
-            return (
-              <li key={e.role} className="mb-8 last:mb-0 relative pl-8">
-                <span className="absolute left-0 mt-1 h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--accent-bg)]" />
-                <div className="flex flex-wrap items-center gap-3">
-                  <p className="font-medium">{title}</p>
-                  {company && (
-                    <span className="text-xs rounded px-2 py-0.5 bg-[#f3e7d6] text-[var(--accent)] ring-1 ring-[var(--border)]">
-                      {company}
-                    </span>
-                  )}
-                  <span className="ml-auto text-sm text-[var(--muted)]">{e.time}</span>
-                </div>
-                <ul className="mt-2 list-disc pl-5 text-[var(--fg)]/85">
-                  {e.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
-              </li>
-            );
-          })}
-        </ol>
+        <div className="relative">
+          {/* Timeline vertical line */}
+          <span className="absolute left-2 top-1 bottom-1 w-px bg-[var(--border)]" aria-hidden="true" />
+          <ol className="pl-6">
+            {about.experiences.map((e) => {
+              const company = extractCompany(e.role);
+              const title = extractTitle(e.role);
+              return (
+                <li key={e.role} className="mb-8 last:mb-0 relative pl-8">
+                  <span className="absolute left-0 mt-1 h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--accent-bg)]" />
+                  <div className="flex flex-wrap items-center gap-3">
+                    <p className="font-medium">{title}</p>
+                    {company && (
+                      <span className="text-xs rounded px-2 py-0.5 bg-[#f3e7d6] text-[var(--accent)] ring-1 ring-[var(--border)]">
+                        {company}
+                      </span>
+                    )}
+                    <span className="ml-auto text-sm text-[var(--muted)]">{e.time}</span>
+                  </div>
+                  <ul className="mt-2 list-disc pl-5 text-[var(--fg)]/85">
+                    {e.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </Section>
 
       notfinished{/* Skills */}

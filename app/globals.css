@@ -67,3 +67,14 @@ a:hover { color: var(--accent-ink); }
   background: var(--nav-hover);
   color: var(--header);
 }
+
+/* Section titles */
+.section-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem; /* 2xl */
+  font-weight: 400;
+  font-family: var(--font-sans), Inter, Arial, sans-serif;
+  text-transform: none;
+  color: #5e7d5e;
+  letter-spacing: 0.01em;
+}
