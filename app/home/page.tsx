@@ -107,17 +107,55 @@ export default function Home() {
         </div>
       </Section>
 
-      notfinished{/* Skills */}
+      {/* Skills */}
       <Section title="skills">
-        <div className="flex flex-wrap gap-2">
-          {about.passions.map((p) => (
-            <span
-              key={p}
-              className="text-xs rounded-full px-2.5 py-1 bg-[var(--accent-bg)] text-[var(--accent-ink)] ring-1 ring-[var(--border)]"
-            >
-              {p}
-            </span>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <h3 className="text-sm font-semibold mb-2 text-[var(--accent)]">programming languages</h3>
+            <ul className="list-none p-0 m-0 flex flex-wrap gap-2">
+              {["Python","JavaScript/TypeScript","C++","C","Java","Git","SQL","R"].map(skill => (
+                <li
+                  key={skill}
+                  className="text-xs rounded-full px-2.5 py-1 bg-[var(--accent-bg)] text-[var(--accent-ink)] ring-1 ring-[var(--border)]"
+                >
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold mb-2 text-[var(--accent)]">full stack</h3>
+            <ul className="list-none p-0 m-0 flex flex-wrap gap-2">
+              {["React.js","Node.js","PostgreSQL","Django","Flask","Firebase","MongoDB","FastAPI"].map(skill => (
+                <li key={skill} className="text-xs rounded-full px-2.5 py-1 bg-[var(--accent-bg)] text-[var(--accent-ink)] ring-1 ring-[var(--border)]">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold mb-2 text-[var(--accent)]">ai, data</h3>
+            <ul className="list-none p-0 m-0 flex flex-wrap gap-2">
+              {["Tensorflow","PyTorch","Keras","Apache","Databricks","Fabric","SQL","Pandas","Airflow","Azure OpenAI","Cohere"].map(skill => (
+                <li key={skill} className="text-xs rounded-full px-2.5 py-1 bg-[var(--accent-bg)] text-[var(--accent-ink)] ring-1 ring-[var(--border)]">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold mb-2 text-[var(--accent)]">Developer Tools</h3>
+            <ul className="list-none p-0 m-0 flex flex-wrap gap-2">
+              {["AWS","Azure","Docker","Git","Linux","Redis","Jira","Pytest","Pydantic"].map(skill => (
+                <li key={skill} className="text-xs rounded-full px-2.5 py-1 bg-[var(--accent-bg)] text-[var(--accent-ink)] ring-1 ring-[var(--border)]">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
     </div>

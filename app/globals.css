@@ -3,7 +3,7 @@
 /* ---------- Design tokens ---------- */
 :root{
   --bg:        #f5f7fa;  /* clean, modern off-white */
-  --fg:        #1a2e1a;  /* deep green text */
+  --fg:        #020302;  /* deep green text */
   --muted:     #5e7d5e;  /* muted green/grey */
   --border:    #b7e2c6;  /* soft light green */
   --accent:    #2e8b57;  /* sea-green accent */
@@ -12,7 +12,7 @@
   --header:    #174c2a;  /* dark heading ink */
 
   --nav-bg:    #e3f6e8;  /* slightly richer green for nav */
-  --nav-text:  #1a2e1a;
+  --nav-text:  #0e330e;
   --nav-hover: #d0eddc;
 }
 
