@@ -30,12 +30,12 @@ body{
 h1,h2,h3{
   font-family: var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   letter-spacing:-0.015em;
-  color: var(--header);
   font-weight: 700;
 }
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.6rem; }
-h3 { font-size: 1.2rem; }
+
+h1 { color: var(--header); }        /* page title stays dark */
+h2, h3 { color: var(--muted); }     /* section titles (about me, experience, skills) light green */
+
 
 p{ line-height:1.75; font-size:1.05rem; }
 ul{ list-style:disc; padding-left:1.5rem; }

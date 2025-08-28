@@ -7,7 +7,7 @@ export default function Section({
       {title && (
         <h2
           className="mb-4 text-[1.4rem] font-normal underline underline-offset-4 decoration-[var(--accent)]
-                     text-[#5e7d5e] tracking-[0.01em]
+                     text-[#396e39] tracking-[0.01em]
                      [font-family:var(--font-sans),_Inter,_Arial,_sans-serif]"
         >
           {title}
