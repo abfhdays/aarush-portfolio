@@ -42,7 +42,7 @@ export default function Home() {
 
           <div className="text-[var(--fg)]/85 space-y-3">
             <p>
-              I am interested in creating insightful, high performance and creative solutions with GenAI and classical ML, from professional challenges to weekend side quests. I also work closely across the data engineering stack and app-side stack to deliver end-to-end results (see <a href="#skills" className="underline text-[var(--accent)]">skills</a> for more specifics).
+              I am interested in creating insightful, high performance, and creative solutions with Gen AI and Classical ML, from tackling professional challenges to weekend side quests. I also work closely across the data engineering stack and app-side stack to deliver end-to-end results (see <a href="#skills" className="underline text-[var(--accent)]">skills</a> for more specifics).
               In the past I have:
             </p>
             <ul className="pl-6 space-y-1">
