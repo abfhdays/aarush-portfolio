@@ -30,31 +30,7 @@ export default function Home() {
         </h1>
         <p className="subtitle">Engineer</p>
 
-        {/* small photo strip on mobile */}
-        <div className="mt-5 flex items-center justify-center gap-3 md:hidden">
-          <Image
-            src="/portfolioheader1.jpeg"
-            alt="Portfolio image 1"
-            width={44}
-            height={44}
-            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
-            priority
-          />
-          <Image
-            src="/portfolioheader2.jpeg"
-            alt="Portfolio image 2"
-            width={44}
-            height={44}
-            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
-          />
-          <Image
-            src="/portfolioheader3.jpeg"
-            alt="Portfolio image 3"
-            width={44}
-            height={44}
-            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
-          />
-        </div>
+        
       </header>
 
       {/* About */}
@@ -66,20 +42,20 @@ export default function Home() {
 
           <div className="text-[var(--fg)]/85 space-y-3">
             <p>
-              I am interested in building high performance products with GenAI and classical ML, tackling professional problems and seemingly trivial ones alike. I also work across the data engineering stack and app-side stack to deliver end-to-end results.
+              I am interested in creating insightful, high performance and creative solutions with GenAI and classical ML, from professional challenges to weekend side quests. I also work closely across the data engineering stack and app-side stack to deliver end-to-end results (see <a href="#skills" className="underline text-[var(--accent)]">skills</a> for more specifics).
               In the past I have:
             </p>
             <ul className="pl-6 space-y-1">
-              <li className="text-xs text-[var(--fg)]"><span className="chip">shipped department-scale text2sql RAG solution with CGI,</span></li>
-              <li className="text-xs text-[var(--fg)]"><span className="chip">forecasted student tuition via markov chain with the Dean of Mathematics here at UW,</span></li>
+              <li className="text-xs text-[var(--fg)]"><span className="chip">shipped a department-scale text2sql RAG solution with CGI,</span></li>
+              <li className="text-xs text-[var(--fg)]"><span className="chip">forecasted student tuition via markov chains with the Dean of Mathematics here at UW,</span></li>
               <li className="text-xs text-[var(--fg)]"><span className="chip">experimented with unsupervised ml models to detect malicious network activity with Wat.AI,</span></li>
               <li className="text-xs text-[var(--fg)]"><span className="chip">built a project portfolio which is a reflection of my personal interests and learning endeavours.</span></li>
             </ul>
-            <p><span className="italic">(check my experience and projects)</span></p>
+            <p><span className="italic">check <a href="#experience" className="underline text-[var(--accent)]">experience</a> and <a href="#projects" className="underline text-[var(--accent)]">projects</a> for more</span></p>
           </div>
 
           <p className="text-[var(--fg)]/85">
-            In my own time I enjoy playing/watching/over-analyizing sports (mainly baseball and american football). A great reflection of this is a transformer encoder model I trained to investigate defensive coverages for the 2025 NFL Big Data Bowl <a href="https://github.com/abfhdays" className="underline text-[var(--accent)]">(bdb25-blitz</a>). I also love playing and listening to music: challenging myself with new soundscapes and lyrics every day.
+            In my own time I enjoy playing/watching/over-analyizing sports (mainly baseball and american football). A great reflection of this is a transformer encoder model I trained to investigate defensive coverages for the 2025 NFL Big Data Bowl <a href="https://github.com/abfhdays/bdb25-blitz1" className="underline text-[var(--accent)]">(bdb25-blitz</a>). I also love playing and listening to music—challenging myself with new soundscapes and lyrics every day.
           </p>
           <div className="flex gap-4 mt-6">
             <img
@@ -157,27 +133,27 @@ export default function Home() {
 
       {/* Skills */}
       <Section title="skills">
-        <div id="skills" className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div id="skills" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <div className="list-heading">Programming Languages</div>
+            <div className="text-xs font-semibold mb-2 text-black bg-[var(--accent-bg)] px-2 py-1 rounded inline-block">Programming Languages</div>
             <ul className="flex flex-wrap gap-2">
-              {["Python","JavaScript/TypeScript","C++","C","Java","Git","SQL","R"].map((s) => <li key={s} className="chip">{s}</li>)}
+              {["Python","JavaScript/TypeScript","C++","C","SQL","R"].map((s) => <li key={s} className="chip">{s}</li>)}
             </ul>
           </div>
           <div>
-            <div className="list-heading">Full Stack</div>
+            <div className="text-xs font-semibold mb-2 text-black bg-[var(--accent-bg)] px-2 py-1 rounded inline-block">Full Stack</div>
             <ul className="flex flex-wrap gap-2">
               {["React.js","Node.js","PostgreSQL","Django","Flask","Firebase","MongoDB","FastAPI"].map((s) => <li key={s} className="chip">{s}</li>)}
             </ul>
           </div>
           <div>
-            <div className="list-heading">AI / Data</div>
+            <div className="text-xs font-semibold mb-2 text-black bg-[var(--accent-bg)] px-2 py-1 rounded inline-block">AI / Data</div>
             <ul className="flex flex-wrap gap-2">
-              {["Tensorflow","PyTorch","Keras","Apache","Databricks","Fabric","SQL","Pandas","Airflow","Azure OpenAI","Cohere"].map((s) => <li key={s} className="chip">{s}</li>)}
+              {["Tensorflow","PyTorch","Keras","Apache","Databricks","Fabric","SQL","Pandas","Airflow"].map((s) => <li key={s} className="chip">{s}</li>)}
             </ul>
           </div>
           <div>
-            <div className="list-heading">Developer Tools</div>
+            <div className="text-xs font-semibold mb-2 text-black bg-[var(--accent-bg)] px-2 py-1 rounded inline-block">Developer Tools</div>
             <ul className="flex flex-wrap gap-2">
               {["AWS","Azure","Docker","Git","Linux","Redis","Jira","Pytest","Pydantic"].map((s) => <li key={s} className="chip">{s}</li>)}
             </ul>
