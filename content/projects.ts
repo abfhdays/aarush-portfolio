@@ -9,12 +9,19 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "VLR Newsletter",
-    summary:
-      "Python scraper + summarizer for VLR.gg; collects last-7-day match results and news, exposes a GraphQL API for downstream apps.",
-    tech: ["Python", "FastAPI", "Strawberry", "httpx", "selectolax", "asyncio", "SQLAlchemy", "PostgreSQL", "OpenAI", "LangChain"],
-    github: "https://github.com/abfhdays/vlr-newsletter",
-    year: 2025
+  title: "bdb25-blitz1",
+  summary:
+    "Pre-/post-snap blitz prediction from NFL Next Gen Stats tracking. A two-pass, chunked preprocessing pipeline windows frames (−0.8s…+0.5s around the snap), engineers disguise cues (creep toward LOS, rotation, velocity), then a PyTorch Transformer over the top-K defenders produces frame-level probabilities that aggregate to play-level decisions.",
+  tech: [
+    "Python",
+    "PyTorch (TransformerEncoder, AdamW, BCEWithLogitsLoss)",
+    "pandas",
+    "NumPy",
+    "Jupyter Notebooks",
+    "Parquet (artifacts)"
+  ],
+  github: "https://github.com/abfhdays/bdb25-blitz1",
+  year: 2025
   },
   {
     title: "Morning Tea (AI Stock Newsletter)",

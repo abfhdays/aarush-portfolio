@@ -32,17 +32,28 @@ export default function Home() {
 
         {/* small photo strip on mobile */}
         <div className="mt-5 flex items-center justify-center gap-3 md:hidden">
-          {[1, 2, 3].map((i) => (
-            <Image
-              key={i}
-              src="/portfolioheader1.jpeg"
-              alt={`Portfolio image ${i}`}
-              width={44}
-              height={44}
-              className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
-              priority={i === 1}
-            />
-          ))}
+          <Image
+            src="/portfolioheader1.jpeg"
+            alt="Portfolio image 1"
+            width={44}
+            height={44}
+            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
+            priority
+          />
+          <Image
+            src="/portfolioheader2.jpeg"
+            alt="Portfolio image 2"
+            width={44}
+            height={44}
+            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
+          />
+          <Image
+            src="/portfolioheader3.jpeg"
+            alt="Portfolio image 3"
+            width={44}
+            height={44}
+            className="rounded-lg object-cover ring-1 ring-[var(--border)] bg-[var(--accent-bg)]"
+          />
         </div>
       </header>
 
@@ -55,7 +66,7 @@ export default function Home() {
 
           <div className="text-[var(--fg)]/85 space-y-3">
             <p>
-              I am interested in building high performance products with GenAI and classical ML, tackling professional problems and delightfully trivial ones alike. I also work across the data engineering stack and app-side stack to deliver end-to-end results.
+              I am interested in building high performance products with GenAI and classical ML, tackling professional problems and seemingly trivial ones alike. I also work across the data engineering stack and app-side stack to deliver end-to-end results.
               In the past I have:
             </p>
             <ul className="pl-6 space-y-1">
@@ -68,34 +79,72 @@ export default function Home() {
           </div>
 
           <p className="text-[var(--fg)]/85">
-            In my own time I enjoy playing/watching/overly-analyizing sports (mainly baseball and american football). A great reflection of this is a transformer encoder model I trained to investigate defensive coverages for the 2025 NFL Big Data Bowl <a href="https://github.com/abfhdays" className="underline text-[var(--accent)]">(bdb25-blitz</a>). I also love playing and listening to music: hyperfixating on new soundscapes, lyrics every day.
+            In my own time I enjoy playing/watching/over-analyizing sports (mainly baseball and american football). A great reflection of this is a transformer encoder model I trained to investigate defensive coverages for the 2025 NFL Big Data Bowl <a href="https://github.com/abfhdays" className="underline text-[var(--accent)]">(bdb25-blitz</a>). I also love playing and listening to music: challenging myself with new soundscapes and lyrics every day.
           </p>
+          <div className="flex gap-4 mt-6">
+            <img
+              src="/aboutme1.jpg"
+              alt="About Me 1"
+              width={180}
+              height={180}
+              className="rounded-lg object-cover"
+            />
+            <img
+              src="/aboutme2.jpg"
+              alt="About Me 2"
+              width={180}
+              height={180}
+              className="rounded-lg object-cover"
+            />
+          </div>
         </div>
       </Section>
 
       {/* Experience */}
       <Section title="experience">
-        <div id="experience" className="relative">
-          <span className="absolute left-2 top-1 bottom-1 w-px bg-[var(--border)]" aria-hidden="true" />
-          <ol className="pl-6">
-            {about.experiences.map((e) => {
-              const company = extractCompany(e.role);
-              const title = extractTitle(e.role);
-              return (
-                <li key={e.role} className="mb-8 last:mb-0 relative pl-8">
-                  <span className="absolute left-0 mt-1 h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--accent-bg)]" />
-                  <div className="flex flex-wrap items-center gap-3">
-                    <p className="font-medium">{title}</p>
-                    {company && <span className="badge-soft">{company}</span>}
-                    <span className="ml-auto text-sm text-[var(--muted)]">{e.time}</span>
-                  </div>
-                  <ul className="mt-2 list-disc pl-5 text-[var(--fg)]/85">
-                    {e.bullets.map((b) => <li key={b}>{b}</li>)}
-                  </ul>
-                </li>
-              );
-            })}
-          </ol>
+        <div id="experience">
+          <div className="relative">
+            <span className="absolute left-2 top-1 bottom-1 w-px bg-[var(--border)]" aria-hidden="true" />
+            <ol className="pl-6">
+              {about.experiences.map((e, idx) => {
+                const company = extractCompany(e.role);
+                const title = extractTitle(e.role);
+                // Choose logo for each experience
+                const logoSrc = idx === 0 ? "/logo1.jpeg" : idx === 1 ? "/logo2.jpeg" : null;
+                return (
+                  <li key={e.role} className="mb-8 last:mb-0 relative pl-8">
+                    <span className="absolute left-0 mt-1 h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--accent-bg)]" />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{title}</p>
+                        {logoSrc && (
+                          <img
+                            src={logoSrc}
+                            alt="logo"
+                            width={22}
+                            height={22}
+                            className="inline-block align-middle rounded"
+                            style={{ objectFit: "contain" }}
+                          />
+                        )}
+                      </div>
+                      {company && (
+                        <span className="text-xs rounded px-2 py-0.5 bg-[#f3e7d6] text-[var(--accent)] ring-1 ring-[var(--border)]">
+                          {company}
+                        </span>
+                      )}
+                      <span className="ml-auto text-sm text-[var(--muted)]">{e.time}</span>
+                    </div>
+                    <ul className="mt-2 list-disc pl-5 text-[var(--fg)]/85">
+                      {e.bullets.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </div>
       </Section>
 
