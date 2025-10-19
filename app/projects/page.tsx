@@ -1,5 +1,5 @@
 import { projects } from "@/content/projects";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectCard from "@/components/sections/ProjectCard";
 
 export const metadata = { title: "Projects — Aarush Ghosh" };
 
