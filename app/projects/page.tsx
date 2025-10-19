@@ -8,7 +8,9 @@ export default function ProjectsPage() {
     <div>
       <h1 className="text-3xl mb-6">Projects</h1>
       <div className="space-y-5">
-        {projects.map(p => <ProjectCard key={p.title} p={p} />)}
+        {projects.map((p) => (
+          <ProjectCard key={p.title} project={p} />
+        ))}
       </div>
     </div>
   );
