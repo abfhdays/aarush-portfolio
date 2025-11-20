@@ -4,14 +4,14 @@ import { personalInfo } from "@/content/info";
 export default function Header() {
   return (
     <header className="mb-8">
-      <h1 className="mb-2 flex items-center gap-3 text-3xl md:text-4xl">
+      <h1 className="mb-2 flex items-center gap-3 text-5xl md:text-6xl">
         Hi, I&apos;m{" "}
         <span className="inline-block align-middle">
           <Image
             src="/aarush.jpg"
             alt="Aarush"
-            width={120}
-            height={120}
+            width={140}
+            height={140}
             className="rounded-full object-cover inline-block"
           />
         </span>

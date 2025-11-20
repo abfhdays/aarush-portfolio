@@ -2,19 +2,19 @@ export const workExperience = [
   {
     title: "Machine Learning Engineer",
     company: "Qorsa",
-    date: "Jan 2026 - Present",
-    description: "Building ML infrastructure and developing models for production systems."
+    date: "Jan 2026 - Apr 2026",
+    description: "Building AI agents and RAG applications for the AtlasAI platform using PyTorch, LangChain, and Neo4j, focusing on NLP pipelines, knowledge graph construction, and LLM fine-tuning for quantum-secure enterprise solutions."
   },
   {
-    title: "Machine Learning Developer",
+    title: "Data Engineer",
     company: "University of Waterloo: Dean of Mathematics",
-    date: "Winter 2025",
-    description: "Developed a Markov chain model to simulate student progression and forecast program-level tuition revenue with 97.3% accuracy. Automated data pipelines using PySpark and SQL, improving runtime by 82%."
+    date: "Jan 2025 - Apr 2025",
+    description: "Automated budget planning for 9,000+ students with 94.3% accuracy using Markov chain forecasting model and reduced data pipeline runtime by 82% by transforming legacy SQL queries into PySpark notebooks with Airflow orchestration. Designed asynchronous logic for simultaneous ingestion from Oracle database and dynamic web data using Scrapy and Apache Kafka."
   },
   {
-    title: "AI Developer",
+    title: "AI Consultant",
     company: "CGI",
-    date: "Summer 2024",
-    description: "Built an internal RAG chatbot for client marketing data using Azure Databricks with medallion architecture. Implemented text-to-SQL pipeline and managed Google Analytics 4 data using Pandas and Airflow."
+    date: "May 2024 - Aug 2024",
+    description: "Deployed production RAG chatbot on Azure Databricks processing Google Analytics 4 data through medallion architecture, enabling natural language queries over web traffic patterns for insurance client marketing team. Improved text-to-SQL agent accuracy by 23% through metadata enrichment and achieved 89% table cell F1-score on complex multi-table marketing analytics queries using LlamaIndex."
   }
 ];
