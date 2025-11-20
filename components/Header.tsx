@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className="mb-8">
       <h1 className="mb-2 flex items-center gap-3 text-3xl md:text-4xl">
-        Hi, I'm{" "}
+        Hi, I&apos;m{" "}
         <span className="inline-block align-middle">
           <Image
             src="/aarush.jpg"
