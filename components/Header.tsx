@@ -1,19 +1,33 @@
+import Image from "next/image";
 import { personalInfo } from "@/content/info";
 
 export default function Header() {
   return (
-    <header className="mb-12">
-      <h1 className="mb-2">Hi, I'm {personalInfo.name.split(' ')[0]}.</h1>
-      <p className="text-[var(--text-secondary)] leading-relaxed">
+    <header className="mb-8">
+      <h1 className="mb-2 flex items-center gap-3 text-3xl md:text-4xl">
+        Hi, I'm{" "}
+        <span className="inline-block align-middle">
+          <Image
+            src="/aarush.jpg"
+            alt="Aarush"
+            width={120}
+            height={120}
+            className="rounded-full object-cover inline-block"
+          />
+        </span>
+      </h1>
+      {/* intro info now italic */}
+      <p className="text-[var(--text-secondary)] leading-relaxed italic">
         {personalInfo.bio}
       </p>
-      <div className="flex gap-4 mt-4 text-sm">
+      <div className="flex gap-8 mt-4 text-sm">
         {personalInfo.links.map((link) => (
-          <a 
+          <a
             key={link.label}
-            href={link.url} 
-            target={link.url.startsWith('http') ? '_blank' : undefined}
-            rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+            href={link.url}
+            target={link.url.startsWith("http") ? "_blank" : undefined}
+            rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="hover:underline"
           >
             {link.label}
           </a>
