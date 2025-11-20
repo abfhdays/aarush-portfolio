@@ -5,6 +5,7 @@ import WorkItem from "@/components/WorkItem";
 import ProjectItem from "@/components/ProjectItem";
 import { workExperience } from "@/content/work";
 import { projects } from "@/content/projects";
+import { learning } from "@/content/learning";
 
 export default function Home() {
   return (
@@ -14,12 +15,12 @@ export default function Home() {
       {/* WORK: title with piano icon directly to the right */}
       <Section>
         <div className="flex items-center gap-3 mb-4">
-          <h3 className="m-0 text-lg font-medium underline underline-offset-4 decoration-[var(--accent)]">Work</h3>
+          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Work</h3>
           <Image
             src="/piano.jpg"
             alt="piano"
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             className="rounded-sm object-contain"
           />
         </div>
@@ -38,12 +39,12 @@ export default function Home() {
       {/* PROJECTS: title with baseball icon directly to the right */}
       <Section>
         <div className="flex items-center gap-3 mb-4">
-          <h3 className="m-0 text-lg font-medium underline underline-offset-4 decoration-[var(--accent)]">Projects</h3>
+          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Projects</h3>
           <Image
             src="/baseball.jpg"
             alt="baseball"
-            width={60}
-            height={60}
+            width={80}
+            height={80}
             className="rounded-sm object-contain"
           />
         </div>
@@ -57,6 +58,26 @@ export default function Home() {
             link={project.link}
           />
         ))}
+      </Section>
+
+      {/* LEARNING: title with fish icon directly to the right */}
+      <Section>
+        <div className="flex items-center gap-3 mb-4">
+          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Learning</h3>
+          <Image
+            src="/fish.jpg"
+            alt="fish"
+            width={120}
+            height={120}
+            className="rounded-sm object-contain"
+          />
+        </div>
+
+        <ul className="!list-disc list-inside space-y-2 text-[var(--text-secondary)] text-[0.95rem]">
+          {learning.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </Section>
     </div>
   );

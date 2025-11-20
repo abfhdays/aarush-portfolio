@@ -52,7 +52,8 @@ a:hover {
   text-decoration-color: var(--text);
 }
 
-ul {
+nav ul,
+.nav-list {
   margin: 0;
   padding: 0;
   list-style: none;
