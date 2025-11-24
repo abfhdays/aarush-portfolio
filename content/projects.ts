@@ -19,14 +19,14 @@ export const projects = [
     link: "https://github.com/abfhdays/distributed-task-scheduler"
   },
   {
-    title: "NFL Big Data Bowl: Blitz Prediction Model",
+    title: "NFL Big Data Bowl '25: Blitz Prediction Model",
     date: "2024-2025",
     tags: "Python | Deep Learning | PyTorch | Transformers  | MLOps",
     description: "As a football fan, I wanted to predict blitzes before they happen by analyzing how defenders move pre-snap. I used Transformers with self-attention because blitzes aren't about individual players—it's the collective movement that matters. The model watches the 0.8 seconds before the snap, tracking subtle cues like linebackers creeping forward or cornerbacks rotating. I learned that defenses disguise blitzes incredibly well; my model hit 0.92 AUROC but still struggled with 'mug-and-bail' tactics where defenders fake aggression. Processing 10Hz tracking data across thousands of plays taught me how to handle massive datasets—I had to implement chunked streaming to avoid memory crashes.",
     link: "https://github.com/abfhdays/bdb25-blitz1"
   },
   {
-    title: "Network Traffic Anomaly Detection",
+    title: "WAT.ai: Network Traffic Anomaly Detection",
     date: "2023-2024",
     tags: "TensorFlow | JavaScript | Unsupervised Learning | Data Visualization",
     description: "I built this interactive demo at WAT.ai to help people visualize how unsupervised learning detects cyber attacks on IoT devices. The cool part was making it run entirely in the browser with TensorFlow.js—no Python setup needed. I implemented K-means and DBSCAN to cluster network traffic patterns across 7 attack types, and watching them work in real-time made me understand why DBSCAN handles irregular cluster shapes better than K-means. The dataset had 105 IoT devices, and I learned that different devices exhibit completely different 'normal' behavior, which makes anomaly detection tricky. Building the visualization layer taught me a lot about making ML interpretable.",
