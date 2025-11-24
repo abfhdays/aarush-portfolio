@@ -3,9 +3,22 @@ export interface Link {
   url: string;
 }
 
+export interface WorkItem {
+  text: string;
+  company?: string;
+  url?: string;
+}
+
+export interface Bio {
+  intro: string;
+  work: WorkItem[];
+  interests: string;
+  personal: string;
+}
+
 export interface PersonalInfo {
   name: string;
-  bio: string;
+  bio: Bio;
   links: Link[];
 }
 

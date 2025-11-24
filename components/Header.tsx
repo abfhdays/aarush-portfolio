@@ -17,9 +17,41 @@ export default function Header() {
         </span>
       </h1>
       {/* intro info now italic */}
-      <p className="text-[var(--text-secondary)] leading-relaxed italic">
-        {personalInfo.bio}
-      </p>
+      <div className="text-[var(--text-secondary)] leading-relaxed space-y-3">
+        <p className="italic">{personalInfo.bio.intro}</p>
+
+        <div className="text-left">
+          <p className="mb-2 font-medium text-sm">My work spans across:</p>
+          <ul className="list-none space-y-1 text-sm">
+            {personalInfo.bio.work.map((item, index) => (
+              <li key={index} className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>
+                  {item.text}
+                  {item.company && item.url && (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
+                    >
+                      {item.company}
+                    </a>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className="text-sm">
+            <span className="font-normal">In my own time,</span>
+            <span className="italic">{personalInfo.bio.interests.replace("In my own time,", "")}</span>
+          </p>
+          {personalInfo.bio.personal && <p className="italic text-sm">{personalInfo.bio.personal}</p>}
+        </div>
+      </div>
       <div className="flex items-center gap-8 mt-4">
         <div className="flex gap-8 text-sm">
           {personalInfo.links.map((link) => (
