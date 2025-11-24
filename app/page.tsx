@@ -56,6 +56,7 @@ export default function Home() {
             date={project.date}
             description={project.description}
             link={project.link}
+            tags={project.tags}
           />
         ))}
       </Section>

@@ -12,7 +12,7 @@ export const workExperience = [
     description: "Automated budget planning for 9,000+ students with 94.3% accuracy using Markov chain forecasting model and reduced data pipeline runtime by 82% by transforming legacy SQL queries into PySpark notebooks with Airflow orchestration. Designed asynchronous logic for simultaneous ingestion from Oracle database and dynamic web data using Scrapy and Apache Kafka."
   },
   {
-    title: "AI Consultant",
+    title: "AI Engineer",
     company: "CGI",
     date: "Summer 2024",
     description: "Deployed production RAG chatbot on Azure Databricks processing Google Analytics 4 data through medallion architecture, enabling natural language queries over web traffic patterns for insurance client marketing team. Improved text-to-SQL agent accuracy by 23% through metadata enrichment and achieved 89% table cell F1-score on complex multi-table marketing analytics queries using LlamaIndex."
