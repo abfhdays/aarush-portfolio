@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import type { Components } from 'react-markdown';
 
 interface ProjectItemProps {
@@ -102,7 +103,7 @@ export default function ProjectItem({ title, date, description, link, tags }: Pr
         </span>
       </div>
       <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>{description}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>{description}</ReactMarkdown>
       </div>
     </div>
   );

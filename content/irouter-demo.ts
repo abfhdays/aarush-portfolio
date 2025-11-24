@@ -1,5 +1,8 @@
 export const irouterDemo = `**Quick Demo:**
 
+<div class="demo-block">
+<div class="demo-label">irouter execute</div>
+
 \`\`\`bash
 $ irouter execute "SELECT * FROM sales
                     WHERE date = '2024-11-01'
@@ -30,6 +33,10 @@ Execution Summary:
   From Cache       Yes
   Pruning Speedup  30.0x
 \`\`\`
+</div>
+
+<div class="demo-block">
+<div class="demo-label">irouter explain</div>
 
 \`\`\`bash
 $ irouter explain "SELECT region, COUNT(*), SUM(amount)
@@ -65,4 +72,5 @@ $ irouter explain "SELECT region, COUNT(*), SUM(amount)
    duckdb:  Total Time: 2.10s | Scan: 0.00s | Compute: 2.08s | Overhead: 0.10s
    polars:  Total Time: 2.00s | Scan: 0.00s | Compute: 1.80s | Overhead: 0.20s
    spark:   Total Time: 1660.03s | Scan: 0.00s | Compute: 1.60s | Overhead: 15.00s
-\`\`\``;
+\`\`\`
+</div>`;
