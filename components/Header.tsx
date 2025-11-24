@@ -45,10 +45,7 @@ export default function Header() {
         </div>
 
         <div>
-          <p className="text-sm">
-            <span className="font-normal">In my own time,</span>
-            <span className="italic">{personalInfo.bio.interests.replace("In my own time,", "")}</span>
-          </p>
+          <p className="text-sm">{personalInfo.bio.interests}</p>
           {personalInfo.bio.personal && <p className="italic text-sm text-center">{personalInfo.bio.personal}</p>}
         </div>
       </div>
