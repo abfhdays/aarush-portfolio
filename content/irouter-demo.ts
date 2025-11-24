@@ -7,7 +7,7 @@ export const irouterDemo = `**Quick Demo:**
 $ irouter execute "SELECT * FROM sales
                     WHERE date = '2024-11-01'
                     LIMIT 10"
-
+---
 Query Results:
 ┌─────────────┬─────────┬────────┬────────────┬──────────┬─────────────────────┐
 │ customer_id │ amount  │ region │ product_id │ quantity │ date                │
@@ -43,7 +43,7 @@ $ irouter explain "SELECT region, COUNT(*), SUM(amount)
                      FROM sales
                      WHERE date >= '2024-11-01'
                      GROUP BY region"
-
+---
 📊 QUERY ANALYSIS:
    Tables: sales
    Joins: 0

@@ -9,9 +9,6 @@ export default function Navigation() {
       <Link href="/projects" className="hover:underline">
         projects
       </Link>
-      <Link href="/work" className="hover:underline">
-        work
-      </Link>
       <Link href="/learning" className="hover:underline">
         learning
       </Link>

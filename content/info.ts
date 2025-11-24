@@ -11,8 +11,8 @@ export const personalInfo = {
       url: "https://www.linkedin.com/in/aarush-ghosh-/"
     },
     {
-      label: "email",
-      url: "mailto:a66ghosh@uwaterloo.ca"
+      label: "resume",
+      url: "/resume.pdf"
     }
   ]
 };

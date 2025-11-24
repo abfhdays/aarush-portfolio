@@ -49,12 +49,6 @@ export default function Home() {
             projects
           </Link>
           <Link
-            href="/work"
-            className="underline underline-offset-4 decoration-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
-          >
-            work
-          </Link>
-          <Link
             href="/learning"
             className="underline underline-offset-4 decoration-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
           >
