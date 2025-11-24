@@ -1,85 +1,67 @@
 import Image from "next/image";
-import Header from "@/components/Header";
-import Section from "@/components/Section";
-import WorkItem from "@/components/WorkItem";
-import ProjectItem from "@/components/ProjectItem";
-import { workExperience } from "@/content/work";
-import { projects } from "@/content/projects";
-import { learning } from "@/content/learning";
+import Link from "next/link";
+import { personalInfo } from "@/content/info";
 
 export default function Home() {
   return (
-    <div className="max-w-2xl mx-auto px-6 py-16 min-h-screen">
-      <Header />
+    <div className="max-w-2xl mx-auto px-6 min-h-screen flex items-center justify-center">
+      <header className="w-full -mt-12 text-center">
+        {/* Name */}
+        <h1 className="m-0 mb-2 flex items-center justify-center gap-3 !text-5xl md:!text-6xl">
+          Hi, I&apos;m{" "}
+          <span className="inline-block align-middle">
+            <Image
+              src="/aarush2.jpg"
+              alt="Aarush"
+              width={280}
+              height={280}
+              className="rounded-full object-cover inline-block"
+            />
+          </span>
+        </h1>
 
-      {/* WORK: title with piano icon directly to the right */}
-      <Section>
-        <div className="flex items-center gap-3 mb-4">
-          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Work</h3>
-          <Image
-            src="/piano.jpg"
-            alt="piano"
-            width={120}
-            height={120}
-            className="rounded-sm object-contain"
-          />
-        </div>
-
-        {workExperience.map((work, index) => (
-          <WorkItem
-            key={index}
-            title={work.title}
-            company={work.company}
-            date={work.date}
-            description={work.description}
-          />
-        ))}
-      </Section>
-
-      {/* PROJECTS: title with baseball icon directly to the right */}
-      <Section>
-        <div className="flex items-center gap-3 mb-4">
-          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Projects</h3>
-          <Image
-            src="/baseball.jpg"
-            alt="baseball"
-            width={80}
-            height={80}
-            className="rounded-sm object-contain"
-          />
-        </div>
-
-        {projects.map((project, index) => (
-          <ProjectItem
-            key={index}
-            title={project.title}
-            date={project.date}
-            description={project.description}
-            link={project.link}
-            tags={project.tags}
-          />
-        ))}
-      </Section>
-
-      {/* LEARNING: title with fish icon directly to the right */}
-      <Section>
-        <div className="flex items-center gap-3 mb-4">
-          <h3 className="m-0 text-2xl font-medium underline underline-offset-4 decoration-[var(--accent)]">Learning</h3>
-          <Image
-            src="/fish.jpg"
-            alt="fish"
-            width={120}
-            height={120}
-            className="rounded-sm object-contain"
-          />
-        </div>
-
-        <ul className="!list-disc list-inside space-y-2 text-[var(--text-secondary)] text-[0.95rem]">
-          {learning.map((item, index) => (
-            <li key={index}>{item}</li>
+        {/* Social links */}
+        <div className="flex justify-center gap-6 text-sm mb-6">
+          {personalInfo.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target={link.url.startsWith("http") ? "_blank" : undefined}
+              rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+              className="underline underline-offset-2 decoration-[var(--border)] hover:decoration-[var(--text)] transition-colors"
+            >
+              {link.label}
+            </a>
           ))}
-        </ul>
-      </Section>
+        </div>
+
+        {/* Bio */}
+        <p className="text-[var(--text-secondary)] leading-relaxed italic mb-12 max-w-xl mx-auto">
+          {personalInfo.bio}
+        </p>
+
+        {/* Main navigation - centered and prominent */}
+        <nav className="flex justify-center gap-8 text-xl font-semibold">
+          <Link
+            href="/projects"
+            className="underline underline-offset-4 decoration-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
+          >
+            projects
+          </Link>
+          <Link
+            href="/work"
+            className="underline underline-offset-4 decoration-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
+          >
+            work
+          </Link>
+          <Link
+            href="/learning"
+            className="underline underline-offset-4 decoration-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
+          >
+            learning
+          </Link>
+        </nav>
+      </header>
     </div>
   );
 }

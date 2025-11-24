@@ -10,8 +10,8 @@ export default function Header() {
           <Image
             src="/aarush2.jpg"
             alt="Aarush"
-            width={240}
-            height={240}
+            width={280}
+            height={280}
             className="rounded-full object-cover inline-block"
           />
         </span>
