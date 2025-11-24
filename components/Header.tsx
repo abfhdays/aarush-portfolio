@@ -49,7 +49,7 @@ export default function Header() {
             <span className="font-normal">In my own time,</span>
             <span className="italic">{personalInfo.bio.interests.replace("In my own time,", "")}</span>
           </p>
-          {personalInfo.bio.personal && <p className="italic text-sm">{personalInfo.bio.personal}</p>}
+          {personalInfo.bio.personal && <p className="italic text-sm text-center">{personalInfo.bio.personal}</p>}
         </div>
       </div>
       <div className="flex items-center gap-8 mt-4">

@@ -84,7 +84,7 @@ export default function Home() {
               <span className="font-normal">In my own time,</span>
               <span className="italic">{personalInfo.bio.interests.replace("In my own time,", "")}</span>
             </p>
-            {personalInfo.bio.personal && <p className="italic">{personalInfo.bio.personal}</p>}
+            {personalInfo.bio.personal && <p className="italic text-center">{personalInfo.bio.personal}</p>}
           </div>
         </div>
       </header>
