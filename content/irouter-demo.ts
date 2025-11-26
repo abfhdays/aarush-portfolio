@@ -1,12 +1,13 @@
 export const irouterDemo = `**Quick Demo:**
 
+<div class="demo-grid">
 <div class="demo-block">
 <div class="demo-label">irouter execute</div>
 
 \`\`\`bash
 $ irouter execute "SELECT * FROM sales
-                    WHERE date = '2024-11-01'
-                    LIMIT 10"
+                   WHERE date = '2024-11-01'
+                   LIMIT 10"
 ---
 Query Results:
 ┌─────────────┬─────────┬────────┬────────────┬──────────┬─────────────────────┐
@@ -40,9 +41,9 @@ Execution Summary:
 
 \`\`\`bash
 $ irouter explain "SELECT region, COUNT(*), SUM(amount)
-                     FROM sales
-                     WHERE date >= '2024-11-01'
-                     GROUP BY region"
+                    FROM sales
+                    WHERE date >= '2024-11-01'
+                    GROUP BY region"
 ---
 📊 QUERY ANALYSIS:
    Tables: sales
@@ -73,4 +74,5 @@ $ irouter explain "SELECT region, COUNT(*), SUM(amount)
    polars:  Total Time: 2.00s | Scan: 0.00s | Compute: 1.80s | Overhead: 0.20s
    spark:   Total Time: 1660.03s | Scan: 0.00s | Compute: 1.60s | Overhead: 15.00s
 \`\`\`
+</div>
 </div>`;

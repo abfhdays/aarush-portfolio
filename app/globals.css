@@ -67,22 +67,26 @@ nav ul,
 /* Demo grid - side by side layout */
 .markdown-content .demo-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin: 1rem 0;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 0.35rem;
+  margin: 0.8rem 0;
+  align-items: stretch;
 }
 
 .markdown-content .demo-block {
   margin: 0;
   min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .markdown-content .demo-label {
   background: #2a2f3b;
   color: #7ec6e0;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.35rem;
   font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   font-weight: 600;
   border: 1px solid #3a3f4b;
   border-bottom: none;
@@ -91,14 +95,17 @@ nav ul,
 }
 
 .markdown-content .demo-block pre {
-  margin-top: 0;
+  margin: 0;
   border-radius: 0 0 3px 3px;
-  padding: 0.4rem 0.5rem;
+  padding: 0.25rem 0.35rem;
   overflow-x: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .markdown-content .demo-block pre code {
-  font-size: 0.55rem;
+  font-size: 0.42rem;
   line-height: 1.25;
 }
 

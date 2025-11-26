@@ -15,7 +15,7 @@ export const projects = [
     title: "Cascade: Distributed Task Orchestrator",
     date: "Sep 2025",
     tags: "Go | Distributed Systems | Concurrency | etcd | gRPC",
-    description: "I wanted to deeply understand distributed systems, so I built a DAG scheduler from scratch in Go. The biggest challenge was handling coordinator failures—I implemented Raft consensus through etcd so when a coordinator dies, another takes over in under a second without losing tasks. I learned that task ordering matters: using Kahn's algorithm for topological sorting ensured dependencies always execute in the right sequence. Switching from channels to gRPC with Protocol Buffers cut dispatch latency from 250ms to 12ms, which taught me how serialization overhead compounds at scale. I'm planning to add Prometheus metrics and Kubernetes autoscaling to make it production-ready.",
+    description: "I wanted to deeply understand distributed systems, so I built a DAG scheduler from scratch in Go. The biggest challenge was handling coordinator failures—I implemented Raft consensus through etcd so when a coordinator dies, another takes over in under a second without losing tasks. I learned that task ordering matters: using Kahn's algorithm for topological sorting ensured dependencies always execute in the right sequence. Switching from channels to gRPC with Protocol Buffers cut dispatch latency from 250ms to 12ms, which taught me how serialization overhead compounds at scale. I'm planning to add Prometheus metrics and Kubernetes autoscaling to make it production-ready.\n\n<img src=\"dag.png\" alt=\"DAG Visualization\" width=\"60%\" />",
     link: "https://github.com/abfhdays/distributed-task-scheduler"
   },
   {
@@ -29,7 +29,7 @@ export const projects = [
     title: "WAT.ai: Network Traffic Anomaly Detection",
     date: "2023-2024",
     tags: "TensorFlow | JavaScript | Unsupervised Learning | Data Visualization",
-    description: "I built this interactive demo at WAT.ai to help people visualize how unsupervised learning detects cyber attacks on IoT devices. The cool part was making it run entirely in the browser with TensorFlow.js—no Python setup needed. I implemented K-means and DBSCAN to cluster network traffic patterns across 7 attack types, and watching them work in real-time made me understand why DBSCAN handles irregular cluster shapes better than K-means. The dataset had 105 IoT devices, and I learned that different devices exhibit completely different 'normal' behavior, which makes anomaly detection tricky. Building the visualization layer taught me a lot about making ML interpretable.",
+    description: "I built this interactive demo at WAT.ai to help people visualize how unsupervised learning detects cyber attacks on IoT devices. The cool part was making it run entirely in the browser with TensorFlow.js—no Python setup needed. I implemented K-means and DBSCAN to cluster network traffic patterns across 7 attack types, and watching them work in real-time made me understand why DBSCAN handles irregular cluster shapes better than K-means. The dataset had 105 IoT devices, and I learned that different devices exhibit completely different 'normal' behavior, which makes anomaly detection tricky. Building the visualization layer taught me a lot about making ML interpretable.\n\n[![WAT.ai Demo](watai-thumbnail.png)](https://wat-ai.github.io/cyber-security-interactive_web_demos/index.html)",
     link: "https://github.com/WAT-ai/cyber-security-interactive_web_demos"
   }
 ];

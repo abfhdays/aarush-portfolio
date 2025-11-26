@@ -1,3 +1,5 @@
+'use client';
+
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -26,13 +28,15 @@ export default function ProjectItem({ title, date, description, link, tags }: Pr
         let currentIndex = 0;
         let key = 0;
 
-        // Create a combined regex to match any of the patterns
-        const combinedRegex = /"[^"]*"|\b(SELECT|FROM|WHERE|LIMIT|GROUP BY|COUNT|SUM)\b|\b\d+(\.\d+)?[xms]?\b|\b(DUCKDB|POLARS|duckdb|polars|spark)\b|[📊🔍⚡💰]/g;
+        // Create a combined regex to match any of the patterns (excluding emojis for hydration safety)
+        const combinedRegex = /"[^"]*"|\b(SELECT|FROM|WHERE|LIMIT|GROUP BY|COUNT|SUM)\b|\b\d+(\.\d+)?[xms]?\b|\b(DUCKDB|POLARS|duckdb|polars|spark)\b/g;
 
-        let match;
-        while ((match = combinedRegex.exec(text)) !== null) {
+        // Use matchAll instead of exec to avoid stateful regex issues
+        const matches = Array.from(text.matchAll(combinedRegex));
+
+        for (const match of matches) {
           const matchText = match[0];
-          const matchStart = match.index;
+          const matchStart = match.index!;
           const matchEnd = matchStart + matchText.length;
 
           // Add text before this match
@@ -50,8 +54,6 @@ export default function ProjectItem({ title, date, description, link, tags }: Pr
             className = 'syntax-backend';
           } else if (/^\d+(\.\d+)?[xms]?$/.test(matchText)) {
             className = 'syntax-number';
-          } else if (/[📊🔍⚡💰]/.test(matchText)) {
-            className = 'syntax-emoji';
           }
 
           result.push(<span key={key++} className={className}>{matchText}</span>);
