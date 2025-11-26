@@ -22,7 +22,7 @@ export const projects = [
     title: "NFL Big Data Bowl '25: Blitz Prediction Model",
     date: "2024-2025",
     tags: "Python | Deep Learning | PyTorch | Transformers  | MLOps",
-    description: "As a football fan, I wanted to predict blitzes before they happen by analyzing how defenders move pre-snap. I used Transformers with self-attention because blitzes aren't about individual players—it's the collective movement that matters. The model watches the 0.8 seconds before the snap, tracking subtle cues like linebackers creeping forward or cornerbacks rotating. I learned that defenses disguise blitzes incredibly well; my model hit 0.92 AUROC but still struggled with 'mug-and-bail' tactics where defenders fake aggression. Processing 10Hz tracking data across thousands of plays taught me how to handle massive datasets—I had to implement chunked streaming to avoid memory crashes.",
+    description: "As a football fan, I wanted to predict blitzes before they happen by analyzing how defenders move pre-snap. I used Transformers with self-attention because blitzes aren't about individual players—it's the collective movement that matters. The model watches the 0.8 seconds before the snap, tracking subtle cues like linebackers creeping forward or cornerbacks rotating. I learned that defenses disguise blitzes incredibly well; my model hit 0.92 AUROC but still struggled with 'mug-and-bail' tactics where defenders fake aggression. Processing 10Hz tracking data across thousands of plays taught me how to handle massive datasets—I had to implement chunked streaming to avoid memory crashes.\n\n<img src=\"safetyblitz.gif\" alt=\"Safety Blitz Visualization\" width=\"60%\" />",
     link: "https://github.com/abfhdays/bdb25-blitz1"
   },
   {
