@@ -19,7 +19,7 @@ export interface InterestItem {
 export interface Interests {
   intro: string;
   items: InterestItem[];
-  outro: string;
+  outro?: string;
   outroLinkLabel?: string;
   outroLinkUrl?: string;
 }

@@ -76,19 +76,18 @@ export default function ProfileBio() {
               </li>
             ))}
           </ul>
-          <p className="fade-up fade-up-6 italic text-center">
-            {personalInfo.bio.interests.outro}
-            {personalInfo.bio.interests.outroLinkLabel && personalInfo.bio.interests.outroLinkUrl && (
-              <>{" "}(<a
-                  href={personalInfo.bio.interests.outroLinkUrl}
-                  target={personalInfo.bio.interests.outroLinkUrl.startsWith("http") ? "_blank" : undefined}
-                  rel={personalInfo.bio.interests.outroLinkUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="underline decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
-                >
-                  {personalInfo.bio.interests.outroLinkLabel}
-                </a>)</>
-            )}
-          </p>
+          {personalInfo.bio.interests.outroLinkLabel && personalInfo.bio.interests.outroLinkUrl && (
+            <p className="fade-up fade-up-6 italic text-center">
+              (<a
+                href={personalInfo.bio.interests.outroLinkUrl}
+                target={personalInfo.bio.interests.outroLinkUrl.startsWith("http") ? "_blank" : undefined}
+                rel={personalInfo.bio.interests.outroLinkUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="underline decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
+              >
+                {personalInfo.bio.interests.outroLinkLabel}
+              </a>)
+            </p>
+          )}
         </div>
       </div>
     </>
