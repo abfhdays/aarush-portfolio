@@ -21,6 +21,7 @@ export default function Projects() {
             description={project.description}
             link={project.link}
             tags={project.tags}
+            previewImage={project.previewImage}
           />
         ))}
       </Section></div>

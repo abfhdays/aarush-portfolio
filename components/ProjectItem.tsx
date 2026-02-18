@@ -13,6 +13,7 @@ interface ProjectItemProps {
   description: string;
   link?: string;
   tags?: string;
+  previewImage?: string;
 }
 
 const markdownComponents: Components = {
@@ -30,18 +31,34 @@ const markdownComponents: Components = {
 
 function getTeaser(description: string): string {
   const first = description.trim().split('\n\n')[0];
-  // strip markdown links, bold, code ticks
   return first
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/[*_`#]/g, '');
 }
 
-export default function ProjectItem({ title, date, description, link, tags }: ProjectItemProps) {
+export default function ProjectItem({ title, date, description, link, tags, previewImage }: ProjectItemProps) {
   const [expanded, setExpanded] = useState(false);
   const teaser = getTeaser(description);
 
   return (
-    <div className="group pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0">
+    <div className="relative pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0 overflow-hidden">
+
+      {/* Faded background image */}
+      {previewImage && (
+        <div
+          className={`absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none select-none transition-opacity duration-300 ${expanded ? 'opacity-0' : 'opacity-100'}`}
+          aria-hidden="true"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={previewImage}
+            alt=""
+            className="project-preview-img absolute right-6 top-1/2 -translate-y-1/2 h-4/5 w-auto object-contain"
+          />
+        </div>
+      )}
+
+      {/* Header */}
       <div className="flex items-baseline justify-between mb-1">
         <div className="flex-1">
           {link ? (
@@ -63,6 +80,7 @@ export default function ProjectItem({ title, date, description, link, tags }: Pr
         <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap ml-4">{date}</span>
       </div>
 
+      {/* Content */}
       {expanded ? (
         <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content mt-2">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>

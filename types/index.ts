@@ -52,4 +52,5 @@ export interface Project {
   description: string;
   link?: string;
   tags?: string;
+  previewImage?: string;
 }
