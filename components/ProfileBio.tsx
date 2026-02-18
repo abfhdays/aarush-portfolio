@@ -9,7 +9,7 @@ export default function ProfileBio() {
         Hi, I&apos;m{" "}
         <span className="inline-block align-middle">
           <Image
-            src="/aarush2.jpg"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/aarush2.jpg`}
             alt="Aarush"
             width={280}
             height={280}
@@ -41,7 +41,7 @@ export default function ProfileBio() {
                     >
                       {item.company}
                       {item.icon && (
-                        <Image src={item.icon} alt={item.company} width={14} height={14} className="rounded-sm object-contain" />
+                        <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${item.icon}`} alt={item.company} width={14} height={14} className="rounded-sm object-contain" />
                       )}
                     </a>
                   )}

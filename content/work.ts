@@ -19,7 +19,7 @@ export const workExperience = [
     title: "AI Engineer",
     company: "CGI",
     companyUrl: "https://www.cgi.com",
-    companyIcon: "/cgi_portfolio_icon.png",
+    companyIcon: "/cgi_portfolio_icon.jpg",
     date: "Summer 2024",
     description: "Deployed production RAG chatbot on Azure Databricks processing Google Analytics 4 data through medallion architecture, enabling natural language queries over web traffic patterns for insurance client marketing team. Improved text-to-SQL agent accuracy by 23% through metadata enrichment and achieved 89% table cell F1-score on complex multi-table marketing analytics queries using LlamaIndex."
   }

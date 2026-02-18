@@ -16,7 +16,7 @@ export default function WorkItem({ title, company, companyUrl, companyIcon, date
         <h3 className="font-medium text-[var(--text)] flex items-center gap-2">
           {companyIcon && (
             <span className="inline-flex items-center self-center">
-              <Image src={companyIcon} alt={company} width={18} height={18} className="rounded-sm object-contain" />
+              <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${companyIcon}`} alt={company} width={18} height={18} className="rounded-sm object-contain" />
             </span>
           )}
           {title}{" "}

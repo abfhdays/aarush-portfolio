@@ -51,7 +51,7 @@ export default function ProjectItem({ title, date, description, link, tags, prev
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={previewImage}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${previewImage}`}
             alt=""
             className="project-preview-img absolute right-6 top-1/2 -translate-y-1/2 h-4/5 w-auto object-contain"
           />
