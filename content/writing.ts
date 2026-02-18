@@ -1,7 +1,10 @@
-export const writing = [
-  "Building distributed systems with Go and Raft consensus",
-  "Query optimization and database internals",
-  "Streaming data pipelines with Kafka and Flink",
-  "Infrastructure as code with Terraform",
-  "Learning how to walk on the double bass in jazz context"
+export const writingPosts = [
+  {
+    title: "your post title here",
+    date: "Feb 2026",
+    excerpt: "your excerpt here.",
+    link: "https://aaarushgg.substack.com/p/your-post-slug", // replace with actual post URL
+    status: "published" as const,
+  },
+  
 ];

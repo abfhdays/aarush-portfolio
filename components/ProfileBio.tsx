@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
+import HomeNav from "@/components/HomeNav";
 
 export default function ProfileBio() {
   return (
@@ -17,19 +18,7 @@ export default function ProfileBio() {
         </span>
       </h1>
 
-      <div className="fade-up fade-up-2 flex justify-center gap-6 text-sm mb-8">
-        {personalInfo.links.map((link) => (
-          <a
-            key={link.label}
-            href={link.url}
-            target={link.url.startsWith("http") ? "_blank" : undefined}
-            rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
-            className="underline underline-offset-2 decoration-[var(--border)] hover:decoration-[var(--text)] transition-colors"
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
+      <HomeNav />
 
       <div className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mx-auto space-y-4">
         <p className="fade-up fade-up-3 italic">{personalInfo.bio.intro}</p>

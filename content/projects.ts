@@ -22,7 +22,7 @@ export const projects = [
   },
 
   {
-    title: "NFL Big Data Bowl '25: Blitz Prediction Model",
+    title: "NFL Big Data Bowl '25: Anticipating the Blitz",
     date: "2024-2025",
     tags: "Python | Deep Learning | PyTorch | Transformers  | MLOps",
     previewImage: "/safetyblitz.gif",
