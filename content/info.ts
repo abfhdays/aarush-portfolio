@@ -22,8 +22,8 @@ export const personalInfo = {
           linkUrl: "https://github.com/abfhdays/intelligent-query-router",
         },
       ],
-      outro: "I'm also working on improving my writing alongside my engineering journey",
-      outroLinkLabel: "I write about music and film too",
+    
+      outroLinkLabel: "Trying to write as well!!",
       outroLinkUrl: "/writing",
     },
     personal: "(check my projects out!)"

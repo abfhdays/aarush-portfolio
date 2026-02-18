@@ -46,10 +46,19 @@ export interface WorkExperience {
   description: string;
 }
 
+export interface WritingPost {
+  title: string;
+  date: string;
+  excerpt: string;
+  link?: string;
+  status?: 'published' | 'coming-soon';
+}
+
 export interface Project {
   title: string;
   date: string;
   description: string;
   link?: string;
   tags?: string;
+  previewImage?: string;
 }
