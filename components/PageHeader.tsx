@@ -12,7 +12,7 @@ export default function PageHeader({ title, icon }: PageHeaderProps) {
         {title}
       </h3>
       <Image
-        src={icon.src}
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${icon.src}`}
         alt={icon.alt}
         width={icon.width}
         height={icon.height}
