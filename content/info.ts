@@ -1,14 +1,31 @@
 export const personalInfo = {
   name: "Aarush Ghosh",
   bio: {
-    intro: "I'm a 3rd year student at the University of Waterloo studying Stats with CS.",
+    intro: "I'm a 3rd year student studying Math @ UWaterloo",
     work: [
-      { text: "Crafting AI agents and NLP pipelines on PyTorch & Neo4j stack for quantum-secure enterprise solutions @ ", company: "Qorsa", url: "https://qorsa.com" },
-      { text: "Building RAG applications for UI/UX analytics on Databricks @ ", company: "CGI", url: "https://www.cgi.com" },
-      { text: "Developing robust data pipelines for student tuition models with Spark and Kafka @ ", company: "UW", url: "https://uwaterloo.ca/math/" }
-      
+      { text: "your concert memories, made intentional; architected the Go backend scaled for 25,000+ active users ", company: "co-founder @ ReLive", url: "https://qorsa.com", icon: "/relive_portfolio_icon.png" },
+      { text: "engineered a Graph RAG application for government intelligence contracts powered by open-source LLMs ", company: "ai software engineer @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
+      { text: "deployed a text-to-SQL agent for web traffic analytics for major insurance client managed on Databricks", company: "ai consultant @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
+      { text: "scaled data infrastructure for student tuition forecasting used to budget plan 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
     ],
-    interests: "In my own time, I am focusing on data infrastructure and distributed systems; currently fixated on understanding what's happening under the hood in query engines and how tools like Spark, Hadoop orchestrate data at scale.",
+    interests: {
+      intro: "In my own time, I'm deepening my core engineering skills by",
+      items: [
+        {
+          text: "learning/mastering backend development in Go",
+          linkLabel: "I talk about it here",
+          linkUrl: "#", // add your blog link
+        },
+        {
+          text: "thinking about data systems at scale",
+          linkLabel: "one of my favourite projects - iRouter",
+          linkUrl: "https://github.com/abfhdays/intelligent-query-router",
+        },
+      ],
+      outro: "I'm also working on improving my writing alongside my engineering journey",
+      outroLinkLabel: "I write about music and film too",
+      outroLinkUrl: "/writing",
+    },
     personal: "(check my projects out!)"
   },
   links: [
@@ -22,7 +39,7 @@ export const personalInfo = {
     },
     {
       label: "resume",
-      url: "/resume.pdf"
+      url: "https://drive.google.com/file/d/16ThJygvUi28VGBbVaBncEUnVaS-eIbl1/view?usp=sharing"
     }
   ]
 };

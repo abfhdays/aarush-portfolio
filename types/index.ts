@@ -7,12 +7,27 @@ export interface WorkItem {
   text: string;
   company?: string;
   url?: string;
+  icon?: string;
+}
+
+export interface InterestItem {
+  text: string;
+  linkLabel?: string;
+  linkUrl?: string;
+}
+
+export interface Interests {
+  intro: string;
+  items: InterestItem[];
+  outro: string;
+  outroLinkLabel?: string;
+  outroLinkUrl?: string;
 }
 
 export interface Bio {
   intro: string;
   work: WorkItem[];
-  interests: string;
+  interests: Interests;
   personal: string;
 }
 
@@ -25,6 +40,8 @@ export interface PersonalInfo {
 export interface WorkExperience {
   title: string;
   company: string;
+  companyUrl?: string;
+  companyIcon?: string;
   date: string;
   description: string;
 }

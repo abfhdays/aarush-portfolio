@@ -18,6 +18,8 @@ export default function Work() {
             key={index}
             title={work.title}
             company={work.company}
+            companyUrl={work.companyUrl}
+            companyIcon={work.companyIcon}
             date={work.date}
             description={work.description}
           />

@@ -1,28 +1,29 @@
 import { irouterDemo } from './irouter-demo';
 
 export const projects = [
+  {
+    title: "reLive: your concert memories, made intentional",
+    date: "Jan 2026 - Present",
+    tags: "Go | Concurrency | Backend | UX | Product Growth ",
+    description: "A social platform for concert lovers to log shows and relive them from the crowd’s point of view. I built reLive's core infrastructure from the ground-up which involved making architecture-level and code-level design decision. Designed an elegant, go-idiomatic, worker-pool concurrency model backed by PostgreSQL as a job queue implemented with goroutines and channels to parallelize video processing and external API rate-limiting. Another major optimization directed was uploading video bytes directly to our S3 object storage via presigned URLs from the client side, minimizing server bottleneck. Seperating http handling from core service logic, having concurrency infra domain agnostic and wiring auth, error handling and logging as first-class middleware are intentional design patterns that position the app for long-term scale. These are feats I'm genuinely proud of. \n\n<img src=\"relive_portfolio_icon.png\" alt=\"DAG Visualization\" width=\"60%\" />",
+    link: "https://github.com/abfhdays/distributed-task-scheduler"
+  },
 
   {
     title: "iRouter: Intelligent SQL Query Router",
     date: "Nov 2025",
     tags: "Python | Query Engine Optimization | AST Parsing | Caching | CLI Development",
-    description: `I built this to solve a real frustration: watching identical queries take wildly different times depending on which engine I used. I implemented cost-based routing that analyzes query complexity and data size to automatically pick the best backend—DuckDB for quick scans, Polars for medium data, Spark for huge datasets. The most satisfying part was adding partition pruning; seeing queries that once scanned gigabytes now skip 70-90% of files taught me how critical predicate pushdown is. I also added LRU caching because I kept rerunning the same analysis queries—now they return in under a millisecond.
+    description: `Inspired and built with [SQLGlot](https://github.com/tobymao/sqlglot). I wanted to grow a deeper, intuitive understanding of how query engines work end-to-end, from query to execution. iRouter uses SQLGlot's core modules to replicate the SQL engine process and attempts to optimize it further by intelligently parsing, partitioning, and executing, given the semantics and specific dialect of the query, as well as the scale of the DB executed against. iRouter achieves up to ~3x speedup from SQLGlot.
 
   ${irouterDemo}`,
     link: "https://github.com/abfhdays/intelligent-query-router"
   },
-  {
-    title: "Cascade: Distributed Task Orchestrator",
-    date: "Sep 2025",
-    tags: "Go | Distributed Systems | Concurrency | etcd | gRPC",
-    description: "I wanted to deeply understand distributed systems, so I built a DAG scheduler from scratch in Go. The biggest challenge was handling coordinator failures—I implemented Raft consensus through etcd so when a coordinator dies, another takes over in under a second without losing tasks. I learned that task ordering matters: using Kahn's algorithm for topological sorting ensured dependencies always execute in the right sequence. Switching from channels to gRPC with Protocol Buffers cut dispatch latency from 250ms to 12ms, which taught me how serialization overhead compounds at scale. I'm planning to add Prometheus metrics and Kubernetes autoscaling to make it production-ready.\n\n<img src=\"dag.png\" alt=\"DAG Visualization\" width=\"60%\" />",
-    link: "https://github.com/abfhdays/distributed-task-scheduler"
-  },
+  
   {
     title: "NFL Big Data Bowl '25: Blitz Prediction Model",
     date: "2024-2025",
     tags: "Python | Deep Learning | PyTorch | Transformers  | MLOps",
-    description: "As a football fan, I wanted to predict blitzes before they happen by analyzing how defenders move pre-snap. I used Transformers with self-attention because blitzes aren't about individual players—it's the collective movement that matters. The model watches the 0.8 seconds before the snap, tracking subtle cues like linebackers creeping forward or cornerbacks rotating. I learned that defenses disguise blitzes incredibly well; my model hit 0.92 AUROC but still struggled with 'mug-and-bail' tactics where defenders fake aggression. Processing 10Hz tracking data across thousands of plays taught me how to handle massive datasets—I had to implement chunked streaming to avoid memory crashes.\n\n<img src=\"safetyblitz.gif\" alt=\"Safety Blitz Visualization\" width=\"60%\" />",
+    description: "Inspired by [SumerSports/SportsTrackingTransformer](https://github.com/SumerSports/SportsTrackingTransformer), which uses a transformer encoder-decoder to embed player and ball tracking into a shared spatial representation, this project adapts that philosophy toward a specific defensive problem: can we detect a blitz before the snap? \n\n<img src=\"safetyblitz.gif\" alt=\"Safety Blitz Visualization\" width=\"60%\" />",
     link: "https://github.com/abfhdays/bdb25-blitz1"
   },
   {

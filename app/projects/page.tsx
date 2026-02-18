@@ -7,8 +7,8 @@ import { projects } from "@/content/projects";
 export default function Projects() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-16 min-h-screen">
-      <Navigation />
-      <Section>
+      <div className="fade-up"><Navigation /></div>
+      <div className="fade-up fade-up-2"><Section>
         <PageHeader
           title="Projects"
           icon={{ src: "/baseball.jpg", alt: "baseball", width: 80, height: 80 }}
@@ -23,7 +23,7 @@ export default function Projects() {
             tags={project.tags}
           />
         ))}
-      </Section>
+      </Section></div>
     </div>
   );
 }

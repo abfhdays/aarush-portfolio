@@ -1,4 +1,4 @@
-export const learning = [
+export const writing = [
   "Building distributed systems with Go and Raft consensus",
   "Query optimization and database internals",
   "Streaming data pipelines with Kafka and Flink",
