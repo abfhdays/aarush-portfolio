@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
 
-export default function Header() {
+export default function ProfileBio() {
   return (
-    <header className="mb-8">
-      <h1 className="mb-2 flex items-center gap-3 !text-4xl md:!text-5xl">
+    <>
+      <h1 className="m-0 mb-2 flex items-center justify-center gap-3 !text-5xl md:!text-6xl">
         Hi, I&apos;m{" "}
         <span className="inline-block align-middle">
           <Image
@@ -16,12 +16,26 @@ export default function Header() {
           />
         </span>
       </h1>
-      {/* intro info now italic */}
-      <div className="text-[var(--text-secondary)] leading-relaxed space-y-3">
+
+      <div className="flex justify-center gap-6 text-sm mb-8">
+        {personalInfo.links.map((link) => (
+          <a
+            key={link.label}
+            href={link.url}
+            target={link.url.startsWith("http") ? "_blank" : undefined}
+            rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="underline underline-offset-2 decoration-[var(--border)] hover:decoration-[var(--text)] transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <div className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mx-auto space-y-4">
         <p className="italic">{personalInfo.bio.intro}</p>
 
-        <div className="text-left">
-          <p className="mb-2 font-medium text-sm">My work spans across:</p>
+        <div className="text-left max-w-xl mx-auto">
+          <p className="mb-2 font-medium">My experience spans across:</p>
           <ul className="list-none space-y-1 text-sm">
             {personalInfo.bio.work.map((item, index) => (
               <li key={index} className="flex items-start">
@@ -44,27 +58,13 @@ export default function Header() {
           </ul>
         </div>
 
-        <div>
-          <p className="text-sm">{personalInfo.bio.interests}</p>
-          {personalInfo.bio.personal && <p className="italic text-sm text-center">{personalInfo.bio.personal}</p>}
+        <div className="text-left max-w-xl mx-auto">
+          <p>{personalInfo.bio.interests}</p>
+          {personalInfo.bio.personal && (
+            <p className="italic text-center">{personalInfo.bio.personal}</p>
+          )}
         </div>
       </div>
-      <div className="flex items-center gap-8 mt-4">
-        <div className="flex gap-8 text-sm">
-          {personalInfo.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target={link.url.startsWith("http") ? "_blank" : undefined}
-              rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="hover:underline"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-        
-      </div>
-    </header>
+    </>
   );
 }
