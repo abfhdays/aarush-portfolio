@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import SeaOfWords from "@/components/SeaOfWords";
 
 export const metadata: Metadata = {
   title: "Aarush Ghosh",
@@ -14,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <SeaOfWords />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          {children}
+        </div>
       </body>
     </html>
   );

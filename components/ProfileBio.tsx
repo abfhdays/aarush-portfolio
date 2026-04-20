@@ -1,27 +1,29 @@
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
 import HomeNav from "@/components/HomeNav";
+import PretextHero from "@/components/PretextHero";
+import DragReflowBio from "@/components/DragReflowBio";
 
 export default function ProfileBio() {
   return (
     <>
-      <h1 className="fade-up fade-up-1 m-0 mb-2 flex items-center justify-center gap-3 !text-5xl md:!text-6xl">
-        Hi, I&apos;m{" "}
-        <span className="inline-block align-middle">
-          <Image
-            src="/aarush2.jpg"
-            alt="Aarush"
-            width={280}
-            height={280}
-            className="rounded-full object-cover inline-block"
-          />
-        </span>
-      </h1>
+      <div className="fade-up fade-up-1 mb-2 flex flex-col items-center gap-3">
+        <PretextHero />
+        <Image
+          src="/aarush2.jpg"
+          alt="Aarush"
+          width={180}
+          height={180}
+          className="rounded-full object-cover"
+        />
+      </div>
 
       <HomeNav />
 
       <div className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mx-auto space-y-4">
-        <p className="fade-up fade-up-3 italic">{personalInfo.bio.intro}</p>
+        <div className="fade-up fade-up-3">
+          <DragReflowBio text={personalInfo.bio.intro} />
+        </div>
 
         <div className="fade-up fade-up-4 text-left max-w-xl mx-auto">
           <p className="mb-2 text-center font-medium text-[var(--text)] ">

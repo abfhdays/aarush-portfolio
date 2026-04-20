@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import type { Components } from 'react-markdown';
 import { highlightSyntax } from '@/lib/highlightSyntax';
+import EditorialFlow from '@/components/EditorialFlow';
 
 interface ProjectItemProps {
   title: string;
@@ -36,15 +37,40 @@ function getTeaser(description: string): string {
     .replace(/[*_`#]/g, '');
 }
 
+function getFirstParagraphPlain(description: string): string {
+  const first = description.trim().split('\n\n')[0];
+  return first
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*_`#]/g, '')
+    .replace(/<[^>]+>/g, '');
+}
+
+function getRestOfDescription(description: string): string {
+  const paragraphs = description.trim().split('\n\n');
+  if (paragraphs.length <= 1) return '';
+  return paragraphs.slice(1).join('\n\n');
+}
+
 export default function ProjectItem({ title, date, description, link, tags, previewImage }: ProjectItemProps) {
   const [expanded, setExpanded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const teaser = getTeaser(description);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const firstParagraph = getFirstParagraphPlain(description);
+  const restDescription = getRestOfDescription(description);
+  const useEditorial = expanded && isDesktop && previewImage;
 
   return (
     <div className="relative pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0 overflow-hidden">
 
-      {/* Faded background image */}
-      {previewImage && (
+      {previewImage && !useEditorial && (
         <div
           className={`absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none select-none transition-opacity duration-300 ${expanded ? 'opacity-0' : 'opacity-100'}`}
           aria-hidden="true"
@@ -58,7 +84,6 @@ export default function ProjectItem({ title, date, description, link, tags, prev
         </div>
       )}
 
-      {/* Header */}
       <div className="flex items-baseline justify-between mb-1">
         <div className="flex-1">
           {link ? (
@@ -80,12 +105,31 @@ export default function ProjectItem({ title, date, description, link, tags, prev
         <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap ml-4">{date}</span>
       </div>
 
-      {/* Content */}
       {expanded ? (
-        <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content mt-2">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
-            {description}
-          </ReactMarkdown>
+        <div className="mt-2">
+          {useEditorial ? (
+            <>
+              <EditorialFlow
+                text={firstParagraph}
+                imageUrl={previewImage}
+                imageWidth={140}
+                imageHeight={120}
+              />
+              {restDescription && (
+                <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content mt-3">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                    {restDescription}
+                  </ReactMarkdown>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                {description}
+              </ReactMarkdown>
+            </div>
+          )}
         </div>
       ) : (
         <p className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed mt-2 line-clamp-2">
