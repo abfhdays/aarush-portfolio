@@ -1,13 +1,13 @@
 export const personalInfo = {
   name: "Aarush Ghosh",
   bio: {
-    intro: "I'm a software developer focusing on building scalable ai/data and backend systems. I'm in my 3rd year studying Math with CS @ UWaterloo",
+    intro: "I'm a software developer focused on scalable AI/data and backend systems. I'm studying Computational Mathematics and Statistics at UWaterloo.",
     work: [
-      
-      { text: "engineering a Graph RAG application for government intelligence contracts with the open-source dev toolkit ", company: "ai software engineer @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
-      { text: "your concert memories, made intentional; architecting the Go backend scaled for 25,000+ active users ", company: "co-founder @ ReLive", url: "https://github.com/areeeeeeeb/reLive", icon: "/relive_portfolio_icon.png" },
-      { text: "deploying a text-to-SQL data pipeline for a major insurance client for a major insurance client's web marketing analytics ", company: "ai consultant @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
-      { text: "scaling data infrastructure for student tuition forecasting used to budget plan 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
+      { text: "joining Versa Networks as a software engineer intern (incoming, Summer 2026).", company: "software engineer intern @ Versa Networks", url: "https://versa-networks.com" },
+      { text: "architecting a distributed Dgraph backend for a GraphRAG engine, plus Kubernetes/Helm deployment and CI/CD for production reliability.", company: "software engineer intern @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
+      { text: "building the Go backend for a concert video platform that handles 1,000+ concurrent requests while keeping latency under 200ms.", company: "co-founder @ reLive", url: "https://github.com/areeeeeeeb/reLive", icon: "/relive_portfolio_icon.png" },
+      { text: "deploying a production text-to-SQL RAG pipeline over GA4 marketing data and improving query accuracy with retrieval-augmented parsing.", company: "AI developer intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
+      { text: "automating budget forecasting for 9,000+ students and migrating SQL workflows into a faster Databricks PySpark ETL pipeline.", company: "developer @ University of Waterloo", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
     ],
     interests: {
       intro: "In my own time, I'm deepening my core engineering skills by",
