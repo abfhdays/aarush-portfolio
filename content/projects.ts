@@ -4,9 +4,9 @@ export const projects = [
   {
     title: "reLive: A social platform for concert lovers to log shows and relive them from the crowd's point of view.",
     date: "Jan 2026 - Present",
-    tags: "Go | Concurrency | Backend | UX | Product Growth ",
+    tags: "Go | Gin | PostgreSQL | Concurrency | Docker | AWS S3",
     previewImage: "/relive_portfolio_icon.png",
-    description: " I built reLive's core infrastructure from the ground-up which involved making architecture-level and code-level design decisions. Designed an elegant, go-idiomatic, worker-pool concurrency model backed by PostgreSQL as a job queue implemented with goroutines and channels to parallelize video processing and external API rate-limiting. Another major optimization directed was uploading video bytes directly to our S3 object storage via presigned URLs from the client side, minimizing server bottleneck. Seperating HTTP handling from core service logic, having concurrency infra domain-agnostic and wiring auth, error-handling, logging as first-class middleware are intentional design patterns that position the app for long-term scale. These are feats I'm genuinely proud of. \n\n<img src=\"relive_portfolio_icon.png\" alt=\"DAG Visualization\" width=\"60%\" />",
+    description: "I led backend development in Go/Gin to evolve reLive from a hackathon win into a deployed app handling 1,000+ concurrent requests while sustaining sub-200ms latency. I designed a PostgreSQL-backed worker-pool concurrency model with goroutines/channels and moved large uploads to direct S3 presigned URLs to keep file transfer load off app servers. Separating HTTP handlers from service logic and keeping auth/logging/error handling as middleware were deliberate architecture choices for long-term scale. \n\n<img src=\"relive_portfolio_icon.png\" alt=\"reLive visualization\" width=\"60%\" />",
     link: "https://github.com/areeeeeeeb/reLive/"
   },
 
@@ -32,7 +32,7 @@ export const projects = [
   {
     title: "WAT.ai: Network Traffic Anomaly Detection",
     date: "2023-2024",
-    tags: "TensorFlow | JavaScript | Unsupervised Learning | Data Visualization",
+    tags: "TensorFlow | JavaScript | Unsupervised Learning | Cybersecurity",
     previewImage: "/watai-thumbnail.png",
     description: "Interactive Demo built with WAT.ai to demonstrate how unsupervised learning detects cyber attacks on IoT devices. Showcased k-means clustering, DBSCAN, and negative selection across 7 attack types and against 105 IoT devices. \n\n[![WAT.ai Demo](watai-thumbnail.png)](https://wat-ai.github.io/cyber-security-interactive_web_demos/index.html)",
     link: "https://github.com/WAT-ai/cyber-security-interactive_web_demos"

@@ -13,12 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased" suppressHydrationWarning>
         <SeaOfWords />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          {children}
-        </div>
+        <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
       </body>
     </html>
   );
