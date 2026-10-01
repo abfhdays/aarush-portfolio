@@ -13,7 +13,7 @@ const manrope = localFont({
 
 export const metadata: Metadata = {
   title: "Aarush Ghosh",
-  description: "Statistics & CS @ UWaterloo",
+  description: "Software developer studying Statistics & Computational Math with a CS minor @ UWaterloo",
 };
 
 export default function RootLayout({

@@ -2,8 +2,8 @@
 
 ## Purpose and scope
 
-Personal software engineering website for Aarush Ghosh, a third/fourth-year
-University of Waterloo student. Audience: engineering recruiters, prospective
+Personal software engineering website for Aarush Ghosh, a University of Waterloo
+student graduating in April 2028. Audience: engineering recruiters, prospective
 teammates, and engineers reading project write-ups. Prioritize concrete evidence
 of engineering ownership, technical judgment, and results, with a personal voice.
 
@@ -19,20 +19,20 @@ of engineering ownership, technical judgment, and results, with a personal voice
   a non-clickable about label on the home page, and separate external profile
   links in footers.
   Grid reference: https://21st.dev/@designali-in/components/grid-pattern.
-- Later work: update information and publish a
+- Later work: publish a
   technical article about the newest internship project. The final section list
   and article outline are still to be decided with Aarush.
 
 ## Content sources and future updates
 
 Latest supplied resume: `/Users/aarushghosh/Downloads/Resume/Aarush_Resume___2026_09_04.pdf`.
-This local file is context, not a portable build dependency. The existing
-`public/resume.pdf` and external resume link have not been replaced.
+This local file is context, not a portable build dependency. `public/resume.pdf`
+contains this resume, and the profile's resume URL points to that local asset.
 
 Facts read from the September 4, 2026 resume:
 
 - Waterloo: Bachelor of Statistics & Computational Math, Computer Science minor,
-  co-op; expected graduation April 2028. Confirm academic year before publication.
+  co-op; expected graduation April 2028. The bio omits an unconfirmed academic year.
 - Versa Networks, Software Engineer Intern, May 2026–Present as of that resume:
   UEBA model training and delivery across Kubernetes clusters, Argo Workflows,
   MLflow, a Go delivery service, Helm, CronJob reconciliation, sidecars, and
@@ -46,10 +46,12 @@ Facts read from the September 4, 2026 resume:
 - Projects/extracurriculars include reLive (McHacks 13 winner, Go backend,
   PostgreSQL worker queue, S3 uploads) and WAT.ai anomaly detection research.
 
-Current `content/` predates this resume. It omits Versa and contains different
-education phrasing, Qorsa technology details, and some metrics. Reconcile these
-using the resume and Aarush's explanations during the content update; do not
-combine conflicting claims or invent metrics, publication links, or end dates.
+Current profile and experience data in `content/info.ts` and `content/work.ts`
+reflect this resume, with Versa first. The UW employment bullet is last in the
+homepage bio; its work-page entry remains removed at Aarush's request.
+The bio uses the resume's degree wording, Qorsa technologies,
+and reLive concurrency metric; the project tags include the McHacks 13 win.
+Do not combine conflicting claims or invent metrics, publication links, or end dates.
 
 ## Architecture and editing map
 
@@ -73,13 +75,27 @@ combine conflicting claims or invent metrics, publication links, or end dates.
 - `app/globals.css`: theme, typography, animations, Markdown and demo styling.
 
 Use server components by default; only project expansion needs client state.
-Markdown renders trusted repository-authored raw HTML and custom syntax
+Project Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
 Writing uses compact title/date rows linked to local article pages. The
 Work in Progress article is a placeholder; the internship write-up is not written.
-`components/writing/Article.tsx` renders Markdown with reading styles scoped to
+`components/writing/Article.tsx` renders GitHub-flavored Markdown without raw HTML,
+with reading styles scoped to
 `.article-content`, separate from the project demo's terminal styles. Add actual
 article content in `content/writing/`; keep routes as thin page compositions.
+Martin Sit is a reference for text structure and spacing only; retain this site's
+palette, illustrations, and grid.
+
+For another article, follow the existing `work-in-progress` pattern:
+
+1. Add a typed `WritingArticle` in `content/writing/<slug>.ts`, including its
+   Markdown body and internal link `/writing/<slug>/`.
+2. Add that object to `writingPosts` in `content/writing.ts`.
+3. Add `app/writing/<slug>/page.tsx` composing `PageLayout`, `Article`, and
+   `articleNavigation`, with metadata derived from the same content object.
+
+The current article's `Feb 2026` date is inherited placeholder metadata. Confirm
+the publication date when writing the actual internship article.
 
 ## Development and delivery
 
@@ -98,9 +114,10 @@ push, or deploy without explicit authorization.
 
 `PAGES_BASE_PATH` configures deployment under a repository subpath. Next exposes
 it as `NEXT_PUBLIC_BASE_PATH`; use `assetPath()` for local component image paths.
-Markdown image rendering resolves local paths from the public asset root through
+Project Markdown image rendering resolves local paths from the public asset root through
 `assetPath()`; external image URLs remain external. Preserve this behavior when
 adding descriptions, including deployments with a base path.
+The article renderer does not currently apply this custom image-path handling.
 
 ## Working conventions
 
@@ -123,7 +140,7 @@ static build passed locally with Node 22. Before visual refinements, browser che
 matched the pre-refactor DOM for all four routes at 1280px and 390px widths,
 including expanded/collapsed projects, in development and the production export.
 No deployment was performed.
-Content updates and the Versa article remain future work.
+Resume-based content updates are in place. The Versa article remains future work.
 
 Next.js and its lint preset use the patched 15.5.27 release;
 `package.json` overrides Next's pinned PostCSS with patched PostCSS 8. ESLint 9

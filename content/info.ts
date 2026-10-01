@@ -1,24 +1,24 @@
 import { socialLinks } from "@/content/navigation";
+import { assetPath } from "@/lib/assets";
 import type { PersonalInfo } from "@/types/content";
 
 export const personalInfo: PersonalInfo = {
   name: "Aarush Ghosh",
   bio: {
-    intro: "I'm a software developer focusing on building scalable ai/data and backend systems. I'm in my 3rd year studying Math with CS @ UWaterloo",
+    intro: "I'm a software developer building scalable AI/data and backend systems. I study Statistics & Computational Math with a CS minor @ UWaterloo, graduating in April 2028.",
     work: [
       
-      { text: "engineering a Graph RAG application for government intelligence contracts with the open-source dev toolkit ", company: "ai software engineer @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
-      { text: "your concert memories, made intentional; architecting the Go backend scaled for 25,000+ active users ", company: "co-founder @ ReLive", url: "https://github.com/areeeeeeeb/reLive", icon: "/relive_portfolio_icon.png" },
-      { text: "deploying a text-to-SQL data pipeline for a major insurance client for a major insurance client's web marketing analytics ", company: "ai consultant @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
-      { text: "scaling data infrastructure for student tuition forecasting used to budget plan 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
+      { text: "building UEBA model training and delivery across Kubernetes clusters with Argo Workflows, MLflow, and Go ", company: "software engineer intern @ Versa Networks", url: "https://versa-networks.com", icon: "/versa_networks_logo.jpeg" },
+      { text: "built a Dgraph-backed GraphRAG engine for government intelligence contracts and deployed vLLM inference ", company: "machine learning engineer intern @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
+      { text: "your concert memories, made intentional; built the Go backend for our McHacks 13 winner, handling 1,000+ concurrent requests ", company: "co-founder @ ReLive", url: "https://github.com/areeeeeeeb/reLive", icon: "/relive_portfolio_icon.png" },
+      { text: "deployed RAG and text-to-SQL pipelines for an insurance client's web marketing analytics ", company: "ai developer intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
+      { text: "built data infrastructure for tuition forecasting and budget planning for 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
     ],
     interests: {
       intro: "In my own time, I'm deepening my core engineering skills by",
       items: [
         {
           text: "learning/mastering backend development in Go",
-          linkLabel: "i wrote about it here",
-          linkUrl: "#", // add your blog link
         },
         {
           text: "understanding distributed database systems",
@@ -47,7 +47,7 @@ export const personalInfo: PersonalInfo = {
     },
     {
       label: "resume",
-      url: "https://drive.google.com/file/d/16ThJygvUi28VGBbVaBncEUnVaS-eIbl1/view?usp=sharing"
+      url: assetPath("/resume.pdf")
     }
   ]
 };

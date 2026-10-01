@@ -5,7 +5,7 @@ export const projects: Project[] = [
   {
     title: "reLive: A social platform for concert lovers to log shows and relive them from the crowd's point of view.",
     date: "Jan 2026 - Present",
-    tags: "Go | Concurrency | Backend | UX | Product Growth ",
+    tags: "McHacks 13 Winner | Go | Concurrency | Backend | UX | Product Growth ",
     previewImage: "/relive_portfolio_icon.png",
     description: " I built reLive's core infrastructure from the ground-up which involved making architecture-level and code-level design decisions. Designed an elegant, go-idiomatic, worker-pool concurrency model backed by PostgreSQL as a job queue implemented with goroutines and channels to parallelize video processing and external API rate-limiting. Another major optimization directed was uploading video bytes directly to our S3 object storage via presigned URLs from the client side, minimizing server bottleneck. Seperating HTTP handling from core service logic, having concurrency infra domain-agnostic and wiring auth, error-handling, logging as first-class middleware are intentional design patterns that position the app for long-term scale. These are feats I'm genuinely proud of. \n\n<img src=\"relive_portfolio_icon.png\" alt=\"DAG Visualization\" width=\"60%\" />",
     link: "https://github.com/areeeeeeeb/reLive/"
