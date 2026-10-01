@@ -11,8 +11,8 @@ export const personalInfo: PersonalInfo = {
       { text: "building UEBA model training and delivery across Kubernetes clusters with Argo Workflows, MLflow, and Go ", company: "software engineer intern @ Versa Networks", url: "https://versa-networks.com", icon: "/versa_networks_logo.jpeg" },
       { text: "built a Dgraph-backed GraphRAG engine for government intelligence contracts and deployed vLLM inference ", company: "machine learning engineer intern @ Qorsa", url: "https://qorsa.com", icon: "/qorsa_portfolio_icon.png" },
       { text: "your concert memories, made intentional; built the Go backend for our McHacks 13 winner, handling 1,000+ concurrent requests ", company: "co-founder @ ReLive", url: "https://github.com/areeeeeeeb/reLive", icon: "/relive_portfolio_icon.png" },
-      { text: "deployed RAG and text-to-SQL pipelines for an insurance client's web marketing analytics ", company: "ai developer intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
-      { text: "built data infrastructure for tuition forecasting and budget planning for 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
+      { text: "deployed RAG-powered text-to-SQL for insurance marketing analytics ", company: "ai developer intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
+      { text: "tuition forecasting for budget planning across 9,000+ students ", company: "software engineer @ UW", url: "https://uwaterloo.ca/math/", icon: "/uw_portfolio_icon.png" }
     ],
     interests: {
       intro: "In my own time, I'm deepening my core engineering skills by",
