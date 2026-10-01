@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 
 interface PageHeaderProps {
@@ -13,7 +14,7 @@ export default function PageHeader({ title, icon, large }: PageHeaderProps) {
         {title}
       </h3>
       <Image
-        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${icon.src}`}
+        src={assetPath(icon.src)}
         alt={icon.alt}
         width={icon.width}
         height={icon.height}

@@ -1,4 +1,6 @@
-export const workExperience = [
+import type { WorkExperience } from "@/types/content";
+
+export const workExperience: WorkExperience[] = [
   {
     title: "Machine Learning Engineer",
     company: "Qorsa",

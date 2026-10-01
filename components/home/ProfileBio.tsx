@@ -1,6 +1,7 @@
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
-import HomeNav from "@/components/HomeNav";
+import HomeNav from "@/components/home/HomeNav";
 
 export default function ProfileBio() {
   return (
@@ -9,7 +10,7 @@ export default function ProfileBio() {
         Hi, I&apos;m{" "}
         <span className="inline-block align-middle">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/aarush2.jpg`}
+            src={assetPath("/aarush2.jpg")}
             alt="Aarush"
             width={280}
             height={280}
@@ -41,7 +42,7 @@ export default function ProfileBio() {
                     >
                       {item.company}
                       {item.icon && (
-                        <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${item.icon}`} alt={item.company} width={14} height={14} className="rounded-sm object-contain" />
+                        <Image src={assetPath(item.icon)} alt={item.company} width={14} height={14} className="rounded-sm object-contain" />
                       )}
                     </a>
                   )}
@@ -56,7 +57,7 @@ export default function ProfileBio() {
           <div className="mb-2 flex items-center justify-center gap-3 font-medium text-[var(--text)]">
             <span>{personalInfo.bio.interests.intro}:</span>
             <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/piano.jpg`}
+              src={assetPath("/piano.jpg")}
               alt=""
               width={88}
               height={24}

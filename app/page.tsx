@@ -1,4 +1,4 @@
-import ProfileBio from "@/components/ProfileBio";
+import ProfileBio from "@/components/home/ProfileBio";
 
 export default function Home() {
   return (

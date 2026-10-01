@@ -1,22 +1,15 @@
+import type { WorkExperience } from "@/types/content";
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 
-interface WorkItemProps {
-  title: string;
-  company: string;
-  companyUrl?: string;
-  companyIcon?: string;
-  date: string;
-  description: string;
-}
-
-export default function WorkItem({ title, company, companyUrl, companyIcon, date, description }: WorkItemProps) {
+export default function WorkItem({ title, company, companyUrl, companyIcon, date, description }: WorkExperience) {
   return (
     <div className="group pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0">
       <div className="flex items-baseline justify-between mb-1">
         <h3 className="font-medium text-[var(--text)] flex items-center gap-2">
           {companyIcon && (
             <span className="inline-flex items-center self-center">
-              <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${companyIcon}`} alt={company} width={18} height={18} className="rounded-sm object-contain" />
+              <Image src={assetPath(companyIcon)} alt={company} width={18} height={18} className="rounded-sm object-contain" />
             </span>
           )}
           {title}{" "}

@@ -1,9 +1,9 @@
-export interface Link {
+export interface ProfileLink {
   label: string;
   url: string;
 }
 
-export interface WorkItem {
+export interface BioWorkItem {
   text: string;
   company?: string;
   url?: string;
@@ -26,7 +26,7 @@ export interface Interests {
 
 export interface Bio {
   intro: string;
-  work: WorkItem[];
+  work: BioWorkItem[];
   interests: Interests;
   personal: string;
 }
@@ -34,7 +34,7 @@ export interface Bio {
 export interface PersonalInfo {
   name: string;
   bio: Bio;
-  links: Link[];
+  links: ProfileLink[];
 }
 
 export interface WorkExperience {
@@ -61,4 +61,10 @@ export interface Project {
   link?: string;
   tags?: string;
   previewImage?: string;
+}
+
+export interface NavigationLink {
+  label: string;
+  href: string;
+  external?: boolean;
 }

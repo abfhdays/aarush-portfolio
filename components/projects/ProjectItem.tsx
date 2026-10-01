@@ -1,42 +1,12 @@
 'use client';
 
+import { assetPath } from '@/lib/assets';
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import type { Components } from 'react-markdown';
-import { highlightSyntax } from '@/lib/highlightSyntax';
+import type { Project } from '@/types/content';
+import ProjectMarkdown from '@/components/projects/ProjectMarkdown';
+import { getTeaser } from '@/lib/markdown';
 
-interface ProjectItemProps {
-  title: string;
-  date: string;
-  description: string;
-  link?: string;
-  tags?: string;
-  previewImage?: string;
-}
-
-const markdownComponents: Components = {
-  code({ children, className, ...props }) {
-    if (!className) return <code {...props}>{children}</code>;
-
-    const codeString = String(children).replace(/\n$/, '');
-    return (
-      <code {...props} className={className}>
-        {highlightSyntax(codeString)}
-      </code>
-    );
-  },
-};
-
-function getTeaser(description: string): string {
-  const first = description.trim().split('\n\n')[0];
-  return first
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[*_`#]/g, '');
-}
-
-export default function ProjectItem({ title, date, description, link, tags, previewImage }: ProjectItemProps) {
+export default function ProjectItem({ title, date, description, link, tags, previewImage }: Project) {
   const [expanded, setExpanded] = useState(false);
   const teaser = getTeaser(description);
 
@@ -51,7 +21,7 @@ export default function ProjectItem({ title, date, description, link, tags, prev
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${previewImage}`}
+            src={assetPath(previewImage)}
             alt=""
             className="project-preview-img absolute right-6 top-1/2 -translate-y-1/2 h-4/5 w-auto object-contain"
           />
@@ -83,9 +53,9 @@ export default function ProjectItem({ title, date, description, link, tags, prev
       {/* Content */}
       {expanded ? (
         <div className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed markdown-content mt-2">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+          <ProjectMarkdown>
             {description}
-          </ReactMarkdown>
+          </ProjectMarkdown>
         </div>
       ) : (
         <p className="text-[var(--text-secondary)] text-[0.95rem] leading-relaxed mt-2 line-clamp-2">

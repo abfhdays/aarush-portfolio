@@ -1,6 +1,7 @@
+import type { Project } from "@/types/content";
 import { irouterDemo } from './irouter-demo';
 
-export const projects = [
+export const projects: Project[] = [
   {
     title: "reLive: A social platform for concert lovers to log shows and relive them from the crowd's point of view.",
     date: "Jan 2026 - Present",

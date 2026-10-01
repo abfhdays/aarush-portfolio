@@ -1,4 +1,7 @@
-export const personalInfo = {
+import { socialLinks } from "@/content/navigation";
+import type { PersonalInfo } from "@/types/content";
+
+export const personalInfo: PersonalInfo = {
   name: "Aarush Ghosh",
   bio: {
     intro: "I'm a software developer focusing on building scalable ai/data and backend systems. I'm in my 3rd year studying Math with CS @ UWaterloo",
@@ -29,18 +32,18 @@ export const personalInfo = {
         },
       ],
       outroLinkLabel: "All of my projects are on my Github. Check them out!!",
-      outroLinkUrl: "https://github.com/abfhdays",
+      outroLinkUrl: socialLinks.github,
     },
     personal: "(check my projects out!)"
   },
   links: [
     {
       label: "github",
-      url: "https://github.com/abfhdays"
+      url: socialLinks.github
     },
     {
       label: "linkedin",
-      url: "https://www.linkedin.com/in/aarush-ghosh-/"
+      url: socialLinks.linkedin
     },
     {
       label: "resume",

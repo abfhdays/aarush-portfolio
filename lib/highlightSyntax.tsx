@@ -18,7 +18,7 @@ export function highlightSyntax(text: string): ReactNode[] {
 
   for (const match of text.matchAll(SYNTAX_REGEX)) {
     const matchText = match[0];
-    const matchStart = match.index!;
+    const matchStart = match.index;
     const matchEnd = matchStart + matchText.length;
 
     if (matchStart > currentIndex) {

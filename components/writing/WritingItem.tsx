@@ -1,12 +1,6 @@
-interface WritingItemProps {
-  title: string;
-  date: string;
-  excerpt: string;
-  link?: string;
-  status?: 'published' | 'coming-soon';
-}
+import type { WritingPost } from "@/types/content";
 
-export default function WritingItem({ title, date, excerpt, link, status }: WritingItemProps) {
+export default function WritingItem({ title, date, excerpt, link, status }: WritingPost) {
   return (
     <div className="pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0">
       <div className="mb-1">
