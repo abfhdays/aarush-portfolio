@@ -9,16 +9,16 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, icon, large }: PageHeaderProps) {
   return (
-    <div className="flex items-center gap-3 mb-4">
-      <h3 className={`m-0 font-medium underline underline-offset-4 decoration-[var(--accent)] ${large ? "text-5xl" : "text-2xl"}`}>
+    <div className="flex items-center gap-4 mb-6">
+      <h1 className={`m-0 font-medium underline underline-offset-4 decoration-[var(--accent)] ${large ? "text-4xl sm:text-5xl" : "text-2xl"}`}>
         {title}
-      </h3>
+      </h1>
       <Image
         src={assetPath(icon.src)}
         alt={icon.alt}
         width={icon.width}
         height={icon.height}
-        className="rounded-sm object-contain"
+        className="rounded-sm object-contain h-auto max-w-[28vw] shrink-0 mix-blend-multiply sm:max-w-none"
       />
     </div>
   );

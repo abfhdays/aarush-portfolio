@@ -5,7 +5,10 @@ import { homeNavigation } from "@/content/navigation";
 
 export default function HomeNav() {
   return (
-    <nav className="fade-up flex justify-center gap-8 text-xl font-semibold my-5 items-center">
+    <nav aria-label="Main navigation" className="fade-up flex justify-center gap-8 text-xl font-semibold mt-2 mb-3 items-center">
+      <span aria-current="page" className="underline underline-offset-4 decoration-2 decoration-[var(--accent)]">
+        about
+      </span>
       {homeNavigation.map((link) => (
         <SiteLink
           key={link.href}
@@ -16,9 +19,9 @@ export default function HomeNav() {
       <Image
         src={assetPath("/baseball.jpg")}
         alt=""
-        width={52}
-        height={52}
-        className="object-contain opacity-90"
+        width={40}
+        height={40}
+        className="object-contain opacity-90 shrink-0 mix-blend-multiply"
       />
     </nav>
   );

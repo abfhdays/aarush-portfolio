@@ -13,7 +13,7 @@ export default function Section({ title, children }: SectionProps) {
           {title}
         </h2>
       )}
-      <div className="space-y-4">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }

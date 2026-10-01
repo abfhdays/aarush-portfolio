@@ -1,29 +1,23 @@
+import Link from "next/link";
 import type { WritingPost } from "@/types/content";
 
-export default function WritingItem({ title, date, excerpt, link, status }: WritingPost) {
+export default function WritingItem({ title, date, link, status }: WritingPost) {
   return (
-    <div className="pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0">
-      <div className="mb-1">
-        <h3 className="font-semibold text-[var(--text)] text-xl leading-snug mb-1">{title}</h3>
-        {date && (
-          <span className="text-sm text-[var(--text-secondary)] opacity-70">{date}</span>
-        )}
-      </div>
-      <p className="text-[var(--text-secondary)] text-base leading-relaxed mt-2 mb-3">
-        {excerpt}
-      </p>
+    <li className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
       {status === 'published' && link ? (
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-base text-[var(--text)] underline underline-offset-2 decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors"
-        >
-          Read more →
-        </a>
+        link.startsWith('/') ? (
+          <Link href={link} className="font-medium underline underline-offset-4 decoration-[var(--border)] hover:decoration-[var(--accent)]">
+            {title}
+          </Link>
+        ) : (
+          <a href={link} target="_blank" rel="noopener noreferrer" className="font-medium underline underline-offset-4 decoration-[var(--border)] hover:decoration-[var(--accent)]">
+            {title} ↗
+          </a>
+        )
       ) : (
-        <span className="text-base text-[var(--text-secondary)] opacity-50 italic">coming soon</span>
+        <span className="font-medium">{title} <span className="text-sm text-[var(--text-secondary)] italic">(coming soon)</span></span>
       )}
-    </div>
+      {date && <span className="shrink-0 text-sm text-[var(--text-secondary)]">{date}</span>}
+    </li>
   );
 }

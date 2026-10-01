@@ -1,12 +1,4 @@
 import type { WritingPost } from "@/types/content";
+import { workInProgress } from "@/content/writing/work-in-progress";
 
-export const writingPosts: WritingPost[] = [
-  {
-    title: "Work in Progress",
-    date: "Feb 2026",
-    excerpt: "work in progress",
-    link: "https://aaarushgg.substack.com/p/your-post-slug", // replace with actual post URL
-    status: "published",
-  },
-  
-];
+export const writingPosts: WritingPost[] = [workInProgress];

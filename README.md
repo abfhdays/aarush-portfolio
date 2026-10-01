@@ -106,6 +106,8 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 | Work experience | `content/work.ts` |
 | Projects and demos | `content/projects.ts`, `content/irouter-demo.ts` |
 | Writing list | `content/writing.ts` |
+| Work in Progress article | `content/writing/work-in-progress.ts` |
+| Article layout and typography | `components/writing/Article.tsx`, `.article-content` in `app/globals.css` |
 | Navigation links | `content/navigation.ts` |
 | Routes and page composition | `app/**/page.tsx` |
 | UI components | `components/` |
@@ -114,8 +116,10 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 | Images and downloadable files | `public/` |
 
 Only project expansion needs client state. Content is plain typed data, without
-a CMS or object-oriented framework. Writing currently links externally; the
-local technical blog is future work.
+a CMS or object-oriented framework. The writing index links to the local
+`/writing/work-in-progress/` article. Edit its Markdown `body` in
+`content/writing/work-in-progress.ts` when the technical write-up is ready.
+Manrope is bundled in `public/fonts/` with its license; the site loads it locally.
 
 ## Deployment
 

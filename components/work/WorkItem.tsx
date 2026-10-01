@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function WorkItem({ title, company, companyUrl, companyIcon, date, description }: WorkExperience) {
   return (
     <div className="group pb-8 mb-8 border-b border-[var(--border)] last:border-b-0 last:mb-0 last:pb-0">
-      <div className="flex items-baseline justify-between mb-1">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between mb-2">
         <h3 className="font-medium text-[var(--text)] flex items-center gap-2">
           {companyIcon && (
             <span className="inline-flex items-center self-center">
@@ -26,7 +26,7 @@ export default function WorkItem({ title, company, companyUrl, companyIcon, date
             <span className="text-[var(--text-secondary)] font-normal">@ {company}</span>
           )}
         </h3>
-        <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap ml-4">
+        <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap sm:ml-4">
           {date}
         </span>
       </div>

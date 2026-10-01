@@ -12,7 +12,6 @@ export const socialNavigation: NavigationLink[] = [
 
 export const homeNavigation: NavigationLink[] = [
   { label: "writing", href: "/writing" },
-  ...socialNavigation,
 ];
 
 export const pageNavigation: NavigationLink[] = [
@@ -23,5 +22,9 @@ export const pageNavigation: NavigationLink[] = [
 
 export const writingNavigation: NavigationLink[] = [
   { label: "home", href: "/" },
-  ...socialNavigation,
+];
+
+export const articleNavigation: NavigationLink[] = [
+  { label: "home", href: "/" },
+  { label: "writing", href: "/writing" },
 ];

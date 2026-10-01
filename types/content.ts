@@ -54,6 +54,10 @@ export interface WritingPost {
   status?: 'published' | 'coming-soon';
 }
 
+export interface WritingArticle extends WritingPost {
+  body: string;
+}
+
 export interface Project {
   title: string;
   date: string;

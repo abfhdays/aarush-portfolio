@@ -2,36 +2,37 @@ import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
 import HomeNav from "@/components/home/HomeNav";
+import SocialLinks from "@/components/layout/SocialLinks";
 
 export default function ProfileBio() {
   return (
     <>
-      <h1 className="fade-up fade-up-1 m-0 mb-2 flex items-center justify-center gap-3 !text-5xl md:!text-6xl">
-        Hi, I&apos;m{" "}
-        <span className="inline-block align-middle">
+      <h1 className="fade-up fade-up-1 m-0 mb-2 flex items-center justify-center gap-3 !text-3xl sm:!text-5xl">
+        <span className="whitespace-nowrap">Hi, I&apos;m</span>
+        <span className="inline-block align-middle shrink-0">
           <Image
             src={assetPath("/aarush2.jpg")}
             alt="Aarush"
             width={280}
             height={280}
-            className="rounded-full object-cover inline-block"
+            className="rounded-full object-contain inline-block h-auto w-[min(46vw,200px)] mix-blend-multiply"
           />
         </span>
       </h1>
 
       <HomeNav />
 
-      <div className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mx-auto space-y-4">
-        <p className="fade-up fade-up-3 italic">{personalInfo.bio.intro}</p>
+      <div className="text-[var(--text-secondary)] leading-normal mx-auto flex flex-col gap-3.5">
+        <p className="fade-up fade-up-3 text-[0.95rem] italic mb-0">{personalInfo.bio.intro}</p>
 
-        <div className="fade-up fade-up-4 text-left max-w-xl mx-auto">
-          <p className="mb-2 text-center font-medium text-[var(--text)] ">
+        <div className="fade-up fade-up-4 text-left w-full">
+          <p className="mb-2 text-center font-medium text-[var(--text)]">
             My work experience spans across:
           </p>
-          <ul className="list-none space-y-1 text-sm mb-6">
+          <ul className="list-none space-y-1.5 text-sm leading-[1.45] m-0">
             {personalInfo.bio.work.map((item, index) => (
               <li key={index} className="flex items-start">
-                <span className="mr-2">•</span>
+                <span className="mr-2 shrink-0">•</span>
                 <span>
                   {item.company && item.url && (
                     <a
@@ -42,7 +43,7 @@ export default function ProfileBio() {
                     >
                       {item.company}
                       {item.icon && (
-                        <Image src={assetPath(item.icon)} alt={item.company} width={14} height={14} className="rounded-sm object-contain" />
+                        <Image src={assetPath(item.icon)} alt={item.company} width={14} height={14} className="rounded-sm object-contain shrink-0 mix-blend-multiply" />
                       )}
                     </a>
                   )}
@@ -53,26 +54,26 @@ export default function ProfileBio() {
           </ul>
         </div>
 
-        <div className="fade-up fade-up-5 text-left max-w-xl mx-auto">
-          <div className="mb-2 flex items-center justify-center gap-3 font-medium text-[var(--text)]">
+        <div className="fade-up fade-up-5 text-left w-full">
+          <div className="mb-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center font-medium text-[var(--text)]">
             <span>{personalInfo.bio.interests.intro}:</span>
             <Image
               src={assetPath("/piano.jpg")}
               alt=""
-              width={88}
+              width={64}
               height={24}
-              className="object-contain opacity-80"
+              className="object-contain opacity-80 shrink-0 mix-blend-multiply"
             />
           </div>
-          <ul className="list-none space-y-1 text-sm mb-6">
+          <ul className="list-none space-y-1.5 text-sm leading-[1.45] m-0">
             {personalInfo.bio.interests.items.map((item, index) => (
               <li key={index} className="flex items-start">
-                <span className="mr-2">•</span>
-                <span className="flex flex-col">
+                <span className="mr-2 shrink-0">•</span>
+                <span className="flex min-w-0 flex-col gap-0.5">
                   <span>{item.text}</span>
                   {item.linkLabel && item.linkUrl && (
-                    <span className="ml-3 flex items-center gap-1">
-                      <span className="opacity-50">◦</span>
+                    <span className="ml-3 flex items-start gap-1">
+                      <span className="opacity-50 shrink-0">◦</span>
                       <a
                         href={item.linkUrl}
                         target={item.linkUrl.startsWith("http") ? "_blank" : undefined}
@@ -88,7 +89,7 @@ export default function ProfileBio() {
             ))}
           </ul>
           {personalInfo.bio.interests.outroLinkLabel && personalInfo.bio.interests.outroLinkUrl && (
-            <p className="fade-up fade-up-6 italic text-center">
+            <p className="fade-up fade-up-6 italic text-center mt-4 mb-0">
               (<a
                 href={personalInfo.bio.interests.outroLinkUrl}
                 target={personalInfo.bio.interests.outroLinkUrl.startsWith("http") ? "_blank" : undefined}
@@ -101,6 +102,7 @@ export default function ProfileBio() {
           )}
         </div>
       </div>
+      <SocialLinks className="mt-3 pt-2" />
     </>
   );
 }

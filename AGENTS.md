@@ -12,9 +12,14 @@ of engineering ownership, technical judgment, and results, with a personal voice
 - Content inspiration: https://www.bryandeng.ca/ (concise introduction, projects,
   writing) and https://martinsit.ca/ (current work, concrete outcomes, previous
   experience, projects, writing). References, not templates to copy.
-- This preparation pass preserves content, styling, routes, navigation,
+- Initial preparation preserved content, styling, routes, navigation,
   animations, and project expand/collapse behavior.
-- Later work: update information, slightly refine aesthetics, and publish a
+- Current visual direction: a subtle dashed grid across all pages, the existing
+  light palette and illustrations, self-hosted Manrope, deliberate text spacing,
+  a non-clickable about label on the home page, and separate external profile
+  links in footers.
+  Grid reference: https://21st.dev/@designali-in/components/grid-pattern.
+- Later work: update information and publish a
   technical article about the newest internship project. The final section list
   and article outline are still to be decided with Aarush.
 
@@ -49,6 +54,7 @@ combine conflicting claims or invent metrics, publication links, or end dates.
 ## Architecture and editing map
 
 - `app/`: Next.js App Router pages: `/`, `/projects/`, `/work/`, `/writing/`.
+  The first local article route is `/writing/work-in-progress/`.
   Work and projects exist even though the landing navigation does not link to
   them. Preserve these routes unless a later task explicitly changes them.
 - `components/layout/`: navigation, section, page header, and page layout.
@@ -57,17 +63,23 @@ combine conflicting claims or invent metrics, publication links, or end dates.
 - `components/work/`, `components/writing/`: experience and writing list items.
 - `content/`: typed plain data for profile, work, projects, writing, navigation.
   Edit copy here rather than embedding it in route components.
+  `content/writing.ts` lists posts; `content/writing/work-in-progress.ts` owns the
+  first article's metadata and Markdown body.
 - `types/content.ts`: shared data contracts. UI-only props stay with components.
   Plain objects are sufficient; avoid classes, a CMS, or speculative abstractions.
 - `lib/`: asset paths and Markdown/syntax helpers.
 - `public/`: images, resume PDF, custom-domain CNAME.
+  `public/fonts/` contains the locally bundled Manrope variable font and its license.
 - `app/globals.css`: theme, typography, animations, Markdown and demo styling.
 
 Use server components by default; only project expansion needs client state.
 Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
-Writing currently lists an external placeholder post. No local article routes
-or blog engine exist yet; choose their structure when implementing that feature.
+Writing uses compact title/date rows linked to local article pages. The
+Work in Progress article is a placeholder; the internship write-up is not written.
+`components/writing/Article.tsx` renders Markdown with reading styles scoped to
+`.article-content`, separate from the project demo's terminal styles. Add actual
+article content in `content/writing/`; keep routes as thin page compositions.
 
 ## Development and delivery
 
@@ -86,8 +98,9 @@ push, or deploy without explicit authorization.
 
 `PAGES_BASE_PATH` configures deployment under a repository subpath. Next exposes
 it as `NEXT_PUBLIC_BASE_PATH`; use `assetPath()` for local component image paths.
-Markdown contains relative image paths; preserve their behavior in a refactor
-and revisit them explicitly during later content work.
+Markdown image rendering resolves local paths from the public asset root through
+`assetPath()`; external image URLs remain external. Preserve this behavior when
+adding descriptions, including deployments with a base path.
 
 ## Working conventions
 
@@ -106,10 +119,11 @@ and revisit them explicitly during later content work.
 Component organization, shared content typing, common navigation/layouts, and
 asset/Markdown helpers are in place. The broken lint dependencies were aligned
 with Next.js 15; `typecheck` and `.nvmrc` were added. Lint, type checking, and the
-static build passed locally with Node 22. Browser checks matched the pre-refactor
-DOM for all four routes at 1280px and 390px widths, including expanded/collapsed
-projects, in development and the production export. No deployment was performed.
-Content updates, aesthetic changes, and the Versa article remain future work.
+static build passed locally with Node 22. Before visual refinements, browser checks
+matched the pre-refactor DOM for all four routes at 1280px and 390px widths,
+including expanded/collapsed projects, in development and the production export.
+No deployment was performed.
+Content updates and the Versa article remain future work.
 
 Next.js and its lint preset use the patched 15.5.27 release;
 `package.json` overrides Next's pinned PostCSS with patched PostCSS 8. ESLint 9
@@ -117,3 +131,24 @@ remains within the preset's supported peer range but is end-of-life; a maintaine
 lint toolchain is follow-up work, and its install warning does not block development.
 A fresh `npm ci` reported zero vulnerabilities after the dependency updates.
 Lint, type checking, build, and production browser comparisons passed again locally.
+
+## Visual refinement status (October 1, 2026)
+
+A static SVG grid with dashed lines, 0.14 opacity, and a soft fade covers every
+route. Home navigation shows a non-clickable about label and a writing link. External profiles
+are in a shared footer with outward arrows. Self-hosted Manrope provides a subtle
+typography change. The landing page fits tested desktop/laptop viewports without
+scrolling (1366×700, 1366×768, 1280×720, 1440×900, 1024×768); narrow or shorter
+windows retain natural scrolling. Text spacing, continuation indents, and
+narrow-screen title/image sizing were refined without changing portfolio copy.
+Element defaults live in Tailwind's base layer so spacing utilities take effect.
+Project Markdown images now load from the asset root instead of the current route.
+The writing index uses linked title/date rows inspired by Martin Sit. A local
+Work in Progress article has metadata and a Markdown placeholder, with separate
+reading typography for headings, paragraphs, lists, quotes, and code blocks.
+Article content and the internship project explanation still need to be written.
+Lint, type checks, and static export passed locally. Development and production
+browser checks covered all five routes at 320, 390, 768, and 1280px, including
+actual font loading, article navigation, image loading, overflow, and project
+expansion/collapse. The five laptop/desktop landing sizes above were checked for
+no scrolling and full footer visibility. No deployment was performed.

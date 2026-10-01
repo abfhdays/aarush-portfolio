@@ -1,6 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import GridPattern from "@/components/layout/GridPattern";
+import localFont from "next/font/local";
+
+const manrope = localFont({
+  src: "../public/fonts/Manrope-Variable.ttf",
+  variable: "--font-manrope",
+  weight: "200 800",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Aarush Ghosh",
@@ -14,7 +23,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${manrope.variable} antialiased`}>
+        <GridPattern />
         {children}
       </body>
     </html>

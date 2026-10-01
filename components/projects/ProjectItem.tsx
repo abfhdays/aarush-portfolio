@@ -29,7 +29,7 @@ export default function ProjectItem({ title, date, description, link, tags, prev
       )}
 
       {/* Header */}
-      <div className="flex items-baseline justify-between mb-1">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between mb-2">
         <div className="flex-1">
           {link ? (
             <a
@@ -47,7 +47,7 @@ export default function ProjectItem({ title, date, description, link, tags, prev
             <div className="text-xs text-[var(--text-secondary)] mt-0.5 opacity-70">{tags}</div>
           )}
         </div>
-        <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap ml-4">{date}</span>
+        <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap sm:ml-4">{date}</span>
       </div>
 
       {/* Content */}
