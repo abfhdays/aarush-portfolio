@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { NavigationLink } from "@/types/content";
 import Navigation from "@/components/layout/Navigation";
 import Section from "@/components/layout/Section";
-import SocialLinks from "@/components/layout/SocialLinks";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -23,7 +22,6 @@ export default function PageLayout({ children, navigation, animated }: PageLayou
       ) : (
         <Section>{children}</Section>
       )}
-      <SocialLinks />
     </div>
   );
 }

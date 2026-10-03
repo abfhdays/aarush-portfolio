@@ -2,12 +2,11 @@ import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 import { personalInfo } from "@/content/info";
 import HomeNav from "@/components/home/HomeNav";
-import SocialLinks from "@/components/layout/SocialLinks";
 
 export default function ProfileBio() {
   return (
     <>
-      <h1 className="fade-up fade-up-1 m-0 mb-2 flex items-center justify-center gap-3 !text-3xl sm:!text-5xl">
+      <h1 className="fade-up fade-up-1 m-0 mb-2 flex items-center justify-center gap-3 !text-[2rem] sm:!text-[3.25rem]">
         <span className="whitespace-nowrap">Hi, I&apos;m</span>
         <span className="inline-block align-middle shrink-0">
           <Image
@@ -15,7 +14,7 @@ export default function ProfileBio() {
             alt="Aarush"
             width={280}
             height={280}
-            className="rounded-full object-contain inline-block h-auto w-[min(46vw,200px)] mix-blend-multiply"
+            className="rounded-full object-contain inline-block h-auto w-[min(46vw,216px)] mix-blend-multiply"
           />
         </span>
       </h1>
@@ -102,7 +101,6 @@ export default function ProfileBio() {
           )}
         </div>
       </div>
-      <SocialLinks className="mt-3 pt-2" />
     </>
   );
 }

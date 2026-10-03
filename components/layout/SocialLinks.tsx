@@ -5,14 +5,12 @@ interface SocialLinksProps {
   className?: string;
 }
 
-export default function SocialLinks({ className = "mt-8 pt-5" }: SocialLinksProps) {
+export default function SocialLinks({ className = "" }: SocialLinksProps) {
   return (
-    <footer className={`border-t border-[var(--border)] ${className}`}>
-      <nav aria-label="External profiles" className="flex justify-center gap-6 text-sm text-[var(--text-secondary)]">
-        {socialNavigation.map((link) => (
-          <SiteLink key={link.href} link={link} className="text-[var(--text-secondary)] underline underline-offset-4 hover:decoration-[var(--accent)]" />
-        ))}
-      </nav>
-    </footer>
+    <span role="group" aria-label="External profiles" className={`flex gap-2 sm:gap-6 font-normal text-[var(--text-secondary)] ${className}`}>
+      {socialNavigation.map((link) => (
+        <SiteLink key={link.href} link={link} className="text-[var(--text-secondary)] no-underline hover:underline underline-offset-4 whitespace-nowrap" />
+      ))}
+    </span>
   );
 }

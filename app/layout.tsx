@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import GridPattern from "@/components/layout/GridPattern";
+import FlickeringGrid from "@/components/layout/FlickeringGrid";
 import localFont from "next/font/local";
 
 const manrope = localFont({
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${manrope.variable} antialiased`}>
-        <GridPattern />
+        <FlickeringGrid />
         {children}
       </body>
     </html>

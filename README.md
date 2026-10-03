@@ -115,7 +115,9 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 | Theme and typography | `app/globals.css` |
 | Images and downloadable files | `public/` |
 
-Only project expansion needs client state. Content is plain typed data, without
+Project expansion and the flickering canvas background are isolated client
+components. The background stays static for reduced motion and pauses in hidden
+tabs. Content is plain typed data, without
 a CMS or object-oriented framework. The writing index links to the local
 `/writing/work-in-progress/` article, now a draft of "From a Training Pipeline to
 Safe Model Delivery". Edit its Markdown `body` in

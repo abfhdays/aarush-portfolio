@@ -14,11 +14,11 @@ of engineering ownership, technical judgment, and results, with a personal voice
   experience, projects, writing). References, not templates to copy.
 - Initial preparation preserved content, styling, routes, navigation,
   animations, and project expand/collapse behavior.
-- Current visual direction: a subtle dashed grid across all pages, the existing
+- Current visual direction: a subtle flickering square grid across all pages, the existing
   light palette and illustrations, self-hosted Manrope, deliberate text spacing,
   a non-clickable about label on the home page, and separate external profile
-  links in footers.
-  Grid reference: https://21st.dev/@designali-in/components/grid-pattern.
+  links inline with each page's navigation.
+  Grid reference: https://21st.dev/@dillionverma/components/flickering-grid.
 - The first engineering article is drafted in the existing Work in Progress
   route. Aarush will iterate on the prose before publication.
 
@@ -74,7 +74,8 @@ Do not combine conflicting claims or invent metrics, publication links, or end d
   `public/fonts/` contains the locally bundled Manrope variable font and its license.
 - `app/globals.css`: theme, typography, animations, Markdown and demo styling.
 
-Use server components by default; only project expansion needs client state.
+Use server components by default; project expansion and the canvas background
+are isolated client components.
 Project Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
 Writing uses compact title/date rows linked to local article pages. The
@@ -158,11 +159,17 @@ lint toolchain is follow-up work, and its install warning does not block develop
 A fresh `npm ci` reported zero vulnerabilities after the dependency updates.
 Lint, type checking, build, and production browser comparisons passed again locally.
 
-## Visual refinement status (October 1, 2026)
+## Visual refinement status (October 3, 2026)
 
-A static SVG grid with dashed lines, 0.14 opacity, and a soft fade covers every
-route. Home navigation shows a non-clickable about label and a writing link. External profiles
-are in a shared footer with outward arrows. Self-hosted Manrope provides a subtle
+A fixed canvas grid of 3px gray squares with 9px gaps and a maximum opacity of
+0.14 covers every route. A radial mask softens the texture behind the reading
+column. Squares flicker slowly, remain static for reduced motion, and pause when
+the tab is hidden. `components/layout/FlickeringGrid.tsx` adapts the Magic UI
+reference without new dependencies; its MIT license is alongside the component.
+Home navigation shows a non-clickable about label and a writing link. External
+profile links share the navigation row on every page, with outward arrows and no
+divider. Home navigation uses smaller text and gaps on narrow screens to keep
+the row together. Self-hosted Manrope provides a subtle
 typography change. The landing page fits tested desktop/laptop viewports without
 scrolling (1366×700, 1366×768, 1280×720, 1440×900, 1024×768); narrow or shorter
 windows retain natural scrolling. Text spacing, continuation indents, and
@@ -178,4 +185,8 @@ Lint, type checks, and static export passed locally. Development and production
 browser checks covered all five routes at 320, 390, 768, and 1280px, including
 actual font loading, article navigation, image loading, overflow, and project
 expansion/collapse. The five laptop/desktop landing sizes above were checked for
-no scrolling and full footer visibility. No deployment was performed.
+no scrolling and full content visibility. No deployment was performed.
+October 3 production-export checks also verified the canvas at those four widths,
+including 2x pixel density, resizing, animation, reduced motion on load and
+preference changes, and simulated hidden/visible tab transitions. All five
+landing viewports still fit without scrolling; no browser errors were observed.
