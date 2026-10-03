@@ -104,6 +104,14 @@ body {
   margin: 0 0 1.25rem;
 }
 
+.article-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
 .article-content h2,
 .article-content h3 {
   color: var(--text);

@@ -19,9 +19,8 @@ of engineering ownership, technical judgment, and results, with a personal voice
   a non-clickable about label on the home page, and separate external profile
   links in footers.
   Grid reference: https://21st.dev/@designali-in/components/grid-pattern.
-- Later work: publish a
-  technical article about the newest internship project. The final section list
-  and article outline are still to be decided with Aarush.
+- The first engineering article is drafted in the existing Work in Progress
+  route. Aarush will iterate on the prose before publication.
 
 ## Content sources and future updates
 
@@ -36,8 +35,9 @@ Facts read from the September 4, 2026 resume:
 - Versa Networks, Software Engineer Intern, May 2026–Present as of that resume:
   UEBA model training and delivery across Kubernetes clusters, Argo Workflows,
   MLflow, a Go delivery service, Helm, CronJob reconciliation, sidecars, and
-  Redis-backed tenant provisioning. Intended internship blog subject; the article
-  itself has not been supplied or written.
+  Redis-backed tenant provisioning. The first article covers the killchain
+  training and model-delivery project; its draft is based on Aarush's Google Doc
+  and referenced local design notes.
 - Qorsa, Machine Learning Engineer Intern, January–April 2026: Dgraph-backed
   GraphRAG storage, ingestion, vLLM deployment, CI/CD, and IAM authentication.
 - Waterloo, Software Developer, January–April 2025: tuition forecasting and
@@ -78,7 +78,8 @@ Use server components by default; only project expansion needs client state.
 Project Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
 Writing uses compact title/date rows linked to local article pages. The
-Work in Progress article is a placeholder; the internship write-up is not written.
+first article is "From a Training Pipeline to Safe Model Delivery", labeled
+"Draft · Oct 2026" while Aarush iterates on publication copy.
 `components/writing/Article.tsx` renders GitHub-flavored Markdown without raw HTML,
 with reading styles scoped to
 `.article-content`, separate from the project demo's terminal styles. Add actual
@@ -94,8 +95,14 @@ For another article, follow the existing `work-in-progress` pattern:
 3. Add `app/writing/<slug>/page.tsx` composing `PageLayout`, `Article`, and
    `articleNavigation`, with metadata derived from the same content object.
 
-The current article's `Feb 2026` date is inherited placeholder metadata. Confirm
-the publication date when writing the actual internship article.
+The current article's date is draft metadata. Confirm the publication date before
+replacing it with a publication date.
+
+Article source: https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit
+and its referenced local killchain design and implementation notes. Both supplied
+diagrams are bundled in `public/writing/killchain/` and open at full size from the
+article. Preserve the distinction between recorded POC cluster evidence and
+offline-only checks; the notes do not establish a customer production rollout.
 
 ## Development and delivery
 
@@ -117,7 +124,8 @@ it as `NEXT_PUBLIC_BASE_PATH`; use `assetPath()` for local component image paths
 Project Markdown image rendering resolves local paths from the public asset root through
 `assetPath()`; external image URLs remain external. Preserve this behavior when
 adding descriptions, including deployments with a base path.
-The article renderer does not currently apply this custom image-path handling.
+The article renderer applies the same asset-root handling to Markdown images and
+their full-size links.
 
 ## Working conventions
 
@@ -140,7 +148,8 @@ static build passed locally with Node 22. Before visual refinements, browser che
 matched the pre-refactor DOM for all four routes at 1280px and 390px widths,
 including expanded/collapsed projects, in development and the production export.
 No deployment was performed.
-Resume-based content updates are in place. The Versa article remains future work.
+Resume-based content updates are in place. The Versa article is now drafted;
+publication remains future work.
 
 Next.js and its lint preset use the patched 15.5.27 release;
 `package.json` overrides Next's pinned PostCSS with patched PostCSS 8. ESLint 9
@@ -163,7 +172,8 @@ Project Markdown images now load from the asset root instead of the current rout
 The writing index uses linked title/date rows inspired by Martin Sit. A local
 Work in Progress article has metadata and a Markdown placeholder, with separate
 reading typography for headings, paragraphs, lists, quotes, and code blocks.
-Article content and the internship project explanation still need to be written.
+The initial placeholder has since been replaced by the killchain article draft
+described above; the publication copy still needs Aarush's review.
 Lint, type checks, and static export passed locally. Development and production
 browser checks covered all five routes at 320, 390, 768, and 1280px, including
 actual font loading, article navigation, image loading, overflow, and project
