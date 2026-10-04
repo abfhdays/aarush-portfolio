@@ -13,7 +13,7 @@ export const workExperience: WorkExperience[] = [
     title: "Machine Learning Engineer Intern",
     company: "Qorsa",
     companyUrl: "https://qorsa.com",
-    companyIcon: "/qorsa_portfolio_icon.png",
+    companyIcon: "/qorsalogo.jpeg",
     date: "Jan 2026 - Apr 2026",
     description: "Architected a distributed Dgraph storage backend for a GraphRAG engine serving government intelligence contracts, implementing MVCC-aware writes, batch reads, and graph traversal for 100,000+ entities. Owned production deployment with GPU-optimized vLLM inference, automated CI/CD, and IAM-based authentication. Built document ingestion for 7+ formats with VLM-based extraction, reducing LLM hallucination by 68%."
   },

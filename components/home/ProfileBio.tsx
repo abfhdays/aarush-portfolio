@@ -26,7 +26,7 @@ export default function ProfileBio() {
 
         <div className="fade-up fade-up-4 text-left w-full">
           <p className="mb-2 text-center font-medium text-[var(--text)]">
-            My work experience spans across:
+            My work so far:
           </p>
           <ul className="list-none space-y-1.5 text-sm leading-[1.45] m-0">
             {personalInfo.bio.work.map((item, index) => (
@@ -69,7 +69,23 @@ export default function ProfileBio() {
               <li key={index} className="flex items-start">
                 <span className="mr-2 shrink-0">•</span>
                 <span className="flex min-w-0 flex-col gap-0.5">
-                  <span>{item.text}</span>
+                  <span>
+                    {item.textBeforeLink}
+                    {item.inlineLink && (
+                      <a
+                        href={item.inlineLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[var(--text)] underline decoration-[var(--border)] hover:decoration-[var(--accent)] transition-colors inline-flex items-center gap-1"
+                      >
+                        {item.inlineLink.label}
+                        {item.icon && (
+                          <Image src={assetPath(item.icon)} alt="" width={14} height={14} className="rounded-sm object-contain shrink-0 mix-blend-multiply" />
+                        )}
+                      </a>
+                    )}
+                    {item.text}
+                  </span>
                   {item.linkLabel && item.linkUrl && (
                     <span className="ml-3 flex items-start gap-1">
                       <span className="opacity-50 shrink-0">◦</span>

@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import PageLayout from "@/components/layout/PageLayout";
 import Article from "@/components/writing/Article";
-import { workInProgress } from "@/content/writing/work-in-progress";
+import { versaMlops } from "@/content/writing/versa-mlops";
 import { articleNavigation } from "@/content/navigation";
 
 export const metadata: Metadata = {
-  title: `${workInProgress.title} | Aarush Ghosh`,
-  description: workInProgress.excerpt,
+  title: `${versaMlops.title} | Aarush Ghosh`,
+  description: versaMlops.excerpt,
 };
 
-export default function WorkInProgress() {
+export default function VersaMlops() {
   return (
     <PageLayout animated navigation={articleNavigation}>
-      <Article {...workInProgress} />
+      <Article {...versaMlops} />
     </PageLayout>
   );
 }

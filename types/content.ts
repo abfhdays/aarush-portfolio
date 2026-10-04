@@ -12,6 +12,9 @@ export interface BioWorkItem {
 
 export interface InterestItem {
   text: string;
+  textBeforeLink?: string;
+  inlineLink?: ProfileLink;
+  icon?: string;
   linkLabel?: string;
   linkUrl?: string;
 }

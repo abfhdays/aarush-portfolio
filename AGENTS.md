@@ -56,7 +56,7 @@ Do not combine conflicting claims or invent metrics, publication links, or end d
 ## Architecture and editing map
 
 - `app/`: Next.js App Router pages: `/`, `/projects/`, `/work/`, `/writing/`.
-  The first local article route is `/writing/work-in-progress/`.
+  The first local article route is `/writing/versa-mlops/`.
   Work and projects exist even though the landing navigation does not link to
   them. Preserve these routes unless a later task explicitly changes them.
 - `components/layout/`: navigation, section, page header, and page layout.
@@ -65,7 +65,7 @@ Do not combine conflicting claims or invent metrics, publication links, or end d
 - `components/work/`, `components/writing/`: experience and writing list items.
 - `content/`: typed plain data for profile, work, projects, writing, navigation.
   Edit copy here rather than embedding it in route components.
-  `content/writing.ts` lists posts; `content/writing/work-in-progress.ts` owns the
+  `content/writing.ts` lists posts; `content/writing/versa-mlops.ts` owns the
   first article's metadata and Markdown body.
 - `types/content.ts`: shared data contracts. UI-only props stay with components.
   Plain objects are sufficient; avoid classes, a CMS, or speculative abstractions.
@@ -79,7 +79,8 @@ are isolated client components.
 Project Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
 Writing uses compact title/date rows linked to local article pages. The
-first article is "From a Training Pipeline to Safe Model Delivery", labeled
+first article is "From a naive POC training pipeline to automated model serving
+in live customer clusters: an MLOps story", labeled
 "Draft · Oct 2026" while Aarush iterates on publication copy.
 `components/writing/Article.tsx` renders GitHub-flavored Markdown without raw HTML,
 with reading styles scoped to
@@ -88,7 +89,7 @@ article content in `content/writing/`; keep routes as thin page compositions.
 Martin Sit is a reference for text structure and spacing only; retain this site's
 palette, illustrations, and grid.
 
-For another article, follow the existing `work-in-progress` pattern:
+For another article, follow the existing `versa-mlops` pattern:
 
 1. Add a typed `WritingArticle` in `content/writing/<slug>.ts`, including its
    Markdown body and internal link `/writing/<slug>/`.

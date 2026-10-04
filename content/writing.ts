@@ -1,4 +1,6 @@
 import type { WritingPost } from "@/types/content";
-import { workInProgress } from "@/content/writing/work-in-progress";
+import { versaMlops } from "@/content/writing/versa-mlops";
 
-export const writingPosts: WritingPost[] = [workInProgress];
+export const writingSubtitle = "Writing about my triumphs, learnings, thoughts";
+
+export const writingPosts: WritingPost[] = [versaMlops];

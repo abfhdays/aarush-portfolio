@@ -106,7 +106,7 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 | Work experience | `content/work.ts` |
 | Projects and demos | `content/projects.ts`, `content/irouter-demo.ts` |
 | Writing list | `content/writing.ts` |
-| First engineering article | `content/writing/work-in-progress.ts` |
+| First engineering article | `content/writing/versa-mlops.ts` |
 | Article layout and typography | `components/writing/Article.tsx`, `.article-content` in `app/globals.css` |
 | Navigation links | `content/navigation.ts` |
 | Routes and page composition | `app/**/page.tsx` |
@@ -119,9 +119,9 @@ Project expansion and the flickering canvas background are isolated client
 components. The background stays static for reduced motion and pauses in hidden
 tabs. Content is plain typed data, without
 a CMS or object-oriented framework. The writing index links to the local
-`/writing/work-in-progress/` article, now a draft of "From a Training Pipeline to
-Safe Model Delivery". Edit its Markdown `body` in
-`content/writing/work-in-progress.ts`; its two diagrams live in
+`/writing/versa-mlops/` article, now a draft of "From a naive POC training pipeline
+to automated model serving in live customer clusters: an MLOps story". Edit its
+Markdown `body` in `content/writing/versa-mlops.ts`; its two diagrams live in
 `public/writing/killchain/` and can be opened at full size from the article.
 Manrope is bundled in `public/fonts/` with its license; the site loads it locally.
 
