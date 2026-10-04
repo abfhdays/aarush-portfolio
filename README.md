@@ -115,10 +115,9 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 | Theme and typography | `app/globals.css` |
 | Images and downloadable files | `public/` |
 
-Project expansion and the flickering canvas background are isolated client
-components. The background stays static for reduced motion and pauses in hidden
-tabs. Content is plain typed data, without
-a CMS or object-oriented framework. The writing index links to the local
+Only project expansion needs a client component. The background is a static
+CSS grid with dots, softened behind the reading column. Content is plain typed
+data, without a CMS or object-oriented framework. The writing index links to the local
 `/writing/versa-mlops/` article, now a draft of "From a naive POC training pipeline
 to automated model serving in live customer clusters: an MLOps story". Edit its
 Markdown `body` in `content/writing/versa-mlops.ts`; its two diagrams live in
