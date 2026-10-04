@@ -6,7 +6,11 @@ import type { PersonalInfo } from "@/types/content";
 export const personalInfo: PersonalInfo = {
   name: "Aarush Ghosh",
   bio: {
-    intro: "I am a Math and Computer Science student at the University of Waterloo, graduating in spring 2028. I have enjoyed working within complex production systems and building infrastructure that serves users well and supports engineers in a meaningful way.",
+    intro: {
+      textBeforeEmphasis: "I am in my 4th year studying ",
+      emphasis: "Math and CS @ University of Waterloo",
+      text: ". I have enjoyed working within complex production systems and building infrastructure that serves users well and supports engineers in a meaningful way.",
+    },
     work: [
       { text: "Designed and shipped our AI/ML platform team's first MLOps pipeline, built Go microservices, and managed customer infrastructure on Kubernetes.", company: "SWE Intern @ Versa Networks", url: "https://versa-networks.com", icon: "/versa_networks_logo.jpeg" },
       { text: "Built the foundation of the graph database engine behind Qorsa's downstream AI framework and led its first cloud deployments.", company: "MLE Intern @ Qorsa", url: "https://qorsa.com", icon: "/qorsalogo.jpeg" },

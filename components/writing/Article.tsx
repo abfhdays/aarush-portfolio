@@ -19,11 +19,12 @@ const markdownComponents: Components = {
   },
 };
 
-export default function Article({ title, date, body }: WritingArticle) {
+export default function Article({ title, date, excerpt, body }: WritingArticle) {
   return (
     <article>
       <header className="mb-8">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">{title}</h1>
+        <p className="text-base leading-relaxed text-[var(--text-secondary)] mb-3">{excerpt}</p>
         <p className="text-sm text-[var(--text-secondary)] mb-0">{date}</p>
       </header>
       <div className="article-content">

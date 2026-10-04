@@ -3,7 +3,7 @@ import type { WritingArticle } from "@/types/content";
 export const versaMlops: WritingArticle = {
   title: "From a naive POC training pipeline to automated model serving in live customer clusters: an MLOps story",
   date: "Draft · Oct 2026",
-  excerpt: "How I took a killchain training workflow through model publication, verified delivery, and safe Kubernetes rollouts at Versa Networks.",
+  excerpt: "From a naive POC training pipeline to automated model serving in live customer clusters",
   link: "/writing/versa-mlops/",
   status: "published",
   body: `My first task on this project at Versa Networks was to turn an existing machine learning training pipeline into an Argo workflow in our POC cluster. By the end, I was owning the path from a training run to a model running in a customer serving environment: publication, delivery, activation, readiness, and recovery.

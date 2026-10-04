@@ -22,7 +22,11 @@ export default function ProfileBio() {
       <HomeNav />
 
       <div className="text-[var(--text-secondary)] leading-normal mx-auto flex flex-col gap-3.5">
-        <p className="fade-up fade-up-3 text-[0.95rem] italic mb-0">{personalInfo.bio.intro}</p>
+        <p className="fade-up fade-up-3 text-[0.95rem] italic mb-0">
+          {personalInfo.bio.intro.textBeforeEmphasis}
+          <strong className="font-semibold">{personalInfo.bio.intro.emphasis}</strong>
+          {personalInfo.bio.intro.text}
+        </p>
 
         <div className="fade-up fade-up-4 text-left w-full">
           <p className="mb-2 text-center font-medium text-[var(--text)]">

@@ -28,7 +28,11 @@ export interface Interests {
 }
 
 export interface Bio {
-  intro: string;
+  intro: {
+    textBeforeEmphasis: string;
+    emphasis: string;
+    text: string;
+  };
   work: BioWorkItem[];
   interests: Interests;
   personal: string;

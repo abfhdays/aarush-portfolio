@@ -31,7 +31,8 @@ contains this resume, and the profile's resume URL points to that local asset.
 Facts read from the September 4, 2026 resume:
 
 - Waterloo: Bachelor of Statistics & Computational Math, Computer Science minor,
-  co-op; expected graduation April 2028. The bio omits an unconfirmed academic year.
+  co-op; expected graduation April 2028. The homepage bio uses Aarush's supplied
+  fourth-year Math and CS wording and omits the graduation date.
 - Versa Networks, Software Engineer Intern, May 2026–Present as of that resume:
   UEBA model training and delivery across Kubernetes clusters, Argo Workflows,
   MLflow, a Go delivery service, Helm, CronJob reconciliation, sidecars, and
@@ -49,8 +50,8 @@ Facts read from the September 4, 2026 resume:
 Current profile and experience data in `content/info.ts` and `content/work.ts`
 reflect this resume, with Versa first. The UW employment bullet is last in the
 homepage bio; its work-page entry remains removed at Aarush's request.
-The bio uses the resume's degree wording, Qorsa technologies,
-and reLive concurrency metric; the project tags include the McHacks 13 win.
+The bio emphasizes "Math and CS @ University of Waterloo" and uses the supplied
+reLive concurrency metric; the project tags include the McHacks 13 win.
 Do not combine conflicting claims or invent metrics, publication links, or end dates.
 
 ## Architecture and editing map
@@ -77,9 +78,9 @@ Do not combine conflicting claims or invent metrics, publication links, or end d
 Use server components by default; only project expansion needs a client component.
 Project Markdown renders trusted repository-authored raw HTML and custom syntax
 highlighting. Preserve these renderers when changing project descriptions.
-Writing uses compact title/date rows linked to local article pages. The
-first article is "From a naive POC training pipeline to automated model serving
-in live customer clusters: an MLOps story", labeled
+Writing uses compact title/date rows with a subtitle description, linked to local
+article pages. The same excerpt appears under the article title. The
+first article is "An MLOps story", labeled
 "Draft · Oct 2026" while Aarush iterates on publication copy.
 `components/writing/Article.tsx` renders GitHub-flavored Markdown without raw HTML,
 with reading styles scoped to
