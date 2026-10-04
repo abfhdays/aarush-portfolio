@@ -1,7 +1,7 @@
 import type { WritingArticle } from "@/types/content";
 
 export const versaMlops: WritingArticle = {
-  title: "From a naive POC training pipeline to automated model serving in live customer clusters: an MLOps story",
+  title: "An MLOps story",
   date: "Draft · Oct 2026",
   excerpt: "From a naive POC training pipeline to automated model serving in live customer clusters",
   link: "/writing/versa-mlops/",
