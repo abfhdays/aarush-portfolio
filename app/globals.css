@@ -115,6 +115,20 @@ body {
   border-radius: 4px;
 }
 
+.article-content p:has(> em:only-child) {
+  margin-top: -0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.article-content :not(pre) > code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  background: #f0f0f0;
+  font-size: 0.875em;
+}
+
 .article-content h2,
 .article-content h3 {
   color: var(--text);

@@ -19,8 +19,8 @@ of engineering ownership, technical judgment, and results, with a personal voice
   a non-clickable about label on the home page, and separate external profile
   links inline with each page's navigation.
   Grid reference: https://21st.dev/@meghtrix/components/background-components/white-grid-with-dots.
-- The first engineering article is drafted in the existing Work in Progress
-  route. Aarush will iterate on the prose before publication.
+- The first engineering article is drafted at `/writing/versa-mlops/`.
+  Aarush will iterate on the prose before publication.
 
 ## Content sources and future updates
 
@@ -100,8 +100,10 @@ For another article, follow the existing `versa-mlops` pattern:
 The current article's date is draft metadata. Confirm the publication date before
 replacing it with a publication date.
 
-Article source: https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit
-and its referenced local killchain design and implementation notes. Both supplied
+Article source: https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit?tab=t.4gzfng87zjll
+is Aarush's revised publication draft. It supersedes the original generated prose;
+preserve its content and section order when formatting. The article keeps its
+existing "An MLOps story" title at Aarush's request. Both supplied
 diagrams are bundled in `public/writing/killchain/` and open at full size from the
 article. Preserve the distinction between recorded POC cluster evidence and
 offline-only checks; the notes do not establish a customer production rollout.
