@@ -5,16 +5,26 @@ import type { WritingArticle } from "@/types/content";
 import { assetPath } from "@/lib/assets";
 
 const markdownComponents: Components = {
-  img({ src, alt }) {
+  p({ node, children }) {
+    if (node?.children.length === 1 && node.children[0].type === "element" && node.children[0].tagName === "img") {
+      return <>{children}</>;
+    }
+
+    return <p>{children}</p>;
+  },
+  img({ src, alt, title }) {
     const imageSrc = typeof src === "string" && !/^(https?:|data:|\/\/)/.test(src)
       ? assetPath(src.startsWith("/") ? src : `/${src}`)
       : src;
 
     return (
-      <a href={typeof imageSrc === "string" ? imageSrc : undefined} target="_blank" rel="noopener noreferrer">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imageSrc} alt={alt} loading="lazy" />
-      </a>
+      <figure>
+        <a href={typeof imageSrc === "string" ? imageSrc : undefined} target="_blank" rel="noopener noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={imageSrc} alt={alt} loading="lazy" />
+        </a>
+        {title && <figcaption>{title}</figcaption>}
+      </figure>
     );
   },
 };

@@ -3,143 +3,217 @@ import type { WritingArticle } from "@/types/content";
 export const versaMlops: WritingArticle = {
   title: "An MLOps story",
   date: "Draft · Oct 2026",
-  excerpt: "From a training workflow to serving versioned models in customer clusters",
+  excerpt: "From a naive POC training pipeline to automated model serving in live customer clusters",
   link: "/writing/versa-mlops/",
   status: "published",
-  body: `My third assignment during my summer internship with Versa Networks started with a fairly contained task: take an existing machine learning training pipeline and make it run reliably on our Kubernetes POC cluster.
+  body: `My third project at Versa Networks started with a fairly small task: take an existing machine learning training pipeline and make it something my senior engineer could reliably trigger and schedule inside our Kubernetes development environment.
 
-The pipeline trained a killchain classifier that would be consumed by an important User and Entity Behavior Analytics service. The data science work already existed. My responsibility was to make the training process repeatable and eventually design the infrastructure around how its outputs reached serving.
+The model was a killchain classifier used by our User and Entity Behavior Analytics (UEBA) service to classify security activity across stages of an attack lifecycle.
 
-The first version of the problem was mostly about orchestration. The pipeline consisted of several Python jobs with dependencies between them, some shared intermediate state, and different compute requirements. Argo Workflows was already available in our development environment, so I began by mapping the existing training process into an Argo DAG.
+The training pipeline and classifier came from the data science work. My responsibility was to make that work repeatable on Kubernetes and design the infrastructure around how its outputs reached serving.
 
-That part was relatively straightforward. What became more challenging and interesting was the work that followed implementing the workflow.
+That distinction mattered more as the project went on. A successful training run could produce the right files while leaving the deployment problem mostly unanswered.
 
-A successful training run could produce the right files without answering how those files should reach an existing customer deployment. A serving application still needs to discover a new model, verify it, load it, and recover if an update failed. The environments doing this were also not all under our direct control: the product ran across Versa-managed cloud, customer-managed cloud, and on-prem Kubernetes clusters.
+> Which model should an existing cluster run?\\
+> How does it discover a new one?\\
+> What happens if only part of a release arrives?\\
+> If an update fails, can the previous model keep serving?
 
-Following those questions widened the project from training orchestration into a full-fledged MLOps design for model delivery.
+Following those questions widened the project from a training workflow into our team's first end-to-end MLOps delivery path.
+
+This post is mostly about that progression, and the architecture changes that came from trying to make each handoff explicit.
+
+---
 
 ## Starting with the training workflow
 
-The original pipeline loaded MITRE ATT&CK data into a graph database, trained technique embeddings with node2vec, generated training sequences, trained a BiLSTM classifier with attention, and exported an ONNX model along with several supporting JSON files.
+The original pipeline loaded MITRE ATT&CK data into a graph database, trained technique embeddings with node2vec, generated training sequences, trained a BiLSTM classifier with attention, and exported an ONNX model with its supporting JSON files.
 
-I represented it as six Argo steps:
+I mapped that work into an Argo DAG and added publication as the final step.
 
 \`\`\`text
 01 Load the technique graph
    ├── 02 Train embeddings
    └── 03 Generate sequences
-       └── 04 Train the classifier (depends on 02 and 03)
+       └── 04 Train the classifier
            └── 05 Export the model bundle
                └── 06 Publish the release
 \`\`\`
 
-The embeddings and sequence generation could run independently. Training depended on both.
+![Argo workflow showing a successful training run from graph loading through model publication.](/writing/killchain/argo-training-workflow.png "A successful run of the training and publication workflow.")
 
-Intermediate file outputs lived on a shared persistent volume. I used a \`ReadWriteMany\` volume because the workflow pods could be scheduled on different nodes, and gave each workflow invocation a separate workspace so overlapping scheduled runs could not modify the same files.
+Steps 02 and 03 could run in parallel. ArangoDB held the graph, while intermediate file outputs lived on a shared persistent volume.
 
-This also made partial execution useful. I could rerun training or export without necessarily recreating all of the earlier artifacts.
+I used a \`ReadWriteMany\` volume so workflow pods could share artifacts even when Kubernetes placed them on different nodes. Each run also received its own workspace so two scheduled runs could not mutate the same intermediate files.
 
-I initially considered separating the stages into different images. In practice, they shared nearly all of their Python dependencies and the same filesystem contract. I kept them in one image and had each Argo step invoke a different entry point. This left the workflow definition responsible for orchestration rather than packaging and gave the pipeline one dependency resolution and one image digest to manage.
+I kept all six stages in one image because they shared dependencies and the same filesystem contract. Each Argo step called a different Python entry point. This kept the workflow YAML focused on orchestration and gave the pipeline one dependency resolution and one image digest to manage.
 
-Some of the more useful problems only appeared once I ran this outside the simplest development path. A volume could provision successfully while still being unreachable from the node where the pod was scheduled. Running the containers as a non-root user exposed group-permission assumptions on the shared filesystem. Resource requests had to work in clusters without assuming a particular GPU configuration.
+Some of the more useful problems appeared outside the DAG. A volume could provision correctly and still fail to mount because its backing storage was on the wrong network. Running containers as non-root exposed shared-volume permission assumptions. Resource configuration also had to avoid assuming that every environment had the same GPU capacity.
 
-None of these changed the DAG itself very much, but they changed what I considered a completed data pipeline. Getting the graph of jobs right was only one part of making the pipeline portable and complete across the environments where it would actually run.
+> A valid workflow graph and a workflow you can ship are different milestones.
 
-I packaged the workflow and its supporting resources into a Helm chart, which took many iterations and was finally integrated into our product release infrastructure.
+I packaged the workflow and supporting Kubernetes resources into a Helm chart that was eventually integrated into our product release infrastructure.
 
-At that point the training workflow had a reliable output. The next question was what that output represented.
+At that point, the training workflow had a reliable output.
 
-## Giving the model its own release lifecycle
+The output was still just a set of files.
 
-The serving application originally received its model through files baked into the application image.
+---
 
-This coupled two things that changed for different reasons. Retraining the classifier required rebuilding the UEBA consumer application through our CI/CD even when the application itself had not changed.
+## The model needed its own release lifecycle
 
-I wanted a model release to be versioned independently from a service release.
+The serving service originally received its classifier through files baked directly into its container image.
 
-The useful distinction became **publication** and **activation**.
+Retraining therefore meant rebuilding the service through Jenkins even when none of the application code had changed.
 
-- **Publication** creates a complete immutable model release on the internally managed Versa side.
-- **Activation** determines which of those releases a particular serving deployment should use on the customer-managed side.
+The deployment environments also varied: Versa-managed cloud, customer-managed cloud, and on-prem Kubernetes. I wanted the model to have a lifecycle independent from the service while preserving the service's existing startup and rollout behavior.
 
-The publisher stored releases under a versioned prefix:
+I separated two decisions.
+
+> **Publication:** make a complete, immutable model release available.\\
+> **Activation:** choose which release a particular serving deployment should run.
+
+![Architecture diagram showing separate model publication and activation paths.](/writing/killchain/model-delivery-architecture.png "The model has its own release lifecycle, while serving workloads consume it through a separate activation and delivery path.")
+
+The publisher wrote immutable versions under \`models/<version>/\`. A manifest contained the expected files, their sizes and SHA-256 hashes, a bundle digest, and compatibility metadata.
+
+A small \`channels/stable.json\` document pointed to the currently selected release.
+
+The important rule was simple.
+
+> **The channel moves last.**
+
+If publishing v43 failed halfway through, an incomplete v43 could remain in storage, but \`stable\` would continue pointing to the previous complete release.
+
+I originally used publish locks, then replaced them with storage-level atomic operations. The publisher claimed a version using a create-only GCS precondition, while the channel update used compare-and-swap against the current object generation.
+
+That also meant:
+
+> manifest exists does not necessarily mean release is complete.
+
+A caller addressing a version directly still had to verify the complete bundle.
+
+The publisher was Python and the delivery path was Go, so the bundle digest became a small protocol between the two. Both implementations hashed file records in the same deterministic order, and a shared golden fixture checked that they agreed.
+
+\`stable\` also had a deliberately narrow meaning. It meant the artifact was completely published. It did not mean the new classifier was more accurate.
+
+Model-quality gating and artifact integrity were separate concerns.
+
+---
+
+## A CronJob selects; an init container installs
+
+The delivery component became two Go binaries packaged in the same image.
+
+They shared manifest and compatibility code, but their responsibilities were intentionally different.
+
+The activator ran as a namespace-level CronJob. It resolved the desired model, checked its manifest, recorded progress, and patched the serving Deployment's pod-template annotations with the model version and bundle digest.
 
 \`\`\`text
-models/
-└── <version>/
-    ├── model.onnx
-    ├── ...
-    └── manifest.json
+model.version = v43
+model.digest = sha256:8f...
 \`\`\`
 
-Each manifest recorded the contract: the expected files, their sizes and SHA-256 hashes, a digest for the complete bundle, and compatibility metadata required by the serving application.
+Changing the pod template caused Kubernetes to create a new ReplicaSet.
 
-Separately, a small channel document represented the currently selected version:
+The model update could therefore reuse the rollout mechanism Kubernetes already provided instead of introducing a separate deployment system.
+
+The fetcher ran as an init container in each replacement pod.
+
+Its input was much smaller.
 
 \`\`\`text
-channels/stable.json
+desired version: v43
+desired digest: sha256:8f...
 \`\`\`
 
-The ordering here mattered more than the layout.
+It downloaded exactly that release into a staging directory, checked file sizes and hashes, validated compatibility information such as the bundle schema and ONNX opset, and renamed the completed directory into place.
 
-The channel moved only after the release had been written and verified. If publication stopped halfway through, an incomplete version could remain in storage, but deployments following \`stable\` would continue to see the previous release.
+Only then could the application container start.
 
-My first approach used a publish lock. I later replaced it with storage-level preconditions.
+The useful boundary was:
 
-The publisher claimed a version by creating its manifest using a create-only GCS precondition. If two publishers attempted to create the same version, only one could succeed. Updating the channel similarly used compare-and-swap against its current object generation.
+\`\`\`text
+Activator:
+"What should this deployment run?"
 
-This removed a separate locking mechanism, but introduced an important detail: because the manifest participated in claiming the version, the existence of a manifest did not by itself prove that every file had finished uploading.
+Fetcher:
+"Do I have exactly that release on disk?"
 
-Consumers therefore verified the complete bundle rather than treating the manifest as a completion marker.
+Application:
+"Load the files already on disk."
+\`\`\`
 
-The publisher was written in Python while the delivery components were written in Go. Once both sides needed to calculate the same bundle digest, the digest format became a small protocol between them.
+I extended the existing serving Helm chart with the activator, init container, model state, scoped RBAC, and rollout settings. Cluster-specific details stayed in values rather than templates, and disabling model delivery preserved the original workload.
 
-Both implementations sorted file records by name and hashed the same encoding of each file's name, SHA-256, and size. I added a shared golden fixture so changes to either implementation could not silently change the definition of a bundle.
+### Why rolling delivery
 
-## Selecting a model and installing it
+Retraining was infrequent, and the UEBA API already loaded its classifier at process startup.
 
-For delivery, I ended up designing two Go binaries packaged in the same image.
+A rolling update reused that lifecycle.
 
-The first component, the **activator**, ran periodically as a Kubernetes CronJob. It resolved the desired model release, validated its manifest, and patched the serving Deployment's pod-template annotations with the selected version and bundle digest.
+I considered a permanent delivery sidecar, but it would have changed the problem. If a sidecar replaced model files while the application was already running, I would also need a model-reload contract and synchronization between the delivery process and inference process.
 
-Changing the pod template caused Kubernetes to create a new ReplicaSet, so the model update could use the application's existing Deployment rollout behavior rather than introducing a separate rollout system.
+The init-container contract was smaller.
 
-The second component, the **fetcher**, ran as an init container in each replacement pod.
+> Before the application starts, install and verify the model it was told to run.
 
-It:
+I also considered a dedicated inference server such as Triton. Its explicit model-control mode separates making a model available from loading it, but adopting it would have changed an existing serving integration that already worked well with startup loading.
 
-1. Downloaded the exact release named on the pod.
-2. Wrote the files into a staging directory.
-3. Checked their expected sizes and hashes.
-4. Validated compatibility information such as the bundle schema and ONNX opset.
-5. Renamed the completed directory into place.
+For this project, pinned startup loading plus Kubernetes rolling replacement fit the workload better.
 
-Only after the fetcher completed could the application container start.
+### Common deployment path
 
-This matched the behavior of the existing service particularly well because the classifier was already loaded during application startup and model updates were relatively infrequent.
+Both deployment modes used the same activator and fetcher.
 
-I considered making the fetcher a permanent sidecar instead of a regular init container. That would have allowed the deployment to watch for new models while the application remained running, but it would also have required a contract for replacing or reloading a classifier inside a live process. The application did not have that contract, and adding one would have introduced synchronization between the model files, delivery process, and inference process.
+- **Track stable:** resolve the channel and its release on each reconciliation.
+- **Pinned:** resolve the release declared in configuration without following the channel.
 
-An init container made the invariant simpler: when the application starts, the requested model has already been installed.
+Cloud deployments could follow \`stable\` automatically. On-prem deployments could use the same activation path while remaining pinned.
 
-I also considered a dedicated inference server such as [Triton](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/model_management.html). Its model-management functionality would solve some of these problems more directly, but adopting it would have changed the serving integration around an application that already loaded the ONNX classifier itself.
+An operator could also run the activator as a one-shot Job. An operator hold prevented the next scheduled reconciliation from immediately restoring the configured target.
 
-For this workload, I preferred to preserve that integration and let Kubernetes replace pods when their model changed.
+The polling interval was five minutes by default.
 
-The activator supported two forms of selection:
+A push model could reduce that delay, but it would add notification infrastructure and connectivity assumptions across deployment environments. Model updates were infrequent, and the serving clusters could already initiate requests.
 
-- **Follow \`stable\`:** resolve the channel again on each reconciliation. This supported cloud deployments that could autonomously poll for a new model release.
-- **Pin a release:** select a particular version. This supported on-prem deployments where an operator could explicitly define a model release and trigger activation manually.
+The concrete trade-off was therefore:
 
-## Moving storage behind the platform boundary
+> A deployment following \`stable\` may wait one reconciliation interval for an update.
 
-My initial delivery design had the activator and fetcher reading model releases directly from the model bucket.
+For this workload, that was acceptable.
 
-It worked, but during architecture reviews my engineering manager and mentors questioned why a customer deployment needed to know anything about the platform's storage backend.
+---
 
-That changed the design.
+## Feedback changed the storage boundary
 
-I moved model access behind an existing onboarding Deployment API and added three authenticated endpoints:
+My first design had the customer-side activator and fetcher read model releases directly from the model bucket.
+
+It worked, but architecture review exposed a more useful question than whether those pods could access GCS.
+
+> **Engineering review**
+>
+> Are channel.json and manifest.json GCP concepts, or artifacts that our workflow owns? If they're ours, make that boundary explicit.
+
+They were ours. The workflow produced them; GCS only stored them.
+
+A second review comment went further.
+
+> **Engineering review**
+>
+> The namespaced delivery pods shouldn't care about GCP or its storage format. They should talk to the Deployment API; the storage adapter should own the GCP-specific details.
+
+That changed the architecture.
+
+The issue was no longer:
+
+> Can the customer-side component securely access GCS?
+
+It became:
+
+> **Why does the customer-side component know GCS exists?**
+
+I moved model reads behind the existing onboarding Deployment API and implemented three token-gated endpoints.
 
 \`\`\`http
 GET /killchain/model/channels/{channel}
@@ -147,109 +221,255 @@ GET /killchain/model/releases/{version}/manifest
 GET /killchain/model/releases/{version}/files/{name}
 \`\`\`
 
-The first two exposed the channel and manifest documents. The file endpoint streamed a requested artifact.
+The API authenticated requests and handled access to storage. The delivery client still interpreted manifests, performed compatibility checks, and verified downloaded bytes.
 
-This moved cloud-storage ownership back into the platform.
+The service already followed a ports-and-adapters architecture. Its storage port described how to open an object, while the provider adapter implemented the cloud-specific operation.
 
-The onboarding service already followed a ports-and-adapters design. Its storage port described how the application opened an object, while the provider adapter implemented the GCS-specific operation. Model delivery could therefore use the existing storage abstraction without exposing GCS to its callers.
+The resulting boundary became:
 
-After the change, serving namespaces received an API address and platform credential. They no longer needed a bucket reference or GCS credential, and I removed the GCS client and cloud-storage dependencies from the delivery image.
+\`\`\`text
+Customer namespace
+  |
+  | HTTP
+  v
+Deployment API
+  |
+  | storage port
+  v
+GCS adapter
+  |
+  v
+Model storage
+\`\`\`
 
-The inference process itself remained unaware of all of this. It only read local files installed before startup.
+Before the change, a serving namespace needed to understand things like:
 
-This review changed how I thought about the boundary more generally. I had originally focused on whether the customer-side component could access the release securely. The more useful question was whether storage access belonged on the customer side at all.
+\`\`\`text
+bucket
+GCP credential
+object location
+\`\`\`
 
-The resulting responsibilities were narrower:
+Afterward, it needed:
 
-- The platform API accessed storage.
-- The activator selected a release.
-- The fetcher installed it.
-- The application loaded local files.
+\`\`\`text
+Deployment API address
+platform token
+\`\`\`
 
-![Model delivery architecture showing the training workflow, versioned release store, platform API, activator, and serving pods.](/writing/killchain/model-delivery-architecture.png)
+I removed the GCS backend and cloud-storage dependencies from the delivery image.
 
-*Serving workloads access model releases through the platform API rather than the underlying object store.*
+The inference process knew even less. It made no model-store calls at all; it only consumed local files.
 
-## Readiness is about the loaded model
+The responsibilities were now much clearer.
 
-Once the release could reach a pod, I needed Kubernetes to distinguish between a process that was merely running and one that was actually ready to serve the selected model.
+> **Platform API:** storage access\\
+> **Activator:** release selection\\
+> **Fetcher:** download, verification, installation\\
+> **Inference service:** load the installed classifier
 
-For model-required deployments, I extended readiness to check that the classifier had loaded successfully and that its loaded version and bundle digest matched the version and digest requested by the pod.
+There was still an accepted limitation: the credential at this layer was shared at the platform level, so this was not a claim of per-tenant authorization isolation.
 
-This made model identity part of serving readiness.
+The important change was not adding another component. It was removing storage knowledge from components that did not need it.
 
-The serving chart also required at least two replicas while delivery was enabled and configured the Deployment with \`maxUnavailable: 0\`. During an update, existing replicas could continue serving while replacement pods downloaded and loaded the new release.
+---
 
-If installation failed, the replacement pod never became ready and Kubernetes retained the old healthy replicas.
+## Readiness and recovery completed the delivery path
 
-This protected availability for the model-update failures I was designing around. It did not claim to handle unrelated infrastructure failures or say anything about the predictive quality of the new model.
+![Diagram showing model publication, activation, rollout, and failure recovery transitions.](/writing/killchain/publication-activation-recovery.png "Publication, activation, rollout, and recovery are separate transitions.")
 
-![Sequence diagram of publication, activation, verified installation, rollout, and recovery.](/writing/killchain/publication-activation-recovery.png)
+Once the release could reach a pod, there was still another boundary to define: what did Kubernetes mean by ready?
 
-*Publication, activation, rollout, and recovery.*
+Consider:
 
-The remaining case was a rollout that never converged.
+\`\`\`text
+process: running
+desired model: v43
+loaded model: v42
+\`\`\`
 
-If a rollout exceeded its deadline and a previously successful release was known, the activator attempted to restore that release. After a successful rollback it placed the failed target on hold instead of trying the same update again at every polling interval.
+The HTTP server may be running perfectly.
 
-A newly published stable version could clear an automatically created hold. A hold requested by an operator required an explicit operator action.
+For this deployment, it is still wrong.
 
-If rollback itself failed, the controller recorded the failure rather than repeatedly alternating between two releases.
+For model-required deployments, I added readiness checks that verified the classifier had loaded and that its loaded version and digest matched the pod's desired version and digest.
 
-Recovery also depended on history. The first model delivered through this mechanism had no previous runtime-delivered model to restore, so rollback was only available after a known-good baseline had been established.
+> **Running with the wrong model is not ready.**
+
+The serving chart required at least two replicas when delivery was enabled and used \`maxUnavailable: 0\`.
+
+During an update, healthy old replicas could remain available while replacement pods fetched and loaded the new model.
+
+A simplified failure case looked like this:
+
+\`\`\`text
+pod A -> v42 -> Ready
+pod B -> v42 -> Ready
+
+activate v43
+
+pod C -> fetch v43 -> checksum failure -> NotReady
+pod A/B continue serving
+\`\`\`
+
+These mechanisms protected availability during the model-update failures I was designing around. They did not claim to validate prediction quality or protect against unrelated infrastructure failures.
+
+If a rollout failed to converge before its deadline and a last-good release existed, the activator attempted one rollback.
+
+The word one mattered.
+
+Without a hold, a reconciler running every five minutes could do this indefinitely:
+
+\`\`\`text
+activate bad v43
+       ↓
+      fail
+       ↓
+rollback to v42
+       ↓
+next tick sees stable=v43
+       ↓
+activate bad v43 again
+\`\`\`
+
+After successful recovery, the activator therefore held the failed target rather than retrying it on every tick.
+
+A different version on \`stable\` could clear an automatic hold. An operator hold required explicit operator action.
+
+If rollback itself failed, the controller recorded the failure and stopped blindly retrying.
+
+There was also a bootstrap constraint:
+
+> You cannot roll back until there is a known-good release to roll back to.
+
+The first activation therefore had no previous runtime-delivered release available for recovery.
+
+---
 
 ## Why I kept native Deployments
 
-I evaluated Argo Rollouts while implementing recovery.
+I evaluated Argo Rollouts while working through rollback and recovery.
 
-It could replace some of the deadline and rollback logic and would provide a better foundation for progressive delivery if we later wanted model canaries or metric-based promotion.
+It could replace some of my rollout-deadline logic and would provide a natural path toward progressive delivery.
 
-The complication was where it would have to run.
+For example, a canary can explicitly describe progression:
 
-Argo Workflows existed in the training environment. The models, however, were served across separate customer Kubernetes environments. Using Argo Rollouts would require operating its controller and CRDs in each of those clusters.
-
-It also would not remove most of the model-specific work. Release resolution, artifact verification, compatibility checks, installation, and operator holds would still exist.
-
-For the scope I was working on, the additional controller did not remove enough complexity to justify becoming another dependency of every serving environment.
-
-I kept native Deployments and the smaller model-specific reconciler. I would make a different decision if progressive delivery became important enough to justify the additional cluster dependency, or if Rollouts were already part of those environments.
-
-## What I learned from building it
-
-The implementation eventually grew across the training workflow, publisher, delivery binaries, API endpoints, Helm charts, tests, and integration work, with more than 15,000 lines of new code moving through review and QA.
-
-The size was less interesting to me than the change in scope.
-
-I began with a pipeline that ended when a model file was exported. By the end of the project I was thinking about the model as something that moved through several distinct states:
-
-\`\`\`text
-training → publication → selection → installation
-         → rollout → readiness → recovery
+\`\`\`yaml
+steps:
+  - setWeight: 10
+  - pause:
+      duration: 1h
+  - setWeight: 20
+  - pause: {}
 \`\`\`
 
-Most of the difficult decisions were at the boundaries between those states.
+That is useful when the question is:
 
-- The Python publisher and Go client needed a common definition of a release.
-- The activator needed to select a model without installing it.
-- The fetcher needed to install files without deciding which version should be selected.
-- Kubernetes readiness needed to reflect what the application had actually loaded rather than what the Deployment intended to run.
+> How should traffic progressively move to a new version?
 
-The storage review was probably the most useful example. The first design was functional, but it assigned a responsibility to the wrong side of the system. Moving storage access behind the platform API made the customer component smaller and made the boundary easier to reason about.
+My delivery problem still contained several model-specific steps outside that boundary:
 
-There were similar decisions throughout the project. I did not add a live model-reload protocol because startup loading already matched the update frequency. I accepted a five-minute polling interval because there was no corresponding requirement for immediate activation. I did not introduce another rollout controller because the functionality it removed was smaller than the operational dependency it added.
+\`\`\`text
+resolve release
+verify manifest
+download bundle
+verify files
+check compatibility
+install model
+manage holds
+\`\`\`
 
-Those decisions made me more careful about starting with the behavior a system actually needs and then choosing the infrastructure around it.
+Argo Rollouts would not remove those responsibilities.
 
-The individual Kubernetes mechanisms were rarely the difficult part. Argo DAGs, CronJobs, init containers, readiness probes, Deployment patches, and Helm templates each have fairly understandable behavior in isolation.
+The larger cost was operational.
 
-The more interesting part was deciding what each mechanism was allowed to mean.
+Argo Workflows ran in the training environment. The serving environments were separate customer clusters. Using Rollouts would mean introducing another controller and set of CRDs into every serving cluster.
 
-- A published manifest described a release but did not by itself prove publication had finished.
-- A \`stable\` channel selected an artifact but did not claim that the model was statistically better.
-- A Deployment annotation described the desired model but did not prove that the application had loaded it.
-- A running process was not necessarily a ready process.
+For the scope of this project, that dependency removed less complexity than it introduced.
 
-Making those distinctions explicit produced most of the final architecture.
+I kept native Deployments and the smaller model-specific reconciler.
 
-The project started as a way to run an existing training pipeline on Kubernetes. Following the model beyond the end of that workflow is what turned it into a real MLOps system.`,
+I would revisit that decision if we needed metric-driven canaries, finer traffic control, or if Rollouts were already an accepted dependency in the serving environments.
+
+---
+
+## Result and my learnings
+
+After several iterations of architecture design and code review, the system grew to more than 15,000 lines across the workflow, publisher, delivery components, API integration, Helm charts, and tests. It moved into QA while I continued integrating the infrastructure into the main product deployment.
+
+The line count is not particularly interesting on its own.
+
+The change in the boundary of the project is.
+
+I started with:
+
+> Run these training jobs correctly.
+
+By the end, the model moved through a much longer path:
+
+\`\`\`text
+training
+    ↓
+publication
+    ↓
+selection
+    ↓
+delivery
+    ↓
+installation
+    ↓
+rollout
+    ↓
+readiness
+    ↓
+recovery
+\`\`\`
+
+What drew me further into the project was the handoff after training.
+
+Every time I followed the artifact one step closer to serving, there was another concrete question to answer:
+
+> Which version was selected?\\
+> Which bytes actually arrived?\\
+> Which process loaded them?\\
+> Which component is allowed to know about storage?\\
+> Who owns recovery when the rollout fails?
+
+The individual Kubernetes mechanisms were rarely the difficult part.
+
+A CronJob is understandable in isolation. So is an init container. So is a readiness probe.
+
+The difficult parts were the contracts between them.
+
+A manifest described the expected release, but its existence alone did not prove publication had completed.
+
+A channel selected a release, but said nothing about model quality.
+
+A Deployment annotation described the desired model, but did not prove the application had loaded it.
+
+A running process could still be unready.
+
+The storage review was probably the clearest example of how my thinking changed. My first implementation was functional: the namespaced delivery components could authenticate to the bucket and retrieve the right files.
+
+But the stronger design question was not whether that could work.
+
+It was whether that responsibility belonged there.
+
+Moving storage behind the Deployment API made the customer-side component smaller, removed cloud-specific knowledge from it, and made the system boundary easier to reason about.
+
+The same pattern showed up in other decisions.
+
+I kept polling because immediate propagation was not a requirement.
+
+I used an init container because the application already loaded its classifier at startup.
+
+I kept native Deployments because we did not need enough of Argo Rollouts to justify operating another controller in every cluster.
+
+The question I kept coming back to became:
+
+> **What is the smallest contract each component actually needs?**
+
+I started with a workflow around training scripts.
+
+Following the model through each handoff is what turned it into a platform problem.`,
 };

@@ -107,6 +107,10 @@ body {
   margin: 0 0 1.25rem;
 }
 
+.article-content figure {
+  margin: 1.75rem 0;
+}
+
 .article-content img {
   display: block;
   max-width: 100%;
@@ -115,8 +119,14 @@ body {
   border-radius: 4px;
 }
 
-.article-content p:has(> em:only-child) {
-  margin-top: -0.5rem;
+.article-content img[src$="/argo-training-workflow.png"] {
+  width: 100%;
+  max-width: 20rem;
+  margin: 0 auto;
+}
+
+.article-content figcaption {
+  margin-top: 0.75rem;
   font-size: 0.875rem;
   line-height: 1.6;
   color: var(--text-secondary);
@@ -142,6 +152,14 @@ body {
 .article-content h2 { font-size: 1.5rem; }
 .article-content h3 { font-size: 1.125rem; }
 
+.article-content hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.75rem 0 2rem;
+}
+
+.article-content hr + h2 { margin-top: 0; }
+
 .article-content ul,
 .article-content ol {
   margin: 0 0 1.25rem;
@@ -157,6 +175,30 @@ body {
   padding-left: 1rem;
   color: var(--text-secondary);
   margin: 1.5rem 0;
+}
+
+.article-content blockquote p { color: inherit; }
+.article-content blockquote p:last-child { margin-bottom: 0; }
+.article-content blockquote strong { color: var(--text); }
+
+.article-content blockquote:has(> p:only-child > strong:only-child) {
+  border-left-color: var(--accent);
+  color: var(--text);
+  font-size: 1.125rem;
+}
+
+.article-content blockquote:has(> p:first-child > strong:only-child):has(> p + p) {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  padding: 1.25rem;
+}
+
+.article-content blockquote:has(> p + p) > p:first-child:has(> strong:only-child) {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .article-content pre {

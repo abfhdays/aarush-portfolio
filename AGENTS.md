@@ -37,8 +37,8 @@ Facts read from the September 4, 2026 resume:
   UEBA model training and delivery across Kubernetes clusters, Argo Workflows,
   MLflow, a Go delivery service, Helm, CronJob reconciliation, sidecars, and
   Redis-backed tenant provisioning. The first article covers the killchain
-  training and model-delivery project; its draft is based on Aarush's Google Doc
-  and referenced local design notes.
+  training and model-delivery project; its draft uses Aarush's October 5 supplied
+  copy, following his earlier Google Doc and referenced local design notes.
 - Qorsa, Machine Learning Engineer Intern, January–April 2026: Dgraph-backed
   GraphRAG storage, ingestion, vLLM deployment, CI/CD, and IAM authentication.
 - Waterloo, Software Developer, January–April 2025: tuition forecasting and
@@ -100,13 +100,16 @@ For another article, follow the existing `versa-mlops` pattern:
 The current article's date is draft metadata. Confirm the publication date before
 replacing it with a publication date.
 
-Article source: https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit?tab=t.4gzfng87zjll
-is Aarush's revised publication draft. It supersedes the original generated prose;
-preserve its content and section order when formatting. The article keeps its
-existing "An MLOps story" title at Aarush's request. Both supplied
-diagrams are bundled in `public/writing/killchain/` and open at full size from the
-article. Preserve the distinction between recorded POC cluster evidence and
-offline-only checks; the notes do not establish a customer production rollout.
+Article source: Aarush's October 5, 2026 supplied copy supersedes the earlier
+Google Doc draft at https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit?tab=t.4gzfng87zjll.
+Preserve its content and section order when formatting. The article keeps its
+existing "An MLOps story" title at Aarush's request. The Argo workflow screenshot
+and both diagrams are bundled in `public/writing/killchain/`, with captions and
+full-size links. The delivery architecture diagram follows the introduction of
+publication and activation. Engineering review quotes have labeled callouts;
+bold standalone quotes receive stronger emphasis. Preserve the distinction between
+recorded POC cluster evidence and offline-only checks; the notes do not establish
+a customer production rollout.
 
 ## Development and delivery
 
