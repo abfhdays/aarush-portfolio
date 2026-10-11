@@ -40,8 +40,6 @@ I mapped that work into an Argo DAG and added publication as the final step.
                └── 06 Publish the release
 \`\`\`
 
-![Argo workflow showing a successful training run from graph loading through model publication.](/writing/killchain/argo-training-workflow.png "A successful run of the training and publication workflow.")
-
 Steps 02 and 03 could run in parallel. ArangoDB held the graph, while intermediate file outputs lived on a shared persistent volume.
 
 I used a \`ReadWriteMany\` volume so workflow pods could share artifacts even when Kubernetes placed them on different nodes. Each run also received its own workspace so two scheduled runs could not mutate the same intermediate files.
