@@ -1,6 +1,5 @@
 import { socialLinks } from "@/content/navigation";
 import { versaMlops } from "@/content/writing/versa-mlops";
-import { assetPath } from "@/lib/assets";
 import type { PersonalInfo } from "@/types/content";
 
 export const personalInfo: PersonalInfo = {
@@ -56,7 +55,7 @@ export const personalInfo: PersonalInfo = {
     },
     {
       label: "resume",
-      url: assetPath("/resume.pdf")
+      url: socialLinks.resume
     }
   ]
 };

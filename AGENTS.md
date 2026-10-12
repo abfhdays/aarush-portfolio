@@ -26,7 +26,8 @@ of engineering ownership, technical judgment, and results, with a personal voice
 
 Latest supplied resume: `/Users/aarushghosh/Downloads/Resume/Aarush_Resume___2026_09_04.pdf`.
 This local file is context, not a portable build dependency. `public/resume.pdf`
-contains this resume, and the profile's resume URL points to that local asset.
+contains this resume. The profile and shared navigation resume links use Aarush's
+supplied Google Drive URL in `content/navigation.ts`.
 
 Facts read from the September 4, 2026 resume:
 
