@@ -49,8 +49,11 @@ Facts read from the September 4, 2026 resume:
   PostgreSQL worker queue, S3 uploads) and WAT.ai anomaly detection research.
 
 Current profile and experience data in `content/info.ts` and `content/work.ts`
-reflect this resume, with Versa first. The UW employment bullet is last in the
-homepage bio; its work-page entry remains removed at Aarush's request.
+reflect this resume, with Versa first among past roles. The homepage bio opens
+with Aarush's supplied "Incoming Winter 2027" StackAdapt backend internship, which
+is not on the September 4 resume and has no work-page entry. The UW employment
+bullet is last in the homepage bio; its work-page entry remains removed at
+Aarush's request.
 The bio emphasizes "Math and CS @ University of Waterloo" and uses the supplied
 reLive concurrency metric; the project tags include the McHacks 13 win.
 Do not combine conflicting claims or invent metrics, publication links, or end dates.
@@ -72,7 +75,8 @@ Do not combine conflicting claims or invent metrics, publication links, or end d
 - `types/content.ts`: shared data contracts. UI-only props stay with components.
   Plain objects are sufficient; avoid classes, a CMS, or speculative abstractions.
 - `lib/`: asset paths and Markdown/syntax helpers.
-- `public/`: images, resume PDF, custom-domain CNAME.
+- `public/`: images, resume PDF, custom-domain CNAME. `fish.jpg` is the favicon,
+  set in `app/layout.tsx` metadata through `assetPath()`.
   `public/fonts/` contains the locally bundled Manrope variable font and its license.
 - `app/globals.css`: theme, typography, animations, Markdown and demo styling.
 
@@ -101,13 +105,21 @@ For another article, follow the existing `versa-mlops` pattern:
 The current article's date is draft metadata. Confirm the publication date before
 replacing it with a publication date.
 
-Article source: Aarush's October 5, 2026 supplied copy supersedes the earlier
-Google Doc draft at https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit?tab=t.4gzfng87zjll.
-Preserve its content and section order when formatting. The article keeps its
-existing "An MLOps story" title at Aarush's request. The Argo workflow screenshot
-and both diagrams are bundled in `public/writing/killchain/`, with captions and
-full-size links. The delivery architecture diagram follows the introduction of
-publication and activation. Engineering review quotes have labeled callouts;
+Article source: the October 14, 2026 rewrite narrows the article to one spine at
+Aarush's request: what a customer-side namespace should know about model storage,
+the engineering lead's review, moving model reads behind the Deployment API, and
+replacing per-namespace tokens with one platform token. Training, publication, and
+activation are brief context; readiness, rollback, and Argo Rollouts are deferred.
+It is a standalone blog post, not interview material. Earlier drafts and the
+inspiration links are in the Google Doc at
+https://docs.google.com/document/d/1kpy7L3B12e4iGUbFTdYY3M1oNC_PwIVcnIcGXFL-Qu4/edit;
+facts come from Aarush's Versa Obsidian notes and the design document. On-prem
+deployments were in scope (pinned, same delivery path); fully disconnected on-prem
+was not. The article keeps its existing "An MLOps story" title at Aarush's request.
+Both diagrams are bundled in `public/writing/killchain/` and embedded with captions
+and full-size links. The Argo workflow screenshot remains in that directory but is
+not embedded, at Aarush's request. The delivery architecture diagram follows the
+Deployment API redesign. Engineering review quotes have labeled callouts;
 bold standalone quotes receive stronger emphasis. Preserve the distinction between
 recorded POC cluster evidence and offline-only checks; the notes do not establish
 a customer production rollout.

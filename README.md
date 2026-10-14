@@ -118,8 +118,7 @@ If the first type check needs generated `next-env.d.ts`, run `npm run dev` or
 Only project expansion needs a client component. The background is a static
 CSS grid with dots, softened behind the reading column. Content is plain typed
 data, without a CMS or object-oriented framework. The writing index links to the local
-`/writing/versa-mlops/` article, now a draft of "From a naive POC training pipeline
-to automated model serving in live customer clusters: an MLOps story". Edit its
+`/writing/versa-mlops/` article, a draft titled "An MLOps story". Edit its
 Markdown `body` in `content/writing/versa-mlops.ts`; its two diagrams live in
 `public/writing/killchain/` and can be opened at full size from the article.
 Manrope is bundled in `public/fonts/` with its license; the site loads it locally.

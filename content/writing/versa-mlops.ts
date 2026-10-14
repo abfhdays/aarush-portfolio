@@ -3,33 +3,20 @@ import type { WritingArticle } from "@/types/content";
 export const versaMlops: WritingArticle = {
   title: "An MLOps story",
   date: "Draft · Oct 2026",
-  excerpt: "From a naive POC training pipeline to automated model serving in live customer clusters",
+  excerpt: "What a customer-side namespace should know about where our models live, and the design review that changed my answer",
   link: "/writing/versa-mlops/",
   status: "published",
-  body: `My third project at Versa Networks started with a fairly small task: take an existing machine learning training pipeline and make it something my senior engineer could reliably trigger and schedule inside our Kubernetes development environment.
+  body: `My third project at Versa Networks started small. Our data science team had a set of Python jobs that trained a killchain classifier, the model our User and Entity Behavior Analytics (UEBA) service uses to place security activity into stages of an attack lifecycle. My job was to turn those jobs into something my senior engineer could trigger and schedule on our Kubernetes development cluster.
 
-The model was a killchain classifier used by our User and Entity Behavior Analytics (UEBA) service to classify security activity across stages of an attack lifecycle.
+That part took a few weeks. Getting the model from the end of that pipeline into serving took most of the rest of my summer, and the part of that design I learned the most from is one I got wrong first.
 
-The training pipeline and classifier came from the data science work. My responsibility was to make that work repeatable on Kubernetes and design the infrastructure around how its outputs reached serving.
-
-That distinction mattered more as the project went on. A successful training run could produce the right files while leaving the deployment problem mostly unanswered.
-
-> Which model should an existing cluster run?\\
-> How does it discover a new one?\\
-> What happens if only part of a release arrives?\\
-> If an update fails, can the previous model keep serving?
-
-Following those questions widened the project from a training workflow into our team's first end-to-end MLOps delivery path.
-
-This post is mostly about that progression, and the architecture changes that came from trying to make each handoff explicit.
+This post is about a single boundary in that system: what a customer-side namespace should know about where our models live. My first design worked, it was locked down, and it gave the customer side far more knowledge than it needed. It took a review comment from the engineering lead on my team, and some time stepping back from my own design, before I could see that.
 
 ---
 
-## Starting with the training workflow
+## Some context
 
-The original pipeline loaded MITRE ATT&CK data into a graph database, trained technique embeddings with node2vec, generated training sequences, trained a BiLSTM classifier with attention, and exported an ONNX model with its supporting JSON files.
-
-I mapped that work into an Argo DAG and added publication as the final step.
+The training pipeline loaded MITRE ATT&CK data into ArangoDB, trained technique embeddings with node2vec, generated training sequences, trained a BiLSTM classifier with attention, and exported an ONNX model with a few supporting JSON files. I mapped it into an Argo DAG and added a final step that publishes the result:
 
 \`\`\`text
 01 Load the technique graph
@@ -40,178 +27,100 @@ I mapped that work into an Argo DAG and added publication as the final step.
                └── 06 Publish the release
 \`\`\`
 
-Steps 02 and 03 could run in parallel. ArangoDB held the graph, while intermediate file outputs lived on a shared persistent volume.
+I packaged the workflow as a Helm chart that went into our product release infrastructure. That was the original task.
 
-I used a \`ReadWriteMany\` volume so workflow pods could share artifacts even when Kubernetes placed them on different nodes. Each run also received its own workspace so two scheduled runs could not mutate the same intermediate files.
+The more interesting problem was what happened to the output. The classifier, about 70 MB across five files, was copied into the UEBA API's container image. Every retrain meant a Jenkins rebuild of a service whose code hadn't changed. The product also ran in three kinds of environments: Versa-managed cloud, customer-managed cloud, and on-prem Kubernetes. The model needed a release lifecycle of its own.
 
-I kept all six stages in one image because they shared dependencies and the same filesystem contract. Each Argo step called a different Python entry point. This kept the workflow YAML focused on orchestration and gave the pipeline one dependency resolution and one image digest to manage.
-
-Some of the more useful problems appeared outside the DAG. A volume could provision correctly and still fail to mount because its backing storage was on the wrong network. Running containers as non-root exposed shared-volume permission assumptions. Resource configuration also had to avoid assuming that every environment had the same GPU capacity.
-
-> A valid workflow graph and a workflow you can ship are different milestones.
-
-I packaged the workflow and supporting Kubernetes resources into a Helm chart that was eventually integrated into our product release infrastructure.
-
-At that point, the training workflow had a reliable output.
-
-The output was still just a set of files.
-
----
-
-## The model needed its own release lifecycle
-
-The serving service originally received its classifier through files baked directly into its container image.
-
-Retraining therefore meant rebuilding the service through Jenkins even when none of the application code had changed.
-
-The deployment environments also varied: Versa-managed cloud, customer-managed cloud, and on-prem Kubernetes. I wanted the model to have a lifecycle independent from the service while preserving the service's existing startup and rollout behavior.
-
-I separated two decisions.
+I split that lifecycle into two halves.
 
 > **Publication:** make a complete, immutable model release available.\\
-> **Activation:** choose which release a particular serving deployment should run.
+> **Activation:** decide which release a particular serving deployment should run.
 
-![Architecture diagram showing separate model publication and activation paths.](/writing/killchain/model-delivery-architecture.png "The model has its own release lifecycle, while serving workloads consume it through a separate activation and delivery path.")
+On the publication side, the Argo step wrote each release under \`models/<version>/\` with a manifest listing every file's size and SHA-256, a digest for the whole bundle, and compatibility metadata. A small \`channels/stable.json\` pointed at the current release, and it only moved after the release was fully written.
 
-The publisher wrote immutable versions under \`models/<version>/\`. A manifest contained the expected files, their sizes and SHA-256 hashes, a bundle digest, and compatibility metadata.
+On the activation side, two Go binaries ran in each customer-side UEBA namespace. An **activator** CronJob resolved which release the namespace should run and wrote that version and digest into the serving Deployment's pod template, which made Kubernetes roll the pods. A **fetcher** init container in each new pod downloaded exactly that release, verified it, and moved it into place before the API started. Cloud deployments followed \`stable\` automatically; on-prem deployments stayed pinned to a version an operator chose, using the same Job.
 
-A small \`channels/stable.json\` document pointed to the currently selected release.
-
-The important rule was simple.
-
-> **The channel moves last.**
-
-If publishing v43 failed halfway through, an incomplete v43 could remain in storage, but \`stable\` would continue pointing to the previous complete release.
-
-I originally used publish locks, then replaced them with storage-level atomic operations. The publisher claimed a version using a create-only GCS precondition, while the channel update used compare-and-swap against the current object generation.
-
-That also meant:
-
-> manifest exists does not necessarily mean release is complete.
-
-A caller addressing a version directly still had to verify the complete bundle.
-
-The publisher was Python and the delivery path was Go, so the bundle digest became a small protocol between the two. Both implementations hashed file records in the same deterministic order, and a shared golden fixture checked that they agreed.
-
-\`stable\` also had a deliberately narrow meaning. It meant the artifact was completely published. It did not mean the new classifier was more accurate.
-
-Model-quality gating and artifact integrity were separate concerns.
+Everything in the rest of this post lives in the gap between those halves. A namespace on the activation side has to read what the publication side wrote. How it does that turned out to be the most important design question in the project.
 
 ---
 
-## A CronJob selects; an init container installs
+## My first answer: read the bucket
 
-The delivery component became two Go binaries packaged in the same image.
+The publisher wrote to a GCS bucket, so I had the activator and fetcher read from that bucket. The delivery client had a small store interface, with a filesystem backend for tests and a GCS backend for real clusters.
 
-They shared manifest and compatibility code, but their responsibilities were intentionally different.
+I spent a fair amount of time making the access careful:
 
-The activator ran as a namespace-level CronJob. It resolved the desired model, checked its manifest, recorded progress, and patched the serving Deployment's pod-template annotations with the model version and bundle digest.
+- The publishing pipeline held the only writer credential.
+- Each customer-side namespace got its own read-only credential, created by Vault during onboarding and granted through that namespace's tenant policy.
+- The fetcher verified every downloaded file against the manifest before the API could load it.
 
-\`\`\`text
-model.version = v43
-model.digest = sha256:8f...
-\`\`\`
-
-Changing the pod template caused Kubernetes to create a new ReplicaSet.
-
-The model update could therefore reuse the rollout mechanism Kubernetes already provided instead of introducing a separate deployment system.
-
-The fetcher ran as an init container in each replacement pod.
-
-Its input was much smaller.
+It worked in our POC cluster, and I was happy with it. To run, a serving namespace needed configuration along these lines:
 
 \`\`\`text
-desired version: v43
-desired digest: sha256:8f...
+store kind:          gcs
+store reference:     gs://<bucket>/<prefix>
+reader credential:   per-namespace, from Vault
 \`\`\`
 
-It downloaded exactly that release into a staging directory, checked file sizes and hashes, validated compatibility information such as the bundle schema and ONNX opset, and renamed the completed directory into place.
-
-Only then could the application container start.
-
-The useful boundary was:
-
-\`\`\`text
-Activator:
-"What should this deployment run?"
-
-Fetcher:
-"Do I have exactly that release on disk?"
-
-Application:
-"Load the files already on disk."
-\`\`\`
-
-I extended the existing serving Helm chart with the activator, init container, model state, scoped RBAC, and rollout settings. Cluster-specific details stayed in values rather than templates, and disabling model delivery preserved the original workload.
-
-### Why rolling delivery
-
-Retraining was infrequent, and the UEBA API already loaded its classifier at process startup.
-
-A rolling update reused that lifecycle.
-
-I considered a permanent delivery sidecar, but it would have changed the problem. If a sidecar replaced model files while the application was already running, I would also need a model-reload contract and synchronization between the delivery process and inference process.
-
-The init-container contract was smaller.
-
-> Before the application starts, install and verify the model it was told to run.
-
-I also considered a dedicated inference server such as Triton. Its explicit model-control mode separates making a model available from loading it, but adopting it would have changed an existing serving integration that already worked well with startup loading.
-
-For this project, pinned startup loading plus Kubernetes rolling replacement fit the workload better.
-
-### Common deployment path
-
-Both deployment modes used the same activator and fetcher.
-
-- **Track stable:** resolve the channel and its release on each reconciliation.
-- **Pinned:** resolve the release declared in configuration without following the channel.
-
-Cloud deployments could follow \`stable\` automatically. On-prem deployments could use the same activation path while remaining pinned.
-
-An operator could also run the activator as a one-shot Job. An operator hold prevented the next scheduled reconciliation from immediately restoring the configured target.
-
-The polling interval was five minutes by default.
-
-A push model could reduce that delay, but it would add notification infrastructure and connectivity assumptions across deployment environments. Model updates were infrequent, and the serving clusters could already initiate requests.
-
-The concrete trade-off was therefore:
-
-> A deployment following \`stable\` may wait one reconciliation interval for an update.
-
-For this workload, that was acceptable.
+The delivery image also carried the GCS client and the dependency tree that came with it.
 
 ---
 
-## Feedback changed the storage boundary
+## The review
 
-My first design had the customer-side activator and fetcher read model releases directly from the model bucket.
-
-It worked, but architecture review exposed a more useful question than whether those pods could access GCS.
+The engineering lead on my team left two comments on the design. Paraphrasing:
 
 > **Engineering review**
 >
 > Are channel.json and manifest.json GCP concepts, or artifacts that our workflow owns? If they're ours, make that boundary explicit.
 
-They were ours. The workflow produced them; GCS only stored them.
+My first reaction was to answer exactly that question. I went back and checked. The files were ours: the Argo publish step wrote them, and GCS only stored the bytes. Nothing about the release format depended on GCP. I was ready to say the design was fine and just needed clearer documentation.
 
-A second review comment went further.
+The second comment didn't fit that answer.
 
 > **Engineering review**
 >
 > The namespaced delivery pods shouldn't care about GCP or its storage format. They should talk to the Deployment API; the storage adapter should own the GCP-specific details.
 
-That changed the architecture.
+I had treated these as the same question. They weren't. The first was about who owns the *format*. The second was about who should *talk to the storage*. Owning the format didn't make it right for every customer-side namespace to reach into our bucket.
 
-The issue was no longer:
+---
 
-> Can the customer-side component securely access GCS?
+## What the customer side knew
 
-It became:
+What finally made it click was writing two lists.
 
-> **Why does the customer-side component know GCS exists?**
+The first was everything a customer-side namespace had to know for delivery to work in my design:
 
-I moved model reads behind the existing onboarding Deployment API and implemented three token-gated endpoints.
+\`\`\`text
+our models live in GCS
+the bucket name and prefix
+how we lay out versions and channels
+which storage backend to use
+a cloud credential for reading it
+a cloud SDK, built into the image running in their namespace
+\`\`\`
+
+The second was what that namespace was actually responsible for:
+
+\`\`\`text
+ask for the release it was told to run
+check that the bytes it received are that release
+\`\`\`
+
+The second list was much shorter. Everything else in the first list described how *we* store and serve models. Changing the bucket, the credential scheme, or the backend would have meant new configuration, and possibly a new image, in every customer-side namespace, for a change that had nothing to do with them.
+
+I had been asking whether a pod could access GCS securely. Underneath the review comment was a better question:
+
+> **Why does this pod know GCS exists?**
+
+---
+
+## Moving the reads behind the Deployment API
+
+We already had a service in the right place. The onboarding Deployment API runs in a shared, Versa-run namespace and already provisions customer namespaces. It was also already built with ports and adapters: the core declares interfaces for what it needs from infrastructure, such as opening a stored object, and a GCloud adapter implements them. The platform's own storage access already sat behind an abstraction there.
+
+I added three token-gated routes to it:
 
 \`\`\`http
 GET /killchain/model/channels/{channel}
@@ -219,255 +128,76 @@ GET /killchain/model/releases/{version}/manifest
 GET /killchain/model/releases/{version}/files/{name}
 \`\`\`
 
-The API authenticated requests and handled access to storage. The delivery client still interpreted manifests, performed compatibility checks, and verified downloaded bytes.
+The API checks the token and path parameters, opens the object through its storage port, and either returns the channel or manifest JSON or streams the file as raw bytes. It reads the bucket with its own identity, so the change didn't add a new kind of cloud credential anywhere.
 
-The service already followed a ports-and-adapters architecture. Its storage port described how to open an object, while the provider adapter implemented the cloud-specific operation.
+I mapped errors by kind instead of collapsing them into one failure:
 
-The resulting boundary became:
+- **401:** missing or bad token
+- **404:** unknown release
+- **502:** the storage backend answered badly
+- **503:** model delivery isn't set up on this deployment
 
-\`\`\`text
-Customer namespace
-  |
-  | HTTP
-  v
-Deployment API
-  |
-  | storage port
-  v
-GCS adapter
-  |
-  v
-Model storage
-\`\`\`
+When a fetch fails inside a customer-side namespace, the status code tells you which side of the boundary to look at.
 
-Before the change, a serving namespace needed to understand things like:
+The split of work mattered as much as the routes. The API streams file bytes without interpreting them. The delivery client still reads manifests, checks compatibility (bundle schema, ONNX opset, minimum API version), and verifies every file's size and hash. The Python publisher and the Go fetcher compute the bundle digest the same way, and a shared golden fixture keeps the two languages in agreement. Because verification runs from publisher to fetcher, the API in the middle can stay a thin pipe. Nothing downstream has to trust it to have read the right object.
 
-\`\`\`text
-bucket
-GCP credential
-object location
-\`\`\`
-
-Afterward, it needed:
+After the change, a serving namespace's configuration came down to:
 
 \`\`\`text
 Deployment API address
-platform token
+token
 \`\`\`
 
-I removed the GCS backend and cloud-storage dependencies from the delivery image.
+I deleted the GCS backend and the cloud SDK dependencies from the delivery image. The fetcher fails closed: an empty or unreadable credential is an error, never an unauthenticated request and never a fallback to whatever identity the pod happens to have. The inference service itself never calls the API or the bucket; it only loads the files the fetcher installed.
 
-The inference process knew even less. It made no model-store calls at all; it only consumed local files.
+The responsibilities ended up much narrower than where I started:
 
-The responsibilities were now much clearer.
+> **Deployment API:** storage access\\
+> **Activator:** which release to run\\
+> **Fetcher:** download and verify that release\\
+> **Inference service:** load the files on disk
 
-> **Platform API:** storage access\\
-> **Activator:** release selection\\
-> **Fetcher:** download, verification, installation\\
-> **Inference service:** load the installed classifier
-
-There was still an accepted limitation: the credential at this layer was shared at the platform level, so this was not a claim of per-tenant authorization isolation.
-
-The important change was not adding another component. It was removing storage knowledge from components that did not need it.
+![Architecture diagram showing the training cluster publishing to the model store, the Deployment API reading it, and customer-side namespaces reading through the API.](/writing/killchain/model-delivery-architecture.png "Customer-side namespaces read model releases through the Deployment API. Only the platform holds the store credential.")
 
 ---
 
-## Readiness and recovery completed the delivery path
+## A token that protected nothing
 
-![Diagram showing model publication, activation, rollout, and failure recovery transitions.](/writing/killchain/publication-activation-recovery.png "Publication, activation, rollout, and recovery are separate transitions.")
+The first version of the API kept one thing from my original design: each customer-side namespace got its own token. A namespace sent its token along with its namespace name, and the API's middleware checked that the pair matched.
 
-Once the release could reach a pod, there was still another boundary to define: what did Kubernetes mean by ready?
+Going back through that path, I noticed what happened right after the check: the middleware discarded the namespace. Every read resolved against the same process-wide store reference. Every namespace received byte-identical content from the same bucket.
 
-Consider:
+The per-namespace token was protecting a distinction the store didn't make.
 
-\`\`\`text
-process: running
-desired model: v43
-loaded model: v42
-\`\`\`
+That was hard to see while each namespace held its own GCS reader credential, because per-namespace credentials looked like the careful default. Once every namespace was talking to one API, the question became simpler: what does this API actually distinguish between callers? For model reads, the answer was nothing.
 
-The HTTP server may be running perfectly.
+So I replaced it with a single platform token. Requests carry one header. The namespace header went away on both sides, along with the per-namespace token storage and the Vault route that served it. The Deployment API reads the token from a Vault mount it already had.
 
-For this deployment, it is still wrong.
+I'm careful about what this claims:
 
-For model-required deployments, I added readiness checks that verified the classifier had loaded and that its loaded version and digest matched the pod's desired version and digest.
-
-> **Running with the wrong model is not ready.**
-
-The serving chart required at least two replicas when delivery was enabled and used \`maxUnavailable: 0\`.
-
-During an update, healthy old replicas could remain available while replacement pods fetched and loaded the new model.
-
-A simplified failure case looked like this:
-
-\`\`\`text
-pod A -> v42 -> Ready
-pod B -> v42 -> Ready
-
-activate v43
-
-pod C -> fetch v43 -> checksum failure -> NotReady
-pod A/B continue serving
-\`\`\`
-
-These mechanisms protected availability during the model-update failures I was designing around. They did not claim to validate prediction quality or protect against unrelated infrastructure failures.
-
-If a rollout failed to converge before its deadline and a last-good release existed, the activator attempted one rollback.
-
-The word one mattered.
-
-Without a hold, a reconciler running every five minutes could do this indefinitely:
-
-\`\`\`text
-activate bad v43
-       ↓
-      fail
-       ↓
-rollback to v42
-       ↓
-next tick sees stable=v43
-       ↓
-activate bad v43 again
-\`\`\`
-
-After successful recovery, the activator therefore held the failed target rather than retrying it on every tick.
-
-A different version on \`stable\` could clear an automatic hold. An operator hold required explicit operator action.
-
-If rollback itself failed, the controller recorded the failure and stopped blindly retrying.
-
-There was also a bootstrap constraint:
-
-> You cannot roll back until there is a known-good release to roll back to.
-
-The first activation therefore had no previous runtime-delivered release available for recovery.
+- Rotation is now cluster-wide. Every serving namespace has the same token, so rotating it means updating all of them together.
+- It is not per-tenant isolation. Any namespace with the token can read any model release. For one shared classifier, that matches what the store actually serves.
+- What did improve is what a leak gets you. A leaked namespace credential used to be a cloud credential. Now it's a token for three read-only routes, with no cloud access behind it.
 
 ---
 
-## Why I kept native Deployments
+## Where it ended up
 
-I evaluated Argo Rollouts while working through rollback and recovery.
+![Sequence diagram showing namespace onboarding, publication, activation, rollout through the Deployment API, and recovery.](/writing/killchain/publication-activation-recovery.png "The full path: onboarding, publication, activation, rollout, and recovery.")
 
-It could replace some of my rollout-deadline logic and would provide a natural path toward progressive delivery.
+In our POC cluster we tested the Deployment API boundary end to end, along with running delivery from a plain Kubernetes secret instead of Vault access and keeping the token grant across upgrades. That is POC cluster evidence, not a customer production rollout. The work, which grew to more than 15,000 lines across the workflow, publisher, delivery components, API, Helm charts, and tests, moved into QA while I kept integrating it into the main product deployment.
 
-For example, a canary can explicitly describe progression:
-
-\`\`\`yaml
-steps:
-  - setWeight: 10
-  - pause:
-      duration: 1h
-  - setWeight: 20
-  - pause: {}
-\`\`\`
-
-That is useful when the question is:
-
-> How should traffic progressively move to a new version?
-
-My delivery problem still contained several model-specific steps outside that boundary:
-
-\`\`\`text
-resolve release
-verify manifest
-download bundle
-verify files
-check compatibility
-install model
-manage holds
-\`\`\`
-
-Argo Rollouts would not remove those responsibilities.
-
-The larger cost was operational.
-
-Argo Workflows ran in the training environment. The serving environments were separate customer clusters. Using Rollouts would mean introducing another controller and set of CRDs into every serving cluster.
-
-For the scope of this project, that dependency removed less complexity than it introduced.
-
-I kept native Deployments and the smaller model-specific reconciler.
-
-I would revisit that decision if we needed metric-driven canaries, finer traffic control, or if Rollouts were already an accepted dependency in the serving environments.
+There's a lot of that project I haven't written about here: readiness checks that compare the loaded model with the one the pod asked for, rollback and holds when a rollout fails, and why I didn't adopt Argo Rollouts. Those might be another post.
 
 ---
 
-## Result and my learnings
+## What I took away
 
-After several iterations of architecture design and code review, the system grew to more than 15,000 lines across the workflow, publisher, delivery components, API integration, Helm charts, and tests. It moved into QA while I continued integrating the infrastructure into the main product deployment.
+My first design wasn't broken. It authenticated properly, it verified every byte, and it ran. If someone had asked whether it was secure, I could have defended it.
 
-The line count is not particularly interesting on its own.
+The question I hadn't asked was who each piece of knowledge belonged to. A customer-side namespace is code that runs in an environment we don't fully control and might have to upgrade one cluster at a time. Every fact it holds about our storage is something we'd have to change there too.
 
-The change in the boundary of the project is.
+The review didn't hand me the answer. It pointed out that I'd merged two questions, and separating them led me to make the lists. The single platform token came out of the same exercise a step later, once the boundary was clean enough to see what it was actually protecting.
 
-I started with:
-
-> Run these training jobs correctly.
-
-By the end, the model moved through a much longer path:
-
-\`\`\`text
-training
-    ↓
-publication
-    ↓
-selection
-    ↓
-delivery
-    ↓
-installation
-    ↓
-rollout
-    ↓
-readiness
-    ↓
-recovery
-\`\`\`
-
-What drew me further into the project was the handoff after training.
-
-Every time I followed the artifact one step closer to serving, there was another concrete question to answer:
-
-> Which version was selected?\\
-> Which bytes actually arrived?\\
-> Which process loaded them?\\
-> Which component is allowed to know about storage?\\
-> Who owns recovery when the rollout fails?
-
-The individual Kubernetes mechanisms were rarely the difficult part.
-
-A CronJob is understandable in isolation. So is an init container. So is a readiness probe.
-
-The difficult parts were the contracts between them.
-
-A manifest described the expected release, but its existence alone did not prove publication had completed.
-
-A channel selected a release, but said nothing about model quality.
-
-A Deployment annotation described the desired model, but did not prove the application had loaded it.
-
-A running process could still be unready.
-
-The storage review was probably the clearest example of how my thinking changed. My first implementation was functional: the namespaced delivery components could authenticate to the bucket and retrieve the right files.
-
-But the stronger design question was not whether that could work.
-
-It was whether that responsibility belonged there.
-
-Moving storage behind the Deployment API made the customer-side component smaller, removed cloud-specific knowledge from it, and made the system boundary easier to reason about.
-
-The same pattern showed up in other decisions.
-
-I kept polling because immediate propagation was not a requirement.
-
-I used an init container because the application already loaded its classifier at startup.
-
-I kept native Deployments because we did not need enough of Argo Rollouts to justify operating another controller in every cluster.
-
-The question I kept coming back to became:
-
-> **What is the smallest contract each component actually needs?**
-
-I started with a workflow around training scripts.
-
-Following the model through each handoff is what turned it into a platform problem.`,
+Now, when I design something that runs on the other side of a boundary, I write those two lists before I write the client: what it would know, and what it needs to know. Most of the design comes out of the difference.`,
 };
