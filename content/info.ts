@@ -14,7 +14,7 @@ export const personalInfo: PersonalInfo = {
       { text: "Incoming Winter 2027", company: "SWE Intern: Backend @ StackAdapt", url: "https://www.stackadapt.com/", icon: "/stackadapt_logo.jpeg" },
       { text: "Designed and shipped our AI/ML platform team's first MLOps pipeline, built Go microservices, and managed customer infrastructure on Kubernetes.", company: "SWE Intern @ Versa Networks", url: "https://versa-networks.com/products/ueba/", icon: "/versa_networks_logo.jpeg" },
       { text: "Built the foundation of the graph database engine behind Qorsa's downstream AI framework and led its first cloud deployments.", company: "MLE Intern @ Qorsa", url: "https://qorsa.com", icon: "/qorsalogo.jpeg" },
-      { text: "Deployed a RAG-powered text-to-SQL pipeline for insurance marketing analytics.", company: "AI Developer Intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
+      { text: "Deployed a RAG-powered text-to-SQL pipeline for marketing analytics.", company: "AI Developer Intern @ CGI", url: "https://www.cgi.com", icon: "/cgi_portfolio_icon.jpg" },
       { text: "Built tuition forecasts to support budget planning for 9,000+ students.", company: "Developer @ UWaterloo", url: "https://uwaterloo.ca/math/", icon: "/uwlogo.jpg" }
     ],
     interests: {
